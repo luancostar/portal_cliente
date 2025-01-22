@@ -156,6 +156,7 @@ export default function FormLogin() {
             fullWidth
             onClick={handleClick}
             disabled={loading}
+          
           >
             {loading ? "Carregando..." : "LOGIN"}
           </Button>
