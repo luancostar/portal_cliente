@@ -88,7 +88,7 @@ export default function FormLogin() {
           Portal do Cliente
         </Typography>
         <Typography className="mb-16 text-gray-600 font-normal text-[18px]">
-          O Controle de suas encomendas na palma da sua mão.
+          O Controle de suas encomendas ao seu alcance
         </Typography>
         <form action="#" className="mx-auto max-w-[24rem] text-left">
           {/* CPF ou CNPJ Input */}

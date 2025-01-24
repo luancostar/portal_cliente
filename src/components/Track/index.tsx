@@ -13,12 +13,12 @@ export default function TrackTurn() {
         style={{ backgroundColor: "#fff", borderRadius: "10px" }}
         className="w-full flex flex-col gap-4"
       >
-        <div className="w-full justify-around flex">
-          <div className="grid justify-items-center">
+        <div className="w-full justify-between flex sm:justify-around">
+        <div className="grid justify-items-center">
               <div style={{ borderRadius:"100%", backgroundColor: "rgb(13,171,97)"}} className="w-fit">
                 <FaTruckRampBox  className="text-6xl p-3  text-white" />
               </div>
-               <label className="font-bold text-center">Solicitar Coleta</label>
+               <label className="text-sm font-bold text-center">Nova Coleta</label>
           </div>
 
           <div className="grid justify-items-center">
@@ -26,7 +26,7 @@ export default function TrackTurn() {
               <FaBoxesStacked  
               className="text-6xl p-3  text-white" />
               </div>
-               <label className="font-bold text-center">Minhas Coletas</label>
+               <label className="text-sm font-bold text-center">Minhas Coletas</label>
           </div>
           
           
@@ -35,7 +35,7 @@ export default function TrackTurn() {
               <FaRegPaperPlane 
               className="text-6xl p-3  text-white" />
               </div>
-               <label className="font-bold text-center">Mensagem de Suporte</label>
+               <label className="text-sm font-bold text-center">Suporte</label>
           </div>
 
         </div>

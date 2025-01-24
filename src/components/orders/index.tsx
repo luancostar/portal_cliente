@@ -74,7 +74,7 @@ const TABLE_ROWS = [
  
 export function OrdersTable() {
   return (
-    <Card className="mt-4 shadow-none h-full w-full">
+    <Card className="mt-4 shadow-none w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
         <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
           <div>
