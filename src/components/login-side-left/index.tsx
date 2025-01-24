@@ -21,13 +21,13 @@ export default function FormLogin() {
       setErrors({ cpfCnpj: "", senha: "", general: "" });
 
       if (!cpfCnpj) {
-        setErrors((prev) => ({ ...prev, cpfCnpj: "CPF ou CNPJ é obrigatório." }));
+        setErrors((prev) => ({ ...prev, cpfCnpj: "⚠️ CPF ou CNPJ é obrigatório." }));
         setLoading(false);
         return;
       }
 
       if (!senha) {
-        setErrors((prev) => ({ ...prev, senha: "A senha é obrigatória." }));
+        setErrors((prev) => ({ ...prev, senha: "⚠️ A senha é obrigatória." }));
         setLoading(false);
         return;
       }
@@ -110,7 +110,7 @@ export default function FormLogin() {
               className="text-center w-full placeholder:opacity-100 focus:border-t-primary border-t-blue-gray-200"
             />
             {errors.cpfCnpj && (
-              <Typography variant="small" color="red" className="mt-1">
+              <Typography variant="small" color="red" className="text-center mt-1">
                 {errors.cpfCnpj}
               </Typography>
             )}
@@ -145,7 +145,7 @@ export default function FormLogin() {
               }
             />
             {errors.senha && (
-              <Typography variant="small" color="red" className="mt-1">
+              <Typography variant="small" color="red" className="text-center mt-1">
                 {errors.senha}
               </Typography>
             )}
@@ -166,7 +166,7 @@ export default function FormLogin() {
 
           {/* Mensagem de erro geral */}
           {errors.general && (
-            <Typography variant="small" color="red" className="mt-4">
+            <Typography variant="small" color="red" className="text-center mt-4">
               ⚠️ {errors.general}
             </Typography>
           )}
