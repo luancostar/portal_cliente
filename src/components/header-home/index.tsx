@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardBody, Input } from "@material-tailwind/react";
+import {
+  ArrowDownTrayIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
 
 export function SearchHeaderCard({ idCliente }) {
   const [location, setLocation] = useState("Obtendo localização...");
@@ -38,7 +42,7 @@ export function SearchHeaderCard({ idCliente }) {
   return (
     <Card className="w-full">
       <CardBody
-        style={{ backgroundColor: "rgb(13,171,97)", borderRadius: "10px" }}
+        style={{  backgroundImage: "linear-gradient(to bottom, rgb(13,171,97), rgb(0,128,50))", borderRadius: "10px" }}
         className="w-full flex flex-col gap-4"
       >
         <h4 className="flex items-start m-0 p-0 text-white justify-between">
@@ -62,16 +66,39 @@ export function SearchHeaderCard({ idCliente }) {
               {location}
             </div>
           </div>
-          <div>Usuário: {idCliente || "Não identificado"}</div>
+          <div>
+              <p>Bem-vindo:</p>
+            <p>Usuário: {idCliente || "Não identificado"}</p>
+            </div>
         </h4>
         <Input
-          style={{ backgroundColor: "#027A48", color: "#ffffff" }}
-          label="Consultar por Nº do Pedido"
-          size="lg"
-          labelProps={{
-            style: { color: "white" },
-          }}
-        />
+  style={{ backgroundColor: "#027A48", color: "#ffffff" }}
+  label="Consultar por Nº do Pedido"
+  icon={
+    <button
+      style={{
+        backgroundColor: "white",
+        border: "none",
+        borderRadius: "25%",
+        padding: "8px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        position: "absolute",
+        left: "-5px"
+      }}
+      onClick={() => {
+        // Adicione sua lógica de ação do botão aqui
+      }}
+    >
+      <MagnifyingGlassIcon className="text-green-600 h-5 w-5" />
+    </button>
+  }
+  size="lg"
+  labelProps={{
+    style: { color: "white" },
+  }}
+/>
       </CardBody>
     </Card>
   );

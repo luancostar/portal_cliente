@@ -15,14 +15,25 @@ export default function TrackTurn() {
       >
         <div className="w-full justify-between flex sm:justify-around">
         <div className="grid justify-items-center">
-              <div style={{ borderRadius:"100%", backgroundColor: "rgb(13,171,97)"}} className="w-fit">
-                <FaTruckRampBox  className="text-6xl p-3  text-white" />
+        <div
+  style={{
+    borderRadius: "100%",
+    backgroundImage: "linear-gradient(to bottom, rgb(13,171,97), rgb(0,128,50))"
+  }}
+  className="w-fit"
+>                <FaTruckRampBox  className="text-6xl p-3  text-white" />
               </div>
                <label className="text-sm font-bold text-center">Nova Coleta</label>
           </div>
 
           <div className="grid justify-items-center">
-              <div style={{ borderRadius:"100%", backgroundColor: "rgb(13,171,97)"}} className="w-fit">
+          <div
+  style={{
+    borderRadius: "100%",
+    backgroundImage: "linear-gradient(to bottom, rgb(13,171,97), rgb(0,128,50))"
+  }}
+  className="w-fit"
+>
               <FaBoxesStacked  
               className="text-6xl p-3  text-white" />
               </div>
@@ -31,7 +42,13 @@ export default function TrackTurn() {
           
           
           <div className="grid justify-items-center">
-              <div style={{ borderRadius:"100%", backgroundColor: "rgb(13,171,97)"}} className="w-fit">
+          <div
+  style={{
+    borderRadius: "100%",
+    backgroundImage: "linear-gradient(to bottom, rgb(13,171,97), rgb(0,128,50))"
+  }}
+  className="w-fit"
+>
               <FaRegPaperPlane 
               className="text-6xl p-3  text-white" />
               </div>
