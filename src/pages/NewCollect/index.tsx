@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
+
+
 const SolicitarColetaForm = () => {
     const [data, setData] = useState({
       id_cliente: "",
@@ -26,6 +28,16 @@ const SolicitarColetaForm = () => {
     const [messageType, setMessageType] = useState("");
     const [showOverlay, setShowOverlay] = useState(false);
     const navigate = useNavigate();
+    
+    useEffect(() => {
+        const idCliente = localStorage.getItem("idCliente");
+        if (idCliente) {
+          setData((prevData) => ({
+            ...prevData,
+            id_cliente: idCliente,
+          }));
+        }
+      }, []);
   
     const handleChange = (event) => {
       const { name, value } = event.target;
@@ -114,12 +126,9 @@ const SolicitarColetaForm = () => {
             
           <div className="relative">
         
-            <label htmlFor="id_cliente" className="text-sm font-medium text-gray-700">ID Cliente</label>
-            <div className="mt-4 absolute left-3 top-3 text-gray-500">
-              <i className="fas fa-user"></i>
-            </div>
+             
             <input
-              type="text"
+              type="hidden"
               id="id_cliente"
               name="id_cliente"
               value={data.id_cliente}

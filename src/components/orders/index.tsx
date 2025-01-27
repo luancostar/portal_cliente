@@ -1,250 +1,222 @@
-import { PencilIcon } from "@heroicons/react/24/solid";
-import {
-  ArrowDownTrayIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/outline";
+  
 import {
   Card,
-  CardHeader,
-  Typography,
-  Button,
-  CardBody,
-  Chip,
-  CardFooter,
-  Avatar,
-  IconButton,
-  Tooltip,
-  Input,
 } from "@material-tailwind/react";
  
-const TABLE_HEAD = ["Transaction", "Amount", "Date", "Status", "Account", ""];
- 
-const TABLE_ROWS = [
-  {
-    img: "https://docs.material-tailwind.com/img/logos/logo-spotify.svg",
-    name: "Spotify",
-    amount: "$2,500",
-    date: "Wed 3:00pm",
-    status: "coletado",
-    account: "visa",
-    accountNumber: "1234",
-    expiry: "06/2026",
-  },
-  {
-    img: "https://docs.material-tailwind.com/img/logos/logo-amazon.svg",
-    name: "Amazon",
-    amount: "$5,000",
-    date: "Wed 1:00pm",
-    status: "coletado",
-    account: "master-card",
-    accountNumber: "1234",
-    expiry: "06/2026",
-  },
-  {
-    img: "https://docs.material-tailwind.com/img/logos/logo-pinterest.svg",
-    name: "Pinterest",
-    amount: "$3,400",
-    date: "Mon 7:40pm",
-    status: "em aberto",
-    account: "master-card",
-    accountNumber: "1234",
-    expiry: "06/2026",
-  },
-  {
-    img: "https://docs.material-tailwind.com/img/logos/logo-google.svg",
-    name: "Google",
-    amount: "$1,000",
-    date: "Wed 5:00pm",
-    status: "coletado",
-    account: "visa",
-    accountNumber: "1234",
-    expiry: "06/2026",
-  },
-  {
-    img: "https://docs.material-tailwind.com/img/logos/logo-netflix.svg",
-    name: "netflix",
-    amount: "$14,000",
-    date: "Wed 3:30am",
-    status: "cancelado",
-    account: "visa",
-    accountNumber: "1234",
-    expiry: "06/2026",
-  },
-];
  
 export function OrdersTable() {
   return (
-    <Card className="mt-4 shadow-none w-full">
-      <CardHeader floated={false} shadow={false} className="rounded-none">
-        <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
+     <Card className="mt-4">
+ 
+<div className="p-4 max-w-md mx-auto flow-root">
+  <ul role="list" className="-mb-8">
+    <li>
+      <div className="relative pb-8">
+        <span
+          className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200"
+          aria-hidden="true"
+        />
+        <div className="relative flex space-x-3">
           <div>
-            <Typography variant="h5" color="blue-gray">
-              Histórico de Coletas
-            </Typography>
-            <Typography color="gray" className="mt-1 font-normal">
-              Últimas coletas solicitadas:
-            </Typography>
-          </div>
-          <div className="flex w-full shrink-0 gap-2 md:w-max">
-            <div className="w-full md:w-72">
-              <Input
-                label="Filtrar na Tabela"
-                icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+            <span className="h-8 w-8 rounded-full  flex items-center justify-center ring-8 ring-white">
+            <img
+                className="h-6 w-6 text-white"
+                viewbox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+                src="https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif"
               />
+            </span>
+          </div>
+          <div>
+            <span className="h-8 w-8 rounded-full  flex items-center justify-center ring-8 ring-white">
+            <span className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center ring-8 ring-white">
+              <svg
+                className="h-5 w-5 text-white"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </span>
+            </span>
+          </div>
+          <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+            <div>
+              <p className="text-sm text-gray-500">
+                aguardando a confirmação de{" "}
+                <a href="#" className="font-medium text-gray-900">
+                  coleta
+                </a>
+              </p>
+              <p className="text-sm text-gray-500">
+                coleta confirmada!{" "}
+                <a href="#" className="font-medium text-gray-900">
+                 roteirizando...
+                </a>
+              </p>
             </div>
-    
+            <div className="whitespace-nowrap text-right text-sm text-gray-500">
+              <time dateTime="2020-09-20">Sep 20</time>
+            </div>
           </div>
         </div>
-      </CardHeader>
-      <CardBody className="overflow-scroll px-0">
-        <table className="w-full min-w-max table-auto text-left">
-          <thead>
-            <tr>
-              {TABLE_HEAD.map((head) => (
-                <th
-                  key={head}
-                  className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
-                >
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal leading-none opacity-70"
-                  >
-                    {head}
-                  </Typography>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {TABLE_ROWS.map(
-              (
-                {
-                  img,
-                  name,
-                  amount,
-                  date,
-                  status,
-                  account,
-                  accountNumber,
-                  expiry,
-                },
-                index,
-              ) => {
-                const isLast = index === TABLE_ROWS.length - 1;
-                const classes = isLast
-                  ? "p-4"
-                  : "p-4 border-b border-blue-gray-50";
+      </div>
+      
+    </li>
+    <li>
+      <div className="relative pb-8">
+        <span
+          className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200"
+          aria-hidden="true"
+        />
+        <div className="relative flex space-x-3">
+          <div>
+            <span className="h-8 w-8 rounded-full  flex items-center justify-center ring-8 ring-white">
+              <img
+                className="h-6 w-6 text-white"
+                viewbox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+                src=" https://cdn-icons-png.flaticon.com/512/8583/8583437.png "
+              />
+            </span>
+          </div>
+          <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+            <div>
+              <p className="text-sm text-gray-500">
+                 Responsável pela Coleta: {" "}
+                <a href="#" className="font-medium text-gray-900">
+                 Motorista,{" "}
+                </a>
+                Veículo: {" "}
+                <a href="#" className="font-medium text-gray-900">
+                 AAAA-8888
+                </a>
+              </p>
+            </div>
+            <div className="whitespace-nowrap text-right text-sm text-gray-500">
+              <time dateTime="2020-09-22">Sep 22</time>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div className="relative pb-8">
+        <span
+          className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200"
+          aria-hidden="true"
+        />
+        <div className="relative flex space-x-3">
+          <div>
+            <span className="h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white">
+              <img
+                className="h-6 w-6 text-white"
+                viewbox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+                src="https://previews.123rf.com/images/aquamann/aquamann1112/aquamann111200016/11660618-cone-de-caminh%C3%A3o-verde.jpg"
+                clipRule="evenodd"
+              />
+            </span>
+          </div>
+          <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+            <div>
+              <p className="text-sm text-gray-500">
+                O motorista está à {" "}
+                <a href="#" className="font-medium text-gray-900">
+                  {" "}
+                  caminho
+                </a>
+              </p>
+            </div>
+            <div className="whitespace-nowrap text-right text-sm text-gray-500">
+              <time dateTime="2020-09-28">Sep 28</time>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+    {/* <li>
+      <div className="relative pb-8">
+        <span
+          className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200"
+          aria-hidden="true"
+        />
+        <div className="relative flex space-x-3">
+          <div>
+            <span className="h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white">
+              <img
+                className="h-5 w-5 text-white"
+                viewbox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+                src="https://res.cloudinary.com/teepublic/image/private/s--AwgOGWhQ--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_auto:good:420,w_630/v1615488250/production/designs/20135311_0.jpg"
+              />
+            </span>
+          </div>
+          <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+            <div>
+              <p className="text-sm text-gray-500">
+                with driver{" "}
+                <a href="#" className="font-medium text-gray-900">
+                  on the way to you
+                </a>
+              </p>
+            </div>
+            <div className="whitespace-nowrap text-right text-sm text-gray-500">
+              <time dateTime="2020-09-30">Sep 30</time>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li> */}
+    <li>
+      <div className="relative pb-8">
+        <div className="relative flex space-x-3">
+          <div>
+            <span className="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center ring-8 ring-white">
+              <svg
+                className="h-5 w-5 text-white"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </span>
+          </div>
+          <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+            <div>
+              <p className="text-sm text-gray-500">
+                Sua mercadoria foi coletada!{" "}
+                <a href="#" className="font-medium text-gray-900">
+                   
+                </a>
+              </p>
+            </div>
+            <div className="whitespace-nowrap text-right text-sm text-gray-500">
+              <time dateTime="2020-10-04">Oct 4</time>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+     </Card>
  
-                return (
-                  <tr key={name}>
-                    <td className={classes}>
-                      <div className="flex items-center gap-3">
-                        <Avatar
-                          src={img}
-                          alt={name}
-                          size="md"
-                          className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
-                        />
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-bold"
-                        >
-                          {name}
-                        </Typography>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {amount}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {date}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <div className="w-max">
-                        <Chip
-                          size="sm"
-                          variant="ghost"
-                          value={status}
-                          color={
-                            status === "coletado"
-                              ? "green"
-                              : status === "em aberto"
-                              ? "amber"
-                              : "red"
-                          }
-                        />
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="flex items-center gap-3">
-                        <div className="h-9 w-12 rounded-md border border-blue-gray-50 p-1">
-                          <Avatar
-                            src={
-                              account === "visa"
-                                ? "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/visa.png"
-                                : "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/logos/mastercard.png"
-                            }
-                            size="sm"
-                            alt={account}
-                            variant="square"
-                            className="h-full w-full object-contain p-1"
-                          />
-                        </div>
-                        <div className="flex flex-col">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal capitalize"
-                          >
-                            {account.split("-").join(" ")} {accountNumber}
-                          </Typography>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {expiry}
-                          </Typography>
-                        </div>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <Tooltip content="Edit User">
-                        <IconButton variant="text">
-                          <PencilIcon className="h-4 w-4" />
-                        </IconButton>
-                      </Tooltip>
-                    </td>
-                  </tr>
-                );
-              },
-            )}
-          </tbody>
-        </table>
-      </CardBody>
-      <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-        <Button variant="outlined" size="sm">
-          Previous
-        </Button>
-        
-        <Button variant="outlined" size="sm">
-          Next
-        </Button>
-      </CardFooter>
-    </Card>
+  
   );
 }
