@@ -2,92 +2,88 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
-
-
 const SolicitarColetaForm = () => {
-  const [data, setData] = useState({
-    id_cliente: '',
-    cep: '',
-    destino_numero: '',
-    destino_bairro: '',
-    destino_cidade: '',
-    nome_destinatario: '',
-    telefone_destinatario: '',
-    local_entrega: '',
-    solicitante_coleta: '',
-    volume_solicitado: '',
-    peso_solicitado: '',
-    qtd_notas: '',
-    tipo_embalagem: '',
-    obs: ''
-  });
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  const [messageType, setMessageType] = useState('');
-  const [showOverlay, setShowOverlay] = useState(false); // Controle do overlay
-  const navigate = useNavigate();
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setData((prevData) => ({
-      ...prevData,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    setLoading(true);
-    setMessage('');
-    setShowOverlay(true); // Exibe o overlay enquanto carrega
-
-    const formData = new FormData();
-    formData.append('id_cliente', data.id_cliente);
-    formData.append('cep', data.cep);
-    formData.append('destino_numero', data.destino_numero);
-    formData.append('destino_bairro', data.destino_bairro);
-    formData.append('destino_cidade', data.destino_cidade);
-    formData.append('nome_destinatario', data.nome_destinatario);
-    formData.append('telefone_destinatario', data.telefone_destinatario);
-    formData.append('local_entrega', data.local_entrega);
-    formData.append('solicitante_coleta', data.solicitante_coleta);
-    formData.append('volume_solicitado', data.volume_solicitado);
-    formData.append('peso_solicitado', data.peso_solicitado);
-    formData.append('qtd_notas', data.qtd_notas);
-    formData.append('tipo_embalagem', data.tipo_embalagem);
-    formData.append('obs', data.obs);
-
-    try {
-      const response = await axios.post(
-        'http://localhost/roteirizador/functions/portal_cliente/coletas/solicitar_coleta.php',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data'
+    const [data, setData] = useState({
+      id_cliente: "",
+      cep: "",
+      destino_numero: "",
+      destino_bairro: "",
+      destino_cidade: "",
+      nome_destinatario: "",
+      telefone_destinatario: "",
+      local_entrega: "",
+      solicitante_coleta: "",
+      volume_solicitado: "",
+      peso_solicitado: "",
+      qtd_notas: "",
+      tipo_embalagem: "",
+      obs: "",
+    });
+  
+    const [currentStep, setCurrentStep] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState("");
+    const [messageType, setMessageType] = useState("");
+    const [showOverlay, setShowOverlay] = useState(false);
+    const navigate = useNavigate();
+  
+    const handleChange = (event) => {
+      const { name, value } = event.target;
+      setData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    };
+  
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+      setLoading(true);
+      setMessage("");
+      setShowOverlay(true);
+  
+      const formData = new FormData();
+      Object.keys(data).forEach((key) => {
+        formData.append(key, data[key]);
+      });
+  
+      try {
+        const response = await axios.post(
+          "http://localhost/roteirizador/functions/portal_cliente/coletas/solicitar_coleta.php",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
           }
+        );
+  
+        if (response.data.status === "success") {
+          setMessage(
+            "✅️ Coleta solicitada com sucesso! Aguarde Confirmação."
+          );
+          setMessageType("success");
+        } else {
+          setMessage("Erro ao solicitar coleta: " + response.data.message);
+          setMessageType("error");
         }
-      );
-
-      if (response.data.status === 'success') {
-        setMessage('✅️ Coleta solicitada com sucesso! Agora é com a gente, em pouco tempos sua solicitação de coleta será respondida!');
-        setMessageType('success');
-      } else {
-        setMessage('Erro ao solicitar coleta: ' + response.data.message);
-        setMessageType('error');
+      } catch (error) {
+        setMessage("Erro ao enviar solicitação");
+        setMessageType("error");
+      } finally {
+        setLoading(false);
+        setTimeout(() => {
+          setShowOverlay(false);
+          navigate("/home");
+        }, 3000);
       }
-    } catch (error) {
-      setMessage('Erro ao enviar solicitação');
-      setMessageType('error');
-    } finally {
-      setLoading(false);
-      setTimeout(() => {
-        setShowOverlay(false); // Remove o overlay
-        setMessage('');
-        navigate('/home');
-      }, 500000000);
-    }
-  };
+    };
+  
+    const handleNextStep = () => {
+      setCurrentStep((prevStep) => prevStep + 1);
+    };
+  
+    const handlePreviousStep = () => {
+      setCurrentStep((prevStep) => Math.max(prevStep - 1, 1));
+    };
+
 
   return (
     <div style={{height: '100%' }} className="relative">
@@ -95,7 +91,7 @@ const SolicitarColetaForm = () => {
         <div className="absolute inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
           <div
             
-            className={`p-6 rounded-md ${messageType === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
+            className={`p-6 rounded-md ${messageType === 'success' ? 'bg-green-500 text-green-800' : 'bg-red-100 text-red-700'}`}
             style={{ width: '80%', maxWidth: '400px', padding: '70px 0px', marginTop: '-30rem', textAlign: 'center', fontWeight:'bold', backgroundColor: "linear-gradient(to bottom, rgb(13,171,97), rgb(0,128,50)" }}
           >
             <span className='text-white text-2xl'>{message}</span>
@@ -110,7 +106,10 @@ const SolicitarColetaForm = () => {
               <h2><i  style={{color: "rgb(13,171,97"}} className="text-3xl fa-sharp fa-solid fa-arrow-left"></i></h2>
           </Link>
             </div>
+
+
       <form onSubmit={handleSubmit} className="space-y-6 p-4 rounded-lg max-w-8xl mx-auto">
+      {currentStep === 1 && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             
           <div className="relative">
@@ -232,7 +231,9 @@ const SolicitarColetaForm = () => {
                 </div>
             </div>
        
-       
+        )}
+        {currentStep === 2 && (
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
 
@@ -359,22 +360,29 @@ const SolicitarColetaForm = () => {
 
         </div>
  
-
-
-        <div className="flex justify-center">
-          <button
-            style={{width:'100%', background : "linear-gradient(to bottom, rgb(13,171,97), rgb(0,128,50)"}}
-            type="submit"
-            className="text-white p-3 font-bold"
-            disabled={loading}
-          >
-            {loading ? 'Enviando...' : 'Solicitar Coleta'}
-          </button>
-        </div>
-        
-        
+)}
+{currentStep === 3 && (
+  <button type="submit"  className="w-full p-3 border rounded-xl text-white cursor-pointer bg-gradient-to-b from-blue-600 to-blue-400 group-hover:from-white group-hover:to-white group-hover:border group-hover:border-green-500 transform transition-transform duration-200 group-hover:scale-95" >
+    <i class="fa-solid fa-circle-check"></i> Solicitar Coleta
+  </button>
+)}
+<div className="flex justify-between mt-4">
+  {currentStep > 1 && (
+    <button type="button" onClick={handlePreviousStep} className="w-full p-3 border rounded-xl text-white cursor-pointer bg-gradient-to-b from-green-200 to-green-400 group-hover:from-white group-hover:to-white group-hover:border group-hover:border-green-500 transform transition-transform duration-200 group-hover:scale-95">
+     <i class="fa-solid fa-chevron-left"></i>  Voltar
+    </button>
+  )}
+  {currentStep < 3 && (
+    <button type="button" onClick={handleNextStep} className="w-full p-3 border rounded-xl text-white cursor-pointer bg-gradient-to-b from-green-500 to-green-700 group-hover:from-white group-hover:to-white group-hover:border group-hover:border-green-500 transform transition-transform duration-200 group-hover:scale-95"
+>
+      Próximo <i className="fa-solid fa-chevron-right"></i>
+    </button>
+  )}
+</div>
       </form>
+      
     </div>
+    
   );
 };
 
