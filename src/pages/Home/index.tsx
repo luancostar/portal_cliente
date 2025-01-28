@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { SearchHeaderCard } from "../../components/header-home";
 import TrackTurn from "../../components/Track";
 import { OrdersTable } from "../../components/orders";
+import { ColetasTable } from "../../components/coletas";
 
 export default function Home() {
   const [idCliente, setIdCliente] = useState(null);
@@ -18,6 +19,8 @@ export default function Home() {
         {/* Passando o idCliente para os componentes */}
         <SearchHeaderCard idCliente={idCliente} />
         <TrackTurn />
+        <ColetasTable idCliente={idCliente} />
+
         <OrdersTable />
       </div>
     </div>
