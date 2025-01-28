@@ -58,7 +58,7 @@ export function OrdersTable({ idCliente }) {
           <Card className="mt-4" key={index}>
             <div className="p-4 max-w-md mx-auto flow-root">
               <ul role="list" className="-mb-8">
-                {/* Etapa única: Pendente de autorização ou Autorizada */}
+                {/* Etapa 1: Pendente de autorização ou Autorizada */}
                 <li>
                   <div className="relative pb-8">
                     <div className="relative flex space-x-3">
@@ -81,7 +81,7 @@ export function OrdersTable({ idCliente }) {
                       <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
                         <div>
                           <p className="text-sm text-gray-500">
-                            {coleta.status === "Pendente de autorização"
+                            {coleta.status_coleta === "Pendente de autorização"
                               ? "Aguardando confirmação para autorização"
                               : coleta.status_coleta === "Autorizada"
                               ? "Coleta autorizada e roteirizando"
@@ -97,6 +97,47 @@ export function OrdersTable({ idCliente }) {
                     </div>
                   </div>
                 </li>
+
+                {/* Etapa 2: Roteirizando coleta ou dados do motorista e placa */}
+                {coleta.status_coleta === "Autorizada" && (
+                  <li>
+                    <div className="relative pb-8">
+                      <div className="relative flex space-x-3">
+                        <div>
+                          <span className="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center ring-8 ring-white">
+                            <svg
+                              className="h-5 w-5 text-white"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                              aria-hidden="true"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          </span>
+                        </div>
+                        <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                          <div>
+                            <p className="text-sm text-gray-500">
+                              {coleta.nome_motorista !== "SEM MOTORISTA" &&
+                              coleta.placa_veiculo !== "SEM PLACA"
+                                ? `Motorista: ${coleta.nome_motorista} | Placa: ${coleta.placa_veiculo}`
+                                : "Roteirizando coleta"}
+                            </p>
+                          </div>
+                          <div className="whitespace-nowrap text-right text-sm text-gray-500">
+                            <time dateTime={coleta.data_hora_inclusao}>
+                              {coleta.data_hora_inclusao || "N/A"}
+                            </time>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                )}
               </ul>
             </div>
           </Card>
