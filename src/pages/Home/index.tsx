@@ -21,7 +21,7 @@ export default function Home() {
         <TrackTurn />
         <ColetasTable idCliente={idCliente} />
 
-        <OrdersTable />
+        <OrdersTable idCliente={idCliente} />
       </div>
     </div>
   );
