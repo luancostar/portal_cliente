@@ -60,55 +60,60 @@ export function OrdersTable({ idCliente }) {
               <ul role="list" className="-mb-8 w-full grid justify-items-start xl:flex sm:justify-center" >
                 {/* Etapa 1: Pendente de autorização ou Autorizada ou Coletada */}
                 <li>
-                  <div className="relative pb-8">
-                  <div className="relative flex space-x-3">
-                    <div>
-                    <span
-                      className={`h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white ${
-                        coleta.status === "Pendente de autorização" ? "bg-transparent" : "bg-green-500"
-                      }`}
-                    >
-                      <img
-                    src="../src/assets/loading.gif.gif"
-                    alt=""
-                    className={`${coleta.status === "Pendente de autorização" ? "block" : "hidden"}`}
-                  />
-                      <svg
-                        className="h-5 w-5 text-white"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </span>
-                    </div>
-                    <div className="text-sm text-gray-500 flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
-                      <div>
-                     
-               
-                      {coleta.status === "Pendente de autorização"
-                      ? "Aguardando confirmação de coleta"
-                      : coleta.status_coleta === "Autorizada" || coleta.status_coleta === "Coletada"
-                      ? "Coleta aprovada! roteirizando..."
-                      : "Status desconhecido"}
-                                  
-                                      </div>
-                      <div className="whitespace-nowrap text-right text-sm text-gray-500">
-                        
-                        <time>
-                          {coleta.data_solicitacao ? new Date (coleta.data_solicitacao).toLocaleDateString("pt-BR"): "N/A"} - 
-                           {coleta.hora_solicitacao}
-                        </time>
-                      </div>
-                    </div>
-                  </div>
-                  </div>
-                </li> 
+  <div className="relative pb-8">
+    <div className="relative flex space-x-3">
+      <div>
+        {/* Ícone SVG: Só aparece quando status_coleta NÃO for "Pendente de autorização" */}
+        <span
+          className={`h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white ${
+            coleta.status_coleta === "Pendente de autorização" ? "hidden" : "bg-green-500"
+          }`}
+        >
+          <svg
+            className="h-5 w-5 text-white"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fillRule="evenodd"
+              d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </span>
+
+        {/* Imagem de carregamento: Só aparece quando status_coleta for "Pendente de autorização" */}
+        <img
+          src="../src/assets/loading.gif.gif"
+          alt="Carregando"
+          width={'28px'}
+          className={`${coleta.status_coleta === "Pendente de autorização" ? "block" : "hidden"}`}
+        />
+      </div>
+
+      <div className="text-sm text-gray-500 flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+        <div>
+          {coleta.status_coleta === "Pendente de autorização"
+            ? "Aguardando confirmação de coleta"
+            : coleta.status_coleta === "Autorizada" || coleta.status_coleta === "Coletada"
+            ? "Coleta aprovada! roteirizando..."
+            : "Aguardando confirmação de coleta"}
+        </div>
+
+        <div className="whitespace-nowrap text-right text-sm text-gray-500">
+          <time>
+            {coleta.data_solicitacao
+              ? new Date(coleta.data_solicitacao).toLocaleDateString("pt-BR")
+              : "N/A"}{" "}
+            - {coleta.hora_solicitacao}
+          </time>
+        </div>
+      </div>
+    </div>
+  </div>
+</li>
+
                 <div
                 className="bg-[#24c200] xl:h-[2px] xl:w-[100px] xl:mt-[15px] xl:ml-[5px] h-[17px] w-[2px] mt-[-25px] ml-[14px]"
               >
