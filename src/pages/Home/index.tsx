@@ -19,7 +19,7 @@ export default function Home() {
         {/* Passando o idCliente para os componentes */}
         <SearchHeaderCard idCliente={idCliente} />
         <TrackTurn />
-        <ColetasTable idCliente={idCliente} />
+        {/* <ColetasTable idCliente={idCliente} /> */}
 
         <OrdersTable idCliente={idCliente} />
       </div>

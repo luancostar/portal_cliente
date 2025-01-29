@@ -57,7 +57,7 @@ export function OrdersTable({ idCliente }) {
         coletas.map((coleta, index) => (
           <Card className="mt-4" key={index}>
             <div className="p-4 flow-root">
-              <ul role="list" className="-mb-8 w-100 flex justify-center">
+              <ul role="list" className="-mb-8 w-full grid justify-items-start xl:flex sm:justify-center" >
                 {/* Etapa 1: Pendente de autorização ou Autorizada ou Coletada */}
                 <li>
                   <div className="relative pb-8">
@@ -108,11 +108,12 @@ export function OrdersTable({ idCliente }) {
                     </div>
                   </div>
                   </div>
-                </li>
-                
-                            <div style={{backgroundColor: "#24c200", height: "2px", width: "100px", margin: "15px 0px 0px 5px"}}>
-               
-                            </div>
+                </li> 
+                <div
+                className="bg-[#24c200] xl:h-[2px] xl:w-[100px] xl:mt-[15px] xl:ml-[5px] h-[17px] w-[2px] mt-[-25px] ml-[14px]"
+              >
+              </div>
+
                 {/* Etapa 2: Roteirizando coleta ou dados do motorista e placa */}
                 {(
                   coleta.status_coleta === "Autorizada" ||
@@ -171,9 +172,10 @@ export function OrdersTable({ idCliente }) {
                     </div>
                   </li>
                 )}
-                 <div style={{backgroundColor: "#24c200", height: "2px", width: "100px", margin: "15px 0px 0px 5px"}}>
-               
-               </div>
+              <div
+                className="bg-[#24c200] xl:h-[2px] xl:w-[100px] xl:mt-[15px] xl:ml-[5px] h-[17px] w-[2px] mt-[-25px] ml-[14px]"
+              >
+              </div>
 
                 {/* Etapa 3: Veículo em rota de coleta ou Coleta realizada com sucesso */}
                 {coleta.status_coleta === "Coletada" ? (
