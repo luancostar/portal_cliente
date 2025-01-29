@@ -3,100 +3,128 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
 
-
 const SolicitarColetaForm = () => {
-    const [data, setData] = useState({
-      id_cliente: "",
-      cep: "",
-      destino_numero: "",
-      destino_bairro: "",
-      destino_cidade: "",
-      nome_destinatario: "",
-      telefone_destinatario: "",
-      local_entrega: "",
-      solicitante_coleta: "",
-      volume_solicitado: "",
-      peso_solicitado: "",
-      qtd_notas: "",
-      tipo_embalagem: "",
-      obs: "",
-    });
-  
-    const [currentStep, setCurrentStep] = useState(1);
-    const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState("");
-    const [messageType, setMessageType] = useState("");
-    const [showOverlay, setShowOverlay] = useState(false);
-    const navigate = useNavigate();
-    
-    useEffect(() => {
-        const idCliente = localStorage.getItem("idCliente");
-        if (idCliente) {
-          setData((prevData) => ({
-            ...prevData,
-            id_cliente: idCliente,
-          }));
-        }
-      }, []);
-  
-    const handleChange = (event) => {
-      const { name, value } = event.target;
+  const [data, setData] = useState({
+    id_cliente: "",
+    cep: "",
+    destino_numero: "",
+    destino_bairro: "",
+    destino_cidade: "",
+    nome_destinatario: "",
+    telefone_destinatario: "",
+    local_entrega: "",
+    solicitante_coleta: "",
+    volume_solicitado: "",
+    peso_solicitado: "",
+    qtd_notas: "",
+    tipo_embalagem: "",
+    obs: "",
+  });
+
+  const [addresses, setAddresses] = useState([]); // Armazenar múltiplos endereços
+  const [currentStep, setCurrentStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+  const [showOverlay, setShowOverlay] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const idCliente = localStorage.getItem("idCliente");
+    if (idCliente) {
       setData((prevData) => ({
         ...prevData,
-        [name]: value,
+        id_cliente: idCliente,
       }));
-    };
-  
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-      setLoading(true);
-      setMessage("");
-      setShowOverlay(true);
-  
-      const formData = new FormData();
-      Object.keys(data).forEach((key) => {
-        formData.append(key, data[key]);
-      });
-  
-      try {
-        const response = await axios.post(
-          "http://localhost/roteirizador/functions/portal_cliente/coletas/solicitar_coleta.php",
-          formData,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-          }
-        );
-  
-        if (response.data.status === "success") {
-          setMessage(
-            "✅️ Coleta solicitada com sucesso! Aguarde Confirmação."
-          );
-          setMessageType("success");
-        } else {
-          setMessage("Erro ao solicitar coleta: " + response.data.message);
-          setMessageType("error");
-        }
-      } catch (error) {
-        setMessage("Erro ao enviar solicitação");
-        setMessageType("error");
-      } finally {
-        setLoading(false);
-        setTimeout(() => {
-          setShowOverlay(false);
-          navigate("/home");
-        }, 3000);
+      fetchAddress(idCliente); // Chama a função para buscar os endereços
+    }
+  }, []);
+
+  const fetchAddress = async (idCliente) => {
+    try {
+      const response = await axios.get(
+        `http://localhost/roteirizador/functions/portal_cliente/clientes/getEnderecosCliente.php?id_cliente=${idCliente}`
+      );
+      if (response.data.status === "success" && response.data.data.length > 0) {
+        setAddresses(response.data.data); // Armazenar múltiplos endereços
+        // Se necessário, definir valores iniciais para campos do formulário
+        setData((prevData) => ({
+          ...prevData,
+          cep: response.data.data[0].cep,
+          coleta_numero: response.data.data[0].endereco_num,
+          endereco_coleta: response.data.data[0].endereco,
+          id_endereco_coleta: response.data.data[0].id,
+        }));
       }
-    };
-  
-    const handleNextStep = () => {
-      setCurrentStep((prevStep) => prevStep + 1);
-    };
-  
-    const handlePreviousStep = () => {
-      setCurrentStep((prevStep) => Math.max(prevStep - 1, 1));
-    };
+    } catch (error) {
+      console.error("Erro ao buscar endereço:", error);
+    }
+  };
 
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    setMessage("");
+    setShowOverlay(true);
+
+    const formData = new FormData();
+    Object.keys(data).forEach((key) => {
+      formData.append(key, data[key]);
+    });
+
+    try {
+      const response = await axios.post(
+        "http://localhost/roteirizador/functions/portal_cliente/coletas/solicitar_coleta.php",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      if (response.data.status === "success") {
+        setMessage("✅️ Coleta solicitada com sucesso! Aguarde Confirmação.");
+        setMessageType("success");
+      } else {
+        setMessage("Erro ao solicitar coleta: " + response.data.message);
+        setMessageType("error");
+      }
+    } catch (error) {
+      setMessage("Erro ao enviar solicitação");
+      setMessageType("error");
+    } finally {
+      setLoading(false);
+      setTimeout(() => {
+        setShowOverlay(false);
+        navigate("/home");
+      }, 3000);
+    }
+  };
+
+  const handleNextStep = () => {
+    setCurrentStep((prevStep) => prevStep + 1);
+  };
+
+  const handlePreviousStep = () => {
+    setCurrentStep((prevStep) => Math.max(prevStep - 1, 1));
+  };
+
+  const getStepTitle = () => {
+    const titles = {
+      1: "Dados de Coleta",
+      2: "Endereço de Destino (Opcional)",
+      3: "Confirme Solicitação"
+    };
+    return titles[currentStep] || "Solicitação de Coleta";
+  };
+  
   return (
     <div style={{height: '100%' }} className="relative">
       {showOverlay && (
@@ -111,20 +139,22 @@ const SolicitarColetaForm = () => {
         </div>
       )}
           <div className="p-4 flex justify-between">
-                <h1>
-                    Solicitação de Coleta
-                </h1>
+
+          <h1 className='text-2xl font-semibold text-gray-600'>
+              {getStepTitle()}
+          </h1>
+                
           <Link to="/home" className="flex flex-col items-center group">
               <h2><i  style={{color: "rgb(13,171,97"}} className="text-3xl fa-sharp fa-solid fa-arrow-left"></i></h2>
           </Link>
-            </div>
+        </div>
 
 
       <form onSubmit={handleSubmit} className="space-y-6 p-4 rounded-lg max-w-8xl mx-auto">
       {currentStep === 1 && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             
-          <div className="relative">
+          <div className="hidden relative">
         
              
             <input
@@ -225,6 +255,29 @@ const SolicitarColetaForm = () => {
             />
           </div>
 
+          <div className="relative">
+              <label htmlFor="cep" className="text-sm font-medium text-gray-700">Selecione Endereço de Coleta:</label>
+              <select
+                id="cep"
+                name="cep"
+                value={data.cep}
+                onChange={handleChange}
+                className="input input-bordered w-full pl-2 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {addresses.map((address, index) => (
+                   <option
+                   key={index}
+                   value={address.endereco} // O valor visível para o usuário
+                   data-id={address.id} // O id oculto no atributo data-id
+                 >
+                   CEP: {address.cep} - {address.endereco}, {address.endereco_num}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+           
+
            <div className="w-100 flex justify-center">
             <div className="w-full ">
             <label htmlFor="obs" className="text-sm font-medium text-gray-700">Observações</label>
@@ -234,19 +287,20 @@ const SolicitarColetaForm = () => {
                 value={data.obs}
                 onChange={handleChange}
                 placeholder="Observações"
-                className="input input-bordered w-full   rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="input input-bordered w-full pl-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                      </div>
                 </div>
             </div>
+
+            
        
         )}
         {currentStep === 2 && (
 
+ 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-
-          <div className="relative">
+           <div className="relative">
             <label htmlFor="cep" className="text-sm font-medium text-gray-700">CEP</label>
             <div className="mt-4 absolute left-3 top-3 text-gray-500">
               <i className="fas fa-map-pin"></i>

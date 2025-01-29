@@ -8,10 +8,13 @@
 }
 #root{
   height: 100% !important;
+  max-width: 1540px;
 
 }
 body, html {
   height: 100%;
+  display: flex;
+  justify-content: center;
 }
 .spanLogin{
   border-radius: 10px;

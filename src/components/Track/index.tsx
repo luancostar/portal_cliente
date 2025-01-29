@@ -55,7 +55,7 @@ export default function TrackTurn() {
               >
                 <FaRegPaperPlane className="text-6xl p-3 text-white group-hover:text-green-500" />
               </div>
-              <label className="text-sm font-bold text-center">Suporte</label>
+              <label className="text-sm font-bold text-center">Fala <strong>VB</strong></label>
             </Link>
           </div>
         </div>
