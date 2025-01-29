@@ -3,6 +3,7 @@ import { SearchHeaderCard } from "../../components/header-home";
 import TrackTurn from "../../components/Track";
 import { OrdersTable } from "../../components/orders";
 import { ColetasTable } from "../../components/coletas";
+import Hero from "../../components/Hero";
 
 export default function Home() {
   const [idCliente, setIdCliente] = useState(null);
@@ -20,7 +21,7 @@ export default function Home() {
         <SearchHeaderCard idCliente={idCliente} />
         <TrackTurn />
         {/* <ColetasTable idCliente={idCliente} /> */}
-
+<Hero/>
         <OrdersTable idCliente={idCliente} />
       </div>
     </div>

@@ -52,7 +52,7 @@ export function OrdersTable({ idCliente }) {
 
   return (
     <div className="mt-6">
-      <h2 className="text-lg font-bold mb-4">Tracking de Coletas</h2>
+      <h2 className="text-xl text-gray-500 font-bold mb-4">📦 Acompanhe sua coleta! </h2>
       {coletas.length > 0 ? (
         coletas.map((coleta, index) => (
           <Card className="mt-4" key={index}>
