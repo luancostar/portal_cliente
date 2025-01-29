@@ -56,49 +56,63 @@ export function OrdersTable({ idCliente }) {
       {coletas.length > 0 ? (
         coletas.map((coleta, index) => (
           <Card className="mt-4" key={index}>
-            <div className="p-4 max-w-md mx-auto flow-root">
-              <ul role="list" className="-mb-8">
+            <div className="p-4 flow-root">
+              <ul role="list" className="-mb-8 w-100 flex justify-center">
                 {/* Etapa 1: Pendente de autorização ou Autorizada ou Coletada */}
                 <li>
                   <div className="relative pb-8">
                   <div className="relative flex space-x-3">
                     <div>
-                      <span className="h-8 w-8 rounded-full bg-yellow-500 flex items-center justify-center ring-8 ring-white">
-                        <svg
-                          className="h-5 w-5 text-white"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          aria-hidden="true"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </span>
+                    <span
+                      className={`h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white ${
+                        coleta.status === "Pendente de autorização" ? "bg-transparent" : "bg-green-500"
+                      }`}
+                    >
+                      <img
+                    src="../src/assets/loading.gif.gif"
+                    alt=""
+                    className={`${coleta.status === "Pendente de autorização" ? "block" : "hidden"}`}
+                  />
+                      <svg
+                        className="h-5 w-5 text-white"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </span>
                     </div>
-                    <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                    <div className="text-sm text-gray-500 flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
                       <div>
-                        <p className="text-sm text-gray-500">
-                          {coleta.status === "Pendente de autorização"
-                            ? "Aguardando confirmação para autorização"
-                            : (coleta.status_coleta === "Autorizada" ||
-                                coleta.status_coleta === "Coletada")
-                            ? "Coleta autorizada e roteirizando"
-                            : "Status desconhecido"}
-                        </p>
-                      </div>
+                     
+               
+                      {coleta.status === "Pendente de autorização"
+                      ? "Aguardando confirmação de coleta"
+                      : coleta.status_coleta === "Autorizada" || coleta.status_coleta === "Coletada"
+                      ? "Coleta aprovada! roteirizando..."
+                      : "Status desconhecido"}
+                                  
+                                      </div>
                       <div className="whitespace-nowrap text-right text-sm text-gray-500">
-                        <time dateTime={coleta.data_hora_inclusao}>
-                          {coleta.data_hora_inclusao || "N/A"}
+                        
+                        <time>
+                          {coleta.data_solicitacao ? new Date (coleta.data_solicitacao).toLocaleDateString("pt-BR"): "N/A"} - 
+                           {coleta.hora_solicitacao}
                         </time>
                       </div>
                     </div>
                   </div>
                   </div>
                 </li>
-
+                
+                            <div style={{backgroundColor: "#24c200", height: "2px", width: "100px", margin: "15px 0px 0px 5px"}}>
+               
+                            </div>
                 {/* Etapa 2: Roteirizando coleta ou dados do motorista e placa */}
                 {(
                   coleta.status_coleta === "Autorizada" ||
@@ -107,20 +121,35 @@ export function OrdersTable({ idCliente }) {
                     <div className="relative pb-8">
                       <div className="relative flex space-x-3">
                         <div>
-                          <span className="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center ring-8 ring-white">
-                            <svg
-                              className="h-5 w-5 text-white"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              aria-hidden="true"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          </span>
+                        <span
+                          className={`h-8 w-8 rounded-full ${
+                            coleta.nome_motorista === "SEM MOTORISTA" && coleta.placa_veiculo === "SEM PLACA"
+                              ? "bg-transparent"
+                              : "bg-green-500"
+                          } flex items-center justify-center ring-8 ring-white`}
+                        >
+                          <img
+                            src="../src/assets/loading.gif.gif"
+                            alt=""
+                            className={`${
+                              coleta.nome_motorista === "SEM MOTORISTA" && coleta.placa_veiculo === "SEM PLACA"
+                                ? "block"
+                                : "hidden"
+                            }`}
+                          />
+                          <svg
+                            className="h-5 w-5 text-white"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            aria-hidden="true"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </span>
                         </div>
                         <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
                           <div>
@@ -133,7 +162,8 @@ export function OrdersTable({ idCliente }) {
                           </div>
                           <div className="whitespace-nowrap text-right text-sm text-gray-500">
                             <time dateTime={coleta.data_hora_inclusao}>
-                              {coleta.data_hora_inclusao || "N/A"}
+                            {coleta.data_agendamento ? new Date(coleta.data_agendamento).toLocaleDateString("pt-BR"): "N/A"} - 
+
                             </time>
                           </div>
                         </div>
@@ -141,6 +171,9 @@ export function OrdersTable({ idCliente }) {
                     </div>
                   </li>
                 )}
+                 <div style={{backgroundColor: "#24c200", height: "2px", width: "100px", margin: "15px 0px 0px 5px"}}>
+               
+               </div>
 
                 {/* Etapa 3: Veículo em rota de coleta ou Coleta realizada com sucesso */}
                 {coleta.status_coleta === "Coletada" ? (
@@ -148,7 +181,8 @@ export function OrdersTable({ idCliente }) {
                     <div className="relative pb-8">
                       <div className="relative flex space-x-3">
                         <div>
-                          <span className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center ring-8 ring-white">
+                          <span className="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center ring-8 ring-white">
+
                             <svg
                               className="h-5 w-5 text-white"
                               viewBox="0 0 20 20"
@@ -170,8 +204,9 @@ export function OrdersTable({ idCliente }) {
                             </p>
                           </div>
                           <div className="whitespace-nowrap text-right text-sm text-gray-500">
-                            <time dateTime={coleta.data_hora_inclusao}>
-                              {coleta.data_hora_inclusao || "N/A"}
+                            <time dateTime={coleta.data_coleta}>
+                            {coleta.data_coleta ? new Date(coleta.data_coleta).toLocaleDateString("pt-BR"): "N/A"} - 
+                              {coleta.hora_coleta || "N/A"}
                             </time>
                           </div>
                         </div>
@@ -186,7 +221,9 @@ export function OrdersTable({ idCliente }) {
                        <div className="relative pb-8">
                          <div className="relative flex space-x-3">
                            <div>
-                             <span className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center ring-8 ring-white">
+                             <span className="h-8 w-8 rounded-full bg-transparent flex items-center justify-center ring-8 ring-white">
+                        <img src="../src/assets/loading.gif.gif" alt="" />
+
                                <svg
                                  className="h-5 w-5 text-white"
                                  viewBox="0 0 20 20"
@@ -205,7 +242,7 @@ export function OrdersTable({ idCliente }) {
                              <div>
                                <p className="text-sm text-gray-500">
                                  Veículo em rota de coleta
-                               </p>
+                                </p>
                              </div>
                              <div className="whitespace-nowrap text-right text-sm text-gray-500">
                                <time dateTime={coleta.data_hora_inclusao}>
