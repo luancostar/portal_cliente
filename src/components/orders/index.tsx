@@ -65,7 +65,7 @@ export function OrdersTable({ idCliente }) {
       {coletas.length > 0 ? (
         coletas.map((coleta, index) => (
           <Card className="mt-4" key={index}>
-            <div className="p-4 flow-root">
+            <div className="p-4 pb-10 flow-root">
               <ul role="list" className="-mb-8 w-full grid justify-items-start xl:flex sm:justify-start" >
                 {/* Etapa 1: Pendente de autorização ou Autorizada ou Coletada */}
                 <li>

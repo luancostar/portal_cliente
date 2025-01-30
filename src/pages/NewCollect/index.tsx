@@ -30,6 +30,7 @@ const SolicitarColetaForm = () => {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
   const [showOverlay, setShowOverlay] = useState(false);
+  const [embalagens, setEmbalagens] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,6 +64,17 @@ const SolicitarColetaForm = () => {
       console.error("Erro ao buscar endereço:", error);
     }
   };
+
+  useEffect(() => {
+    axios.get(`${API_URL}/embalagens/getEmbalagens.php`)
+      .then(response => {
+        if (response.data.status === 'success') {
+          setEmbalagens(response.data.data);
+        }
+      })
+      .catch(error => console.error("Erro ao buscar embalagens:", error));
+  }, []);
+
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -108,32 +120,6 @@ const SolicitarColetaForm = () => {
         navigate("/home");
       }, 3000);
     }
-    // try {
-    //   const response = await axios.post(
-    //     "http://localhost/roteirizador/functions/portal_cliente/coletas/solicitar_coleta.php",
-    //     formData,
-    //     {
-    //       headers: { "Content-Type": "multipart/form-data" },
-    //     }
-    //   );
-
-    //   if (response.data.status === "success") {
-    //     setMessage("✅️ Coleta solicitada com sucesso! Aguarde Confirmação.");
-    //     setMessageType("success");
-    //   } else {
-    //     setMessage("Erro ao solicitar coleta: " + response.data.message);
-    //     setMessageType("error");
-    //   }
-    // } catch (error) {
-    //   setMessage("Erro ao enviar solicitação");
-    //   setMessageType("error");
-    // } finally {
-    //   setLoading(false);
-    //   setTimeout(() => {
-    //     setShowOverlay(false);
-    //     navigate("/home");
-    //   }, 3000);
-    // }
   };
 
   const handleNextStep = () => {
@@ -235,18 +221,20 @@ const SolicitarColetaForm = () => {
 
           <div className="relative">
             <label htmlFor="tipo_embalagem" className="text-sm font-medium text-gray-700">Tipo de Embalagem</label>
-            <div className="mt-4 absolute left-3 top-3 text-gray-500">
-              <i className="fas fa-user"></i>
-            </div>
-            <input
-              type="text"
-              id="tipo_embalagem"
-              name="tipo_embalagem"
-              value={data.tipo_embalagem}
-              onChange={handleChange}
-              placeholder="Tipo de Embalagem"
-              className="input input-bordered w-full pl-10 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <select
+          id="tipo_embalagem"
+          name="tipo_embalagem"
+          value={data.tipo_embalagem}
+          onChange={handleChange}
+          className="input input-bordered w-full py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">Selecione uma embalagem</option>
+          {embalagens.map((embalagem) => (
+            <option key={embalagem.id} value={embalagem.id}>
+              {embalagem.nome}
+            </option>
+          ))}
+        </select>
           </div>
           
           <div className="relative">
@@ -340,6 +328,7 @@ const SolicitarColetaForm = () => {
               value={data.cep}
               onChange={handleChange}
               placeholder="CEP"
+              autoComplete="off"
               className="input input-bordered w-full pl-10 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />

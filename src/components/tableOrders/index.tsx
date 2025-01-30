@@ -188,7 +188,7 @@ export default function ColetasTable() {
                   color="blue-gray"
                   className="font-normal leading-none opacity-70"
                 >
-                  Volume
+                  Volumes
                 </Typography>
               </th>
               <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
@@ -197,7 +197,7 @@ export default function ColetasTable() {
                   color="blue-gray"
                   className="font-normal leading-none opacity-70"
                 >
-                  Peso
+                  Peso/KG
                 </Typography>
               </th>
               <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
@@ -231,7 +231,9 @@ export default function ColetasTable() {
                   const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
                   return (
                     <tr key={index}>
-                      <td className={classes}>{new Date(coleta.data_solicitacao).toLocaleDateString("pt-BR")}</td>
+                        <td className={classes}>
+                        {isNaN(new Date(coleta.data_solicitacao)) ? "Aguardando..." : new Date(coleta.data_solicitacao).toLocaleDateString("pt-BR")}
+                        </td>
                       <td className={classes}>{coleta.hora_solicitacao}</td>
                       <td className={classes}>
                         <Chip
@@ -251,11 +253,13 @@ export default function ColetasTable() {
                           }
                         />
                       </td>
-                      <td className={classes}>{new Date(coleta.data_coleta).toLocaleDateString("pt-BR")}</td>
+                      <td className={classes}>
+                        {isNaN(new Date(coleta.data_coleta)) ? "Aguardando..." : new Date(coleta.data_coleta).toLocaleDateString("pt-BR")}
+                        </td>
                       <td className={classes}>{coleta.hora_coleta}</td>
                       <td className={classes}>{coleta.solicitante_coleta}</td>
                       <td className={classes} style={{ textAlign: "center" }}>{coleta.volume_solicitado}</td>
-                      <td className={classes} style={{ textAlign: "center" }}>{coleta.peso}</td>
+                      <td className={classes} style={{ textAlign: "center" }}>{coleta.peso} KG</td>
                       <td className={classes}>{coleta.nome_motorista}</td>
                       <td className={classes}>{coleta.placa_veiculo}</td>
                     </tr>
