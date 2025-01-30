@@ -73,15 +73,14 @@ export default function ColetasTable() {
 
   const filteredColetas = coletas.filter((coleta) => {
     return (
-      coleta.data_solicitacao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      coleta.hora_solicitacao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      coleta.status_coleta.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      coleta.data_coleta.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      coleta.hora_coleta.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      coleta.solicitante_coleta.toLowerCase().includes(searchTerm.toLowerCase()) ||
- 
-      coleta.nome_motorista.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      coleta.placa_veiculo.toLowerCase().includes(searchTerm.toLowerCase())
+      (coleta.data_solicitacao && coleta.data_solicitacao.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (coleta.hora_solicitacao && coleta.hora_solicitacao.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (coleta.status_coleta && coleta.status_coleta.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (coleta.data_coleta && coleta.data_coleta.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (coleta.hora_coleta && coleta.hora_coleta.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (coleta.solicitante_coleta && coleta.solicitante_coleta.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (coleta.nome_motorista && coleta.nome_motorista.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (coleta.placa_veiculo && coleta.placa_veiculo.toLowerCase().includes(searchTerm.toLowerCase()))
     );
   });
 
@@ -243,7 +242,11 @@ export default function ColetasTable() {
                               ? "green"
                               : coleta.status_coleta.toLowerCase() === "em aberto"
                               ? "amber"
-                              : "red"
+                              : coleta.status_coleta.toLowerCase() === "autorizada"
+                              ? "blue"
+                              : coleta.status_coleta.toLowerCase() === "pendente de autorização"
+                              ? "gray"
+                              : "red" // Para qualquer outro status não especificado
                           }
                         />
                       </td>
