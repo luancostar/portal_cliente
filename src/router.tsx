@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import NewCollect from "./pages/NewCollect";
 import Diretoria from "./pages/Diretoria";
+import MyCollects from "./pages/MyCollects";
 
 const router = createBrowserRouter ([
     {
@@ -20,6 +21,10 @@ const router = createBrowserRouter ([
     {
         path: '/support',
         element: <Diretoria/>
+    },
+    {
+        path: '/mycollects',
+        element: <MyCollects/>
     },
  
 ])

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card } from "@material-tailwind/react";
 
-export function OrdersTable({ idCliente }) {
+export function OrdersTableAll({ idCliente }) {
   const [coletas, setColetas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -10,11 +10,11 @@ export function OrdersTable({ idCliente }) {
     if (idCliente) {
       const controller = new AbortController();
       const signal = controller.signal;
-  
+
       const url = `http://localhost/roteirizador/functions/portal_cliente/coletas/getColetasCliente.php?id_cliente=${idCliente}`;
-  
+
       setLoading(true);
-  
+
       fetch(url, { signal })
         .then((response) => {
           if (!response.ok) {
@@ -23,15 +23,10 @@ export function OrdersTable({ idCliente }) {
           return response.json();
         })
         .then((data) => {
-          if (data.status === "success" && Array.isArray(data.data)) {
-            // Ordenar as coletas por data_solicitacao (descendente) e pegar a mais recente
-            const coletaMaisRecente = data.data
-              .sort((a, b) => new Date(b.data_solicitacao) - new Date(a.data_solicitacao))[0];
-  
-            setColetas(coletaMaisRecente ? [coletaMaisRecente] : []);
-  
-            if (coletaMaisRecente && coletaMaisRecente.razao_social) {
-              localStorage.setItem("razao_social", coletaMaisRecente.razao_social);
+          if (data.status === "success") {
+            setColetas(data.data);
+            if (data.data && data.data.razao_social) {
+              localStorage.setItem("razao_social", data.data.razao_social);
             }
           } else {
             setError(data.message);
@@ -45,11 +40,11 @@ export function OrdersTable({ idCliente }) {
           }
         })
         .finally(() => setLoading(false));
-  
+
       return () => controller.abort();
     }
   }, [idCliente]);
-  
+
   if (loading) {
     return <div>Carregando dados...</div>;
   }
