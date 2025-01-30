@@ -25,6 +25,9 @@ export function OrdersTable({ idCliente }) {
         .then((data) => {
           if (data.status === "success") {
             setColetas(data.data);
+            if (data.data && data.data.razao_social) {
+              localStorage.setItem("razao_social", data.data.razao_social);
+            }
           } else {
             setError(data.message);
           }

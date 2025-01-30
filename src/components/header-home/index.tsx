@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardBody, Input } from "@material-tailwind/react";
-import {
-  ArrowDownTrayIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 export function SearchHeaderCard({ idCliente }) {
   const [location, setLocation] = useState("Obtendo localização...");
+  const [razaoSocial, setRazaoSocial] = useState("Carregando...");
 
   useEffect(() => {
     const fetchLocation = async () => {
@@ -39,10 +37,35 @@ export function SearchHeaderCard({ idCliente }) {
     fetchLocation();
   }, []);
 
+  useEffect(() => {
+    if (idCliente) {
+      const fetchRazaoSocial = async () => {
+        try {
+          const response = await fetch(
+            `http://localhost/roteirizador/functions/portal_cliente/coletas/getColetasCliente.php?id_cliente=${idCliente}`
+          );
+          const data = await response.json();
+          if (data.status === "success" && data.data.length > 0) {
+            setRazaoSocial(data.data[0].razao_social || "Não identificado");
+          } else {
+            setRazaoSocial("Cliente não encontrado");
+          }
+        } catch (error) {
+          setRazaoSocial("Erro ao buscar cliente");
+        }
+      };
+
+      fetchRazaoSocial();
+    }
+  }, [idCliente]);
+
   return (
     <Card className="w-full">
       <CardBody
-        style={{  backgroundImage: "linear-gradient(to bottom, rgb(13,171,97), rgb(0,128,50))", borderRadius: "10px" }}
+        style={{
+          backgroundImage: "linear-gradient(to bottom, rgb(13,171,97), rgb(0,128,50))",
+          borderRadius: "10px",
+        }}
         className="w-full flex flex-col gap-4"
       >
         <h4 className="flex items-start m-0 p-0 text-white justify-between">
@@ -62,43 +85,43 @@ export function SearchHeaderCard({ idCliente }) {
               </svg>
             </div>
             <div className="grid-flow-col">
-              <p className="text-sm">Você está em:</p>
+              <p className="text-sm">Você está Próximo a :</p>
               {location}
             </div>
           </div>
           <div>
-              <p>Bem-vindo:</p>
-            <p>Usuário: {idCliente || "Não identificado"}</p>
-            </div>
+            <p>Bem-vindo:</p>
+            <p className="font-bold">{razaoSocial}</p>
+          </div>
         </h4>
         <Input
-  style={{ backgroundColor: "#027A48", color: "#ffffff" }}
-  label="Consultar por Nº do Pedido"
-  icon={
-    <button
-      style={{
-        backgroundColor: "white",
-        border: "none",
-        borderRadius: "25%",
-        padding: "8px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        position: "absolute",
-        left: "-5px"
-      }}
-      onClick={() => {
-        // Adicione sua lógica de ação do botão aqui
-      }}
-    >
-      <MagnifyingGlassIcon className="text-green-600 h-5 w-5" />
-    </button>
-  }
-  size="lg"
-  labelProps={{
-    style: { color: "white" },
-  }}
-/>
+          style={{ backgroundColor: "#027A48", color: "#ffffff" }}
+          label="Consultar por Nº do Pedido"
+          icon={
+            <button
+              style={{
+                backgroundColor: "white",
+                border: "none",
+                borderRadius: "25%",
+                padding: "8px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                position: "absolute",
+                left: "-5px",
+              }}
+              onClick={() => {
+                // Adicione sua lógica de ação do botão aqui
+              }}
+            >
+              <MagnifyingGlassIcon className="text-green-600 h-5 w-5" />
+            </button>
+          }
+          size="lg"
+          labelProps={{
+            style: { color: "white" },
+          }}
+        />
       </CardBody>
     </Card>
   );
