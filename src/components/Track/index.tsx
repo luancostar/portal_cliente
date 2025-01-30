@@ -2,6 +2,7 @@ import {
   Card,
   CardBody,
 } from "@material-tailwind/react";
+import { FaDoorOpen } from "react-icons/fa";
 import { FaTruckRampBox, FaBoxesStacked, FaRegPaperPlane } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
@@ -24,7 +25,7 @@ export default function TrackTurn() {
             >
               <FaTruckRampBox className="text-6xl p-3 text-white group-hover:text-green-500" />
             </div>
-            <label className="text-sm font-bold text-center">Nova Coleta</label>
+            <label className="text-xs font-bold text-center">Nova Coleta</label>
           </Link>
         </div>
 
@@ -40,7 +41,7 @@ export default function TrackTurn() {
               >
                 <FaBoxesStacked className="text-6xl p-3 text-white group-hover:text-green-500" />
               </div>
-              <label className="text-sm font-bold text-center">Minhas Coletas</label>
+              <label className="text-xs font-bold text-center"> Coletas</label>
             </Link>
           </div>
 
@@ -55,10 +56,24 @@ export default function TrackTurn() {
               >
                 <FaRegPaperPlane className="text-6xl p-3 text-white group-hover:text-green-500" />
               </div>
-              <label className="text-sm font-bold text-center">Fala <strong>VB</strong></label>
+              <label className="text-xs font-bold text-center">Fala <strong>VB</strong></label>
+            </Link>
+          </div>
+          <div className="grid justify-items-center">
+            <Link to="/support" className="flex flex-col items-center group">
+              <div
+                style={{
+                  borderRadius: "100%",
+                }}
+                className="w-fit cursor-pointer bg-gradient-to-b from-white to-gray-600 group-hover:from-white group-hover:to-white group-hover:border group-hover:border-green-500 transform transition-transform duration-200 group-hover:scale-95"
+              >
+                <FaDoorOpen className="text-6xl p-3 text-white group-hover:text-green-500" />
+              </div>
+              <label className="text-xs font-bold text-center">Sair </label>
             </Link>
           </div>
         </div>
+ 
       </CardBody>
     </Card>
   );
