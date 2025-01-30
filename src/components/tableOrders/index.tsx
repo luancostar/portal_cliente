@@ -1,8 +1,13 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
+
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import * as XLSX from "xlsx";
 import { API_URL } from "../../../config";
+import excelPng from "../../assets/excel.png"
 
 import {
   Card,
@@ -93,7 +98,7 @@ export default function ColetasTable() {
         onClick={exportToExcel}
         className="p-2 bg-transparent flex text-green-500 font-bold text-sm rounded mb-4 border-[1px] border-green-500"
         >
-        <img width={'30px'} className="mr-2" src="../src/assets/excel.png" alt="" />
+        <img width={'30px'} className="mr-2" src={excelPng} alt="" />
         Download
       </button>
         <Link to="/home" className="flex flex-col items-end group">

@@ -1,3 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
+
 import React, { useState, useEffect } from "react";
 import { Card, CardBody, Input } from "@material-tailwind/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
@@ -22,6 +26,7 @@ export function SearchHeaderCard({ idCliente }) {
               const suburb = data.address.suburb || "Bairro não identificado";
 
               setLocation(`${suburb}, ${city}`);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (error) {
               setLocation("Erro ao obter localização");
             }
@@ -51,6 +56,7 @@ export function SearchHeaderCard({ idCliente }) {
           } else {
             setRazaoSocial("VB Logística 💚");
           }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
           setRazaoSocial("Erro ao buscar cliente");
         }

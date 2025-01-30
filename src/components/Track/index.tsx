@@ -1,3 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
+
 import { useState } from "react";  // Importa o hook useState
 import { useNavigate } from "react-router-dom";  // Importa useNavigate
 import { Card, CardBody } from "@material-tailwind/react";

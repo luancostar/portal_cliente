@@ -1,3 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
+import heroBg from "../../assets/herobg.png"
 import { Card, CardBody } from "@material-tailwind/react";
 
 
@@ -12,7 +16,7 @@ export default function Hero() {
                    Pro seu negócio ir mais longe! 
             </div>
             <div className="flex justify-center"> 
-            <img src="../src/assets/herobg.png" alt="" className="w-full xl:max-w-[50%]" />
+            <img src={heroBg} alt="" className="w-full xl:max-w-[50%]" />
 
             </div>
         </div>

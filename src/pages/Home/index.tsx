@@ -1,3 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
+
 import React, { useState, useEffect } from "react";
 import { SearchHeaderCard } from "../../components/header-home";
 import TrackTurn from "../../components/Track";

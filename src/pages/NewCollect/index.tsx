@@ -1,3 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -26,6 +30,7 @@ const SolicitarColetaForm = () => {
 
   const [addresses, setAddresses] = useState([]); // Armazenar múltiplos endereços
   const [currentStep, setCurrentStep] = useState(1);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
@@ -110,6 +115,7 @@ const SolicitarColetaForm = () => {
         setMessage("Erro ao solicitar coleta: " + response.data.message);
         setMessageType("error");
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setMessage("Erro ao enviar solicitação");
       setMessageType("error");

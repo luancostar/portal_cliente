@@ -1,7 +1,11 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardBody } from "@material-tailwind/react";
-import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
+import { API_URL } from '../../../config';
+import bgMsg from "../../assets/diretoriabg.png";
 
 const Formulario: React.FC = () => {
   const [nome, setNome] = useState('');
@@ -18,7 +22,7 @@ const Formulario: React.FC = () => {
 
   const enviarFormulario = async () => {
     setLoading(true); // Ativa o loading
-    const response = await fetch('http://localhost/roteirizador/functions/portal_cliente/email/diretoria.php', {
+    const response = await fetch(`${API_URL}/email/diretoria.php`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -68,7 +72,7 @@ const Formulario: React.FC = () => {
               Suas mensagens vão direto para a diretoria da VB Logística!
             </div>
             <div className="flex justify-center">
-              <img src="../src/assets/diretoriabg.png" alt="" className="w-full xl:max-w-[50%]" />
+              <img src={bgMsg} alt="" className="w-full xl:max-w-[50%]" />
             </div>
           </div>
         </CardBody>

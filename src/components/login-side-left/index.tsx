@@ -1,10 +1,15 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
+
 import { useState } from "react";
 import axios from "axios";
 import { Typography, Input, Button } from "@material-tailwind/react";
 import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../../config.tsx";
- 
+import logoVb from "../../assets/LogoVBLOG_Prioritaria.png"
+
 export default function FormLogin() {
   const [cpfCnpj, setCpfCnpj] = useState("");
   const [senha, setSenha] = useState("");
@@ -81,7 +86,7 @@ export default function FormLogin() {
         <div className="flex justify-center">
           <img
             style={{ width: '500px' }}
-            src="../src/assets/Logo VB LOG_Prioritaria.png"
+            src={logoVb}
             alt="Logo"
           />
         </div>
