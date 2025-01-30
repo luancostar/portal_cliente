@@ -18,7 +18,9 @@ const SolicitarColetaForm = () => {
     peso_solicitado: "",
     qtd_notas: "",
     tipo_embalagem: "",
+    id_endereco_coleta: "",
     obs: "",
+
   });
 
   const [addresses, setAddresses] = useState([]); // Armazenar múltiplos endereços
@@ -132,7 +134,7 @@ const SolicitarColetaForm = () => {
           <div
             
             className={`p-6 rounded-md ${messageType === 'success' ? 'bg-green-500 text-green-800' : 'bg-red-100 text-red-700'}`}
-            style={{ width: '80%', maxWidth: '400px', padding: '70px 0px', marginTop: '-30rem', textAlign: 'center', fontWeight:'bold', backgroundColor: "linear-gradient(to bottom, rgb(13,171,97), rgb(0,128,50)" }}
+            style={{ width: '80%', maxWidth: '400px', padding: '70px 0px', marginTop: '-15rem', border:'5px solid #fff', borderRadius:'5px', textAlign: 'center', fontWeight:'bold', backgroundColor: "linear-gradient(to bottom, rgb(13,171,97), rgb(0,128,50)" }}
           >
             <span className='text-white text-2xl'>{message}</span>
           </div>
@@ -256,11 +258,11 @@ const SolicitarColetaForm = () => {
           </div>
 
           <div className="relative">
-              <label htmlFor="cep" className="text-sm font-medium text-gray-700">Selecione Endereço de Coleta:</label>
+              <label htmlFor="id_endereco_coleta" className="text-sm font-medium text-gray-700">Selecione Endereço de Coleta:</label>
               <select
-                id="cep"
-                name="cep"
-                value={data.cep}
+                id="id_endereco_coleta"
+                name="id_endereco_coleta"
+                value={data.id_endereco_coleta}
                 onChange={handleChange}
                 className="input input-bordered w-full pl-2 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
