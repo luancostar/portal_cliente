@@ -3,7 +3,8 @@ import axios from "axios";
 import { Typography, Input, Button } from "@material-tailwind/react";
 import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
-
+import { API_URL } from "../../../config.tsx";
+ 
 export default function FormLogin() {
   const [cpfCnpj, setCpfCnpj] = useState("");
   const [senha, setSenha] = useState("");
@@ -37,7 +38,7 @@ export default function FormLogin() {
       formData.append("senha", senha);
 
       const response = await axios.post(
-        "https://rotas.calledtecnologia.com/functions/portal_cliente/autenticacao.php",
+        `${API_URL}/autenticacao.php`,
         formData,
         {
           headers: {

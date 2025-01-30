@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { OrdersTableAll } from "../../components/ordersAll";
 import ColetasTable from "../../components/tableOrders";
 
 export default function MyCollects() {

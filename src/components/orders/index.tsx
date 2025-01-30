@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card } from "@material-tailwind/react";
+import { API_URL } from "../../../config";
 
 export function OrdersTable({ idCliente }) {
   const [coletas, setColetas] = useState([]);
@@ -11,7 +12,7 @@ export function OrdersTable({ idCliente }) {
       const controller = new AbortController();
       const signal = controller.signal;
   
-      const url = `http://localhost/roteirizador/functions/portal_cliente/coletas/getColetasCliente.php?id_cliente=${idCliente}`;
+      const url = `${API_URL}/coletas/getColetasCliente.php?id_cliente=${idCliente}`;
   
       setLoading(true);
   

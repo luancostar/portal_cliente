@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
+import { API_URL } from '../../../config';
 
 const SolicitarColetaForm = () => {
   const [data, setData] = useState({
@@ -45,7 +46,7 @@ const SolicitarColetaForm = () => {
   const fetchAddress = async (idCliente) => {
     try {
       const response = await axios.get(
-        `http://localhost/roteirizador/functions/portal_cliente/clientes/getEnderecosCliente.php?id_cliente=${idCliente}`
+        `${API_URL}/clientes/getEnderecosCliente.php?id_cliente=${idCliente}`
       );
       if (response.data.status === "success" && response.data.data.length > 0) {
         setAddresses(response.data.data); // Armazenar múltiplos endereços
@@ -81,16 +82,15 @@ const SolicitarColetaForm = () => {
     Object.keys(data).forEach((key) => {
       formData.append(key, data[key]);
     });
-
     try {
       const response = await axios.post(
-        "http://localhost/roteirizador/functions/portal_cliente/coletas/solicitar_coleta.php",
+        `${API_URL}/coletas/solicitar_coleta.php`, // Usando API_URL na URL da requisição
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-
+    
       if (response.data.status === "success") {
         setMessage("✅️ Coleta solicitada com sucesso! Aguarde Confirmação.");
         setMessageType("success");
@@ -108,6 +108,32 @@ const SolicitarColetaForm = () => {
         navigate("/home");
       }, 3000);
     }
+    // try {
+    //   const response = await axios.post(
+    //     "http://localhost/roteirizador/functions/portal_cliente/coletas/solicitar_coleta.php",
+    //     formData,
+    //     {
+    //       headers: { "Content-Type": "multipart/form-data" },
+    //     }
+    //   );
+
+    //   if (response.data.status === "success") {
+    //     setMessage("✅️ Coleta solicitada com sucesso! Aguarde Confirmação.");
+    //     setMessageType("success");
+    //   } else {
+    //     setMessage("Erro ao solicitar coleta: " + response.data.message);
+    //     setMessageType("error");
+    //   }
+    // } catch (error) {
+    //   setMessage("Erro ao enviar solicitação");
+    //   setMessageType("error");
+    // } finally {
+    //   setLoading(false);
+    //   setTimeout(() => {
+    //     setShowOverlay(false);
+    //     navigate("/home");
+    //   }, 3000);
+    // }
   };
 
   const handleNextStep = () => {

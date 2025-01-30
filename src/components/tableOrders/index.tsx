@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import * as XLSX from "xlsx";
+import { API_URL } from "../../../config";
 
 import {
   Card,
@@ -32,7 +33,7 @@ export default function ColetasTable() {
     if (!idCliente) return;
 
     setLoading(true);
-    fetch(`http://localhost/roteirizador/functions/portal_cliente/coletas/getColetasCliente.php?id_cliente=${idCliente}`)
+    fetch(`${API_URL}/coletas/getColetasCliente.php?id_cliente=${idCliente}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "success") {

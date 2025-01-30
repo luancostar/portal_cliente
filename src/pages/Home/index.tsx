@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { SearchHeaderCard } from "../../components/header-home";
 import TrackTurn from "../../components/Track";
 import { OrdersTable } from "../../components/orders";
-import { ColetasTable } from "../../components/coletas";
 import Hero from "../../components/Hero";
  
 

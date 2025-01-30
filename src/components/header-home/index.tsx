@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardBody, Input } from "@material-tailwind/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { API_URL } from "../../../config";
 
 export function SearchHeaderCard({ idCliente }) {
   const [location, setLocation] = useState("Obtendo localização...");
@@ -42,13 +43,13 @@ export function SearchHeaderCard({ idCliente }) {
       const fetchRazaoSocial = async () => {
         try {
           const response = await fetch(
-            `http://localhost/roteirizador/functions/portal_cliente/coletas/getColetasCliente.php?id_cliente=${idCliente}`
+            `${API_URL}/coletas/getColetasCliente.php?id_cliente=${idCliente}`
           );
           const data = await response.json();
           if (data.status === "success" && data.data.length > 0) {
             setRazaoSocial(data.data[0].razao_social || "Não identificado");
           } else {
-            setRazaoSocial("Cliente não encontrado");
+            setRazaoSocial("VB Logística 💚");
           }
         } catch (error) {
           setRazaoSocial("Erro ao buscar cliente");
