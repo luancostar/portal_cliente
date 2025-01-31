@@ -203,14 +203,14 @@ export default function ColetasTable() {
         </table>
       </CardBody>
       <CardFooter>
-          <div className="flex justify-center gap-2">
-            <Button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
+          <div className="flex justify-between gap-2">
+            <Button className="bg-green-500" onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
               Anterior
             </Button>
-            <span>
+            <span className="text-xs">
               Página {currentPage} de {totalPages}
             </span>
-            <Button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
+            <Button  className="bg-green-500" onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
               Próxima
             </Button>
           </div>
