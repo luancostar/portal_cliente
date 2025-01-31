@@ -144,7 +144,7 @@ export function OrdersTable({ idCliente }) {
                           } flex items-center justify-center ring-8 ring-white`}
                         >
                           <img
-                            src="../src/assets/loading.gif.gif"
+                            src={loadingGif}
                             alt=""
                             className={`${
                               coleta.nome_motorista === "SEM MOTORISTA" && coleta.placa_veiculo === "SEM PLACA"
@@ -238,7 +238,7 @@ export function OrdersTable({ idCliente }) {
                          <div className="relative flex space-x-3">
                            <div>
                              <span className="h-8 w-8 rounded-full bg-transparent flex items-center justify-center ring-8 ring-white">
-                        <img src="../src/assets/loading.gif.gif" alt="" />
+                        <img src={loadingGif} alt="" />
 
                                <svg
                                  className="h-5 w-5 text-white"

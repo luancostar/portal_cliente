@@ -15,7 +15,7 @@ export default function Hero() {
         className="w-full flex flex-col gap-4">
         <div className="flex justify-between">
         <div className="p-6 text-2xl font-bold text-white  sm:text-6xl md:text-6xl">
-              Nós cuidamos pra você 💚
+              Nós cuidamos pra você!
             </div>
             <div className="flex justify-center"> 
             <img src={heroBg} alt="" className="w-full xl:max-w-[50%]" />

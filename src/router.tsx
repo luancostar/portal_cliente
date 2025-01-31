@@ -26,6 +26,10 @@ const router = createBrowserRouter ([
         path: '/mycollects',
         element: <MyCollects/>
     },
+    {
+        path: '*',
+        element: <Home />
+    }
  
 ])
 
