@@ -6,7 +6,7 @@ import { useState } from "react";  // Importa o hook useState
 import { useNavigate } from "react-router-dom";  // Importa useNavigate
 import { Card, CardBody } from "@material-tailwind/react";
 import { FaDoorOpen, FaSpinner } from "react-icons/fa";
-import { FaTruckRampBox, FaBoxesStacked, FaRegPaperPlane } from "react-icons/fa6";
+import { FaTruckRampBox, FaBoxesStacked } from "react-icons/fa6";
 import vbIcon from "../../assets/logo_negativa.png"
 import { Link } from "react-router-dom";
 

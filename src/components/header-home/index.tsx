@@ -2,7 +2,7 @@
 // @ts-nocheck
 
 import React, { useState, useEffect } from "react";
-import { Card, CardBody, Input } from "@material-tailwind/react";
+import { Card, CardBody } from "@material-tailwind/react";
 import { API_URL } from "../../../config";
 
 export function SearchHeaderCard({ idCliente }) {
