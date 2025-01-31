@@ -28,18 +28,15 @@ export function OrdersTable({ idCliente }) {
           return response.json();
         })
         .then((data) => {
-          if (data.status === "success" && Array.isArray(data.data)) {
-            // Ordenar as coletas por data_solicitacao (descendente) e pegar a mais recente
-            const coletaMaisRecente = data.data
-              .sort((a, b) => new Date(b.data_solicitacao) - new Date(a.data_solicitacao))[0];
+          if (data.status === "success" && Array.isArray(data.data) && data.data.length > 0) {
+            const coletaMaisRecente = data.data[data.data.length - 1]; // Pega a última coleta retornada
+            setColetas([coletaMaisRecente]);
   
-            setColetas(coletaMaisRecente ? [coletaMaisRecente] : []);
-  
-            if (coletaMaisRecente && coletaMaisRecente.razao_social) {
+            if (coletaMaisRecente?.razao_social) {
               localStorage.setItem("razao_social", coletaMaisRecente.razao_social);
             }
           } else {
-            setError(data.message);
+            setColetas([]);
           }
         })
         .catch((err) => {
@@ -54,7 +51,6 @@ export function OrdersTable({ idCliente }) {
       return () => controller.abort();
     }
   }, [idCliente]);
-  
   if (loading) {
     return <div>Carregando dados...</div>;
   }

@@ -1,14 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import * as XLSX from "xlsx";
 import { API_URL } from "../../../config";
-import excelPng from "../../assets/excel.png"
-
+import excelPng from "../../assets/excel.png";
 import {
   Card,
   CardHeader,
@@ -24,8 +22,9 @@ export default function ColetasTable() {
   const [coletas, setColetas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [idCliente, setIdCliente] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(""); // Estado para armazenar o texto de pesquisa
-  
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const clienteId = localStorage.getItem("idCliente");
@@ -36,19 +35,31 @@ export default function ColetasTable() {
 
   useEffect(() => {
     if (!idCliente) return;
-
+  
     setLoading(true);
     fetch(`${API_URL}/coletas/getColetasCliente.php?id_cliente=${idCliente}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "success") {
-          setColetas(data.data);
+          setColetas(data.data.reverse()); // Inverte a ordem dos itens
         }
       })
       .catch((error) => console.error("Erro ao buscar dados:", error))
       .finally(() => setLoading(false));
   }, [idCliente]);
+  
 
+  const filteredColetas = coletas.filter((coleta) =>
+    Object.values(coleta).some((value) =>
+      value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
+
+  const totalPages = Math.ceil(filteredColetas.length / itemsPerPage);
+  const currentItems = filteredColetas.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const exportToExcel = () => {
     // Defina os dados da tabela
@@ -76,20 +87,7 @@ export default function ColetasTable() {
     XLSX.writeFile(wb, "coletas.xlsx");
   };
 
-
-  const filteredColetas = coletas.filter((coleta) => {
-    return (
-      (coleta.data_solicitacao && coleta.data_solicitacao.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (coleta.hora_solicitacao && coleta.hora_solicitacao.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (coleta.status_coleta && coleta.status_coleta.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (coleta.data_coleta && coleta.data_coleta.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (coleta.hora_coleta && coleta.hora_coleta.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (coleta.solicitante_coleta && coleta.solicitante_coleta.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (coleta.nome_motorista && coleta.nome_motorista.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (coleta.placa_veiculo && coleta.placa_veiculo.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
-  });
-
+ 
 
   return (
     <div className="p-4 w-full">
@@ -132,98 +130,26 @@ export default function ColetasTable() {
       <CardBody className="overflow-scroll px-0">
         <table className="w-full min-w-max table-auto text-left">
           <thead>
-            <tr>
-              <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal leading-none opacity-70"
-                >
-                  Data Solicitação
-                </Typography>
-              </th>
-              <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal leading-none opacity-70"
-                >
-                  Hora Solicitação
-                </Typography>
-              </th>
-              <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal leading-none opacity-70"
-                >
-                  Status
-                </Typography>
-              </th>
-              <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal leading-none opacity-70"
-                >
-                  Data Coleta
-                </Typography>
-              </th>
-              <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal leading-none opacity-70"
-                >
-                  Hora Coleta
-                </Typography>
-              </th>
-              <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal leading-none opacity-70"
-                >
-                  Solicitante
-                </Typography>
-              </th>
-              <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal leading-none opacity-70"
-                >
-                  Volumes
-                </Typography>
-              </th>
-              <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal leading-none opacity-70"
-                >
-                  Peso/KG
-                </Typography>
-              </th>
-              <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal leading-none opacity-70"
-                >
-                  Motorista
-                </Typography>
-              </th>
-              <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal leading-none opacity-70"
-                >
-                  Placa
-                </Typography>
-              </th>
-            </tr>
+          <tr>
+                {[
+                  "Data Solicitação",
+                  "Hora Solicitação",
+                  "Status",
+                  "Data Coleta",
+                  "Hora Coleta",
+                  "Solicitante",
+                  "Volumes",
+                  "Peso/KG",
+                  "Motorista",
+                  "Placa",
+                ].map((header) => (
+                  <th key={header} className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
+                    <Typography variant="small" color="blue-gray" className="font-normal leading-none opacity-70">
+                      {header}
+                    </Typography>
+                  </th>
+                ))}
+              </tr>
           </thead>
           <tbody>
               {loading ? (
@@ -231,7 +157,9 @@ export default function ColetasTable() {
                   <td colSpan="10" className="text-center p-4">Carregando...</td>
                 </tr>
               ) : (
-                filteredColetas.map((coleta, index) => {
+                
+                currentItems.map((coleta, index) => {
+
                   const isLast = index === filteredColetas.length - 1;
                   const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
                   return (
@@ -274,14 +202,19 @@ export default function ColetasTable() {
             </tbody>
         </table>
       </CardBody>
-      <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-      <Button variant="outlined" className="bg-green-500 text-white border-none" size="sm">
-      Anterior
-        </Button>
-        <Button variant="outlined" className="bg-green-500 text-white border-none" size="sm">
-          Próxima
-        </Button>
-      </CardFooter>
+      <CardFooter>
+          <div className="flex justify-center gap-2">
+            <Button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
+              Anterior
+            </Button>
+            <span>
+              Página {currentPage} de {totalPages}
+            </span>
+            <Button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>
+              Próxima
+            </Button>
+          </div>
+        </CardFooter>
     </Card>
     </div>
   );
