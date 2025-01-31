@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";  // Importa useNavigate
 import { Card, CardBody } from "@material-tailwind/react";
 import { FaDoorOpen, FaSpinner } from "react-icons/fa";
 import { FaTruckRampBox, FaBoxesStacked, FaRegPaperPlane } from "react-icons/fa6";
+import vbIcon from "../../assets/logo_negativa.png"
 import { Link } from "react-router-dom";
 
 export default function TrackTurn() {
@@ -42,7 +43,7 @@ export default function TrackTurn() {
       <Card className="mt-4 shadow-none w-full">
         <CardBody
           style={{ backgroundColor: "#fff", borderRadius: "10px" }}
-          className="w-full flex flex-col gap-4"
+          className="p-2 w-full flex flex-col gap-4"
         >
           <div className="w-full justify-between flex sm:justify-around">
             {/* Nova Coleta */}
@@ -79,14 +80,16 @@ export default function TrackTurn() {
             <div className="grid justify-items-center">
               <Link to="/support" className="flex flex-col items-center group">
                 <div
+                  
                   style={{
                     borderRadius: "100%",
+                    width:'55px',
                   }}
-                  className="w-fit cursor-pointer bg-gradient-to-b from-green-500 to-green-700 group-hover:from-white group-hover:to-white group-hover:border group-hover:border-green-500 transform transition-transform duration-200 group-hover:scale-95"
+                  className="w-fit flex justify-center cursor-pointer bg-gradient-to-b from-green-500 to-green-700 group-hover:from-white group-hover:to-white group-hover:border group-hover:border-green-500 transform transition-transform duration-200 group-hover:scale-95"
                 >
-                  <FaRegPaperPlane className="text-6xl p-3 text-white group-hover:text-green-500" />
+                  <img src={vbIcon} width={'50px'} alt="" className="text-6xl p-2 text-white group-hover:text-green-500" />
                 </div>
-                <label className="text-xs font-bold text-center">Fala <strong>VB</strong></label>
+                <label className="text-xs font-bold text-center">Fale com a <br />Diretoria</label>
               </Link>
             </div>
 

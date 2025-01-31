@@ -1,10 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
-
 import React, { useState, useEffect } from "react";
 import { Card, CardBody, Input } from "@material-tailwind/react";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { API_URL } from "../../../config";
 
 export function SearchHeaderCard({ idCliente }) {
@@ -24,7 +22,7 @@ export function SearchHeaderCard({ idCliente }) {
       const fetchEndereco = async () => {
         try {
           const response = await fetch(
-            `https://rotas.calledtecnologia.com/functions/portal_cliente/clientes/getEnderecosCliente.php?id_cliente=${idCliente}`
+            `${API_URL}/clientes/getEnderecosCliente.php?id_cliente=${idCliente}`
           );
           const data = await response.json();
           if (data.status === "success" && data.data.length > 0) {
@@ -47,9 +45,11 @@ export function SearchHeaderCard({ idCliente }) {
   return (
     <Card className="w-full">
       <CardBody
+      
         style={{
           backgroundImage: "linear-gradient(to bottom, rgb(13,171,97), rgb(0,128,50))",
           borderRadius: "10px",
+          padding: "10px",
         }}
         className="w-full flex flex-col gap-4"
       >
@@ -71,7 +71,7 @@ export function SearchHeaderCard({ idCliente }) {
             </div>
             <div className="grid-flow-col">
               <p className="text-xs">Endereço Principal:</p>
-              <p className="text-xs ">{enderecoPrincipal}</p>
+              <p className="text-xs font-bold ">{enderecoPrincipal}</p>
             </div>
           </div>
           <div>
@@ -79,35 +79,8 @@ export function SearchHeaderCard({ idCliente }) {
             <p className="font-bold text-sm">{razaoSocial}</p>
            </div>
         </h4>
-        <Input
-          style={{ backgroundColor: "#027A48", color: "#ffffff" }}
-          label="Consultar por Nº do Pedido"
-          icon={
-            <button
-              style={{
-                backgroundColor: "white",
-                border: "none",
-                borderRadius: "25%",
-                padding: "8px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                position: "absolute",
-                left: "-5px",
-              }}
-              onClick={() => {
-                // Adicione sua lógica de ação do botão aqui
-              }}
-            >
-              <MagnifyingGlassIcon className="text-green-600 h-5 w-5" />
-            </button>
-          }
-          size="lg"
-          labelProps={{
-            style: { color: "white" },
-          }}
-        />
       </CardBody>
     </Card>
+    
   );
 }
