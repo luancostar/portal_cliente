@@ -53,13 +53,17 @@ export default function FormLogin() {
       );
 
       if (response.data.status === "success") {
-        setIdCliente(response.data.data.id);
-        localStorage.setItem("idCliente", response.data.data.id);
-
+        const { id, razao_social } = response.data.data;
+      
+        setIdCliente(id);
+        localStorage.setItem("idCliente", id);
+        localStorage.setItem("razaoSocial", razao_social); // Armazenando a razão social
+      
         // Delay de 2 segundos antes de redirecionar
         setTimeout(() => {
           navigate("/home");
         }, 2000);
+
       } else {
         setErrors((prev) => ({
           ...prev,

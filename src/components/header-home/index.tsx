@@ -8,61 +8,39 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { API_URL } from "../../../config";
 
 export function SearchHeaderCard({ idCliente }) {
-  const [location, setLocation] = useState("Obtendo localização...");
-  const [razaoSocial, setRazaoSocial] = useState("Carregando...");
+ const [enderecoPrincipal, setEnderecoPrincipal] = useState("Buscando endereço...");
+ const [razaoSocial, setRazaoSocial] = useState("");
+
 
   useEffect(() => {
-    const fetchLocation = async () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            const { latitude, longitude } = position.coords;
-            try {
-              const response = await fetch(
-                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
-              );
-              const data = await response.json();
-              const city = data.address.city || data.address.town || "Desconhecida";
-              const suburb = data.address.suburb || "Bairro não identificado";
 
-              setLocation(`${suburb}, ${city}`);
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            } catch (error) {
-              setLocation("Erro ao obter localização");
-            }
-          },
-          () => {
-            setLocation("Localização não disponível");
-          }
-        );
-      } else {
-        setLocation("Geolocalização não suportada pelo dispositivo");
-      }
-    };
+    const storedRazaoSocial = localStorage.getItem("razaoSocial");
+    if (storedRazaoSocial) {
+      setRazaoSocial(storedRazaoSocial);
+    }
 
-    fetchLocation();
-  }, []);
-
-  useEffect(() => {
     if (idCliente) {
-      const fetchRazaoSocial = async () => {
+ 
+      const fetchEndereco = async () => {
         try {
           const response = await fetch(
-            `${API_URL}/coletas/getColetasCliente.php?id_cliente=${idCliente}`
+            `https://rotas.calledtecnologia.com/functions/portal_cliente/clientes/getEnderecosCliente.php?id_cliente=${idCliente}`
           );
           const data = await response.json();
           if (data.status === "success" && data.data.length > 0) {
-            setRazaoSocial(data.data[0].razao_social || "Não identificado");
+            const enderecoCompleto = `${data.data[0].endereco}, ${data.data[0].endereco_num}, CEP: ${data.data[0].cep}`;
+            setEnderecoPrincipal(enderecoCompleto);
           } else {
-            setRazaoSocial("VB Logística 💚");
+            setEnderecoPrincipal("Endereço não encontrado");
           }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
-          setRazaoSocial("Erro ao buscar cliente");
+          setEnderecoPrincipal("Erro ao buscar endereço");
         }
       };
+ 
+      fetchEndereco();
 
-      fetchRazaoSocial();
     }
   }, [idCliente]);
 
@@ -92,14 +70,14 @@ export function SearchHeaderCard({ idCliente }) {
               </svg>
             </div>
             <div className="grid-flow-col">
-              <p className="text-sm">Você está Próximo a :</p>
-              {location}
+              <p className="text-xs">Endereço Principal:</p>
+              <p className="text-xs ">{enderecoPrincipal}</p>
             </div>
           </div>
           <div>
-            <p>Bem-vindo:</p>
-            <p className="font-bold">{razaoSocial}</p>
-          </div>
+            <p className="text-xs">Bem-vindo(a):</p>
+            <p className="font-bold text-sm">{razaoSocial}</p>
+           </div>
         </h4>
         <Input
           style={{ backgroundColor: "#027A48", color: "#ffffff" }}
