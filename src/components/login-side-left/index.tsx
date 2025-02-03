@@ -87,7 +87,7 @@ export default function FormLogin() {
   }
 
   return (
-    <section style={{ width: '100%', overflow: 'hidden' }} className="grid text-center h-screen items-center p-8">
+    <section style={{ overflow: 'hidden' }} className="grid text-center h-screen items-center p-8">
  <div
   className="absolute inset-0 bg-cover md:hidden"
   style={{
@@ -120,7 +120,8 @@ export default function FormLogin() {
             <label htmlFor="cpfCnpj">
               <Typography
                 variant="small"
-                className="mb-2 block font-medium text-gray-900"
+                className="mb-2 block font-medium text-white md:text-gray-600 "
+                style={{ position: 'relative' }} 
               >
                 CPF ou CNPJ
               </Typography>
@@ -146,29 +147,30 @@ export default function FormLogin() {
             <label htmlFor="senha">
               <Typography
                 variant="small"
-                className="mb-2 block font-medium text-gray-900"
+                style={{ position: 'relative' }} 
+                className="mb-2 block font-medium text-white md:text-gray-600 "
               >
                 Senha
               </Typography>
             </label>
             <Input
-  id="senha"
-  size="lg"
-  placeholder="********"
-  type={passwordShown ? "text" : "password"}
-  value={senha}
-  onChange={(e) => setSenha(e.target.value)}
-  className="text-center w-full text-white font-bold placeholder:opacity-100 focus:border-t-primary border-t-blue-gray-200 md:text-black"
-  icon={
-    <i onClick={togglePasswordVisibility}>
-      {passwordShown ? (
-        <EyeIcon className="h-5 w-5" />
-      ) : (
-        <EyeSlashIcon className="h-5 w-5" />
-      )}
-    </i>
-  }
-/>
+            id="senha"
+            size="lg"
+            placeholder="********"
+            type={passwordShown ? "text" : "password"}
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+            className="text-center w-full text-white font-bold placeholder:opacity-100 focus:border-t-primary border-t-blue-gray-200 md:text-black"
+            icon={
+              <i onClick={togglePasswordVisibility}>
+                {passwordShown ? (
+                  <EyeIcon className="h-5 w-5" />
+                ) : (
+                  <EyeSlashIcon className="h-5 w-5" />
+                )}
+              </i>
+            }
+          />
             {errors.senha && (
               <Typography variant="small" color="red" className="text-center mt-1">
                 {errors.senha}
