@@ -130,7 +130,7 @@ export default function FormLogin() {
               placeholder="Insira seu CPF ou CNPJ"
               value={cpfCnpj}
               onChange={(e) => setCpfCnpj(e.target.value)}
-              className="text-center w-full placeholder:opacity-100 focus:border-t-primary border-t-blue-gray-200"
+              className="text-center text-white font-bold w-full placeholder:opacity-100 focus:border-t-primary border-t-blue-gray-200 sm:text-black"
             />
             {errors.cpfCnpj && (
               <Typography variant="small" color="red" className="text-center mt-1">
@@ -150,23 +150,23 @@ export default function FormLogin() {
               </Typography>
             </label>
             <Input
-              id="senha"
-              size="lg"
-              placeholder="********"
-              type={passwordShown ? "text" : "password"}
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-              className="text-center w-full placeholder:opacity-100 focus:border-t-primary border-t-blue-gray-200"
-              icon={
-                <i onClick={togglePasswordVisibility}>
-                  {passwordShown ? (
-                    <EyeIcon className="h-5 w-5" />
-                  ) : (
-                    <EyeSlashIcon className="h-5 w-5" />
-                  )}
-                </i>
-              }
-            />
+  id="senha"
+  size="lg"
+  placeholder="********"
+  type={passwordShown ? "text" : "password"}
+  value={senha}
+  onChange={(e) => setSenha(e.target.value)}
+  className="text-center w-full text-white font-bold placeholder:opacity-100 focus:border-t-primary border-t-blue-gray-200 sm:text-black"
+  icon={
+    <i onClick={togglePasswordVisibility}>
+      {passwordShown ? (
+        <EyeIcon className="h-5 w-5" />
+      ) : (
+        <EyeSlashIcon className="h-5 w-5" />
+      )}
+    </i>
+  }
+/>
             {errors.senha && (
               <Typography variant="small" color="red" className="text-center mt-1">
                 {errors.senha}
@@ -189,7 +189,7 @@ export default function FormLogin() {
 
           {/* Mensagem de erro geral */}
           {errors.general && (
-            <Typography variant="small" style={{ position: 'relative' }} color="red" className="text-center mt-4">
+            <Typography variant="small" style={{ position: 'relative', fontWeight: 'bold', background: '#ffffff45' }} color="red" className="text-center mt-4">
               ⚠️ {errors.general}
             </Typography>
           )}
