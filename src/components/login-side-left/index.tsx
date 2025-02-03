@@ -87,7 +87,7 @@ export default function FormLogin() {
   }
 
   return (
-    <section style={{ width: '100%' }} className="grid text-center h-screen items-center p-8">
+    <section style={{ width: '100%', overflow: 'hidden' }} className="grid text-center h-screen items-center p-8">
  <div
   className="absolute inset-0 bg-cover md:hidden"
   style={{
