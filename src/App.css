@@ -45,3 +45,8 @@ body, html {
     border-radius: 100%;
  
   } 
+  input:-internal-autofill-selected {
+ 
+    background-color: transparent !important;
+ 
+}

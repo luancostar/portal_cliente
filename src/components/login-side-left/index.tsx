@@ -117,11 +117,10 @@ export default function FormLogin() {
         <form action="#" className="mx-auto max-w-[24rem] text-left">
           {/* CPF ou CNPJ Input */}
           <div className="mb-6">
-            <label htmlFor="cpfCnpj">
+            <label style={{ position: 'relative' }} htmlFor="cpfCnpj">
               <Typography
                 variant="small"
-                className="mb-2 block font-medium text-white md:text-gray-600 "
-                style={{ position: 'relative' }} 
+                className="mb-2 block font-medium text-white md:text-gray-900"
               >
                 CPF ou CNPJ
               </Typography>
@@ -144,11 +143,11 @@ export default function FormLogin() {
 
           {/* Senha Input */}
           <div className="mb-6">
-            <label htmlFor="senha">
+            <label style={{ position: 'relative' }} htmlFor="senha">
               <Typography
                 variant="small"
                 style={{ position: 'relative' }} 
-                className="mb-2 block font-medium text-white md:text-gray-600 "
+                className="mb-2 block font-medium text-white  md:text-gray-900"
               >
                 Senha
               </Typography>
