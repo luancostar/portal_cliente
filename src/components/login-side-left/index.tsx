@@ -125,6 +125,7 @@ export default function FormLogin() {
               </Typography>
             </label>
             <Input
+              type="number"
               id="cpfCnpj"
               size="lg"
               placeholder="Insira seu CPF ou CNPJ"
