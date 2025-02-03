@@ -199,7 +199,7 @@ export default function FormLogin() {
 
           {/* Mensagem de sucesso */}
           {idCliente && (
-            <Typography variant="small" color="green" style={{ position: 'relative' }} className="text-center font-bold mt-4">
+            <Typography variant="small" color="green" style={{ position: 'relative',fontWeight: 'bold', background: '#ffffff45'  }} className="text-center font-bold mt-4">
               {/* Bem-vindo, seu ID de cliente é: {idCliente} */}
               Bem-vindo ao Portal do Cliente! 😉 
             </Typography>
