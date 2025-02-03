@@ -46,3 +46,22 @@ body, html {
  
 } 
  
+/* Para navegadores baseados em WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px; /* Ajuste a largura conforme necessário */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3); /* Ajuste a transparência conforme necessário */
+  border-radius: 10px;
+  border: 2px solid transparent; /* Torna a borda transparente */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Fundo da barra de rolagem transparente */
+}
+
+/* Para Firefox */
+* {
+  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+}

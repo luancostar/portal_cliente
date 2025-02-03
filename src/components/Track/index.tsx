@@ -6,7 +6,7 @@ import { useState } from "react";  // Importa o hook useState
 import { useNavigate } from "react-router-dom";  // Importa useNavigate
 import { Card, CardBody } from "@material-tailwind/react";
 import { FaDoorOpen, FaSpinner } from "react-icons/fa";
-import { FaTruckRampBox, FaBoxesStacked } from "react-icons/fa6";
+import { FaTruckRampBox, FaBoxesStacked, FaChartSimple } from "react-icons/fa6";
 import vbIcon from "../../assets/logo_negativa.png"
 import { Link } from "react-router-dom";
 
@@ -40,12 +40,12 @@ export default function TrackTurn() {
         </div>
       )}
 
-      <Card className="mt-4 shadow-none w-full">
+      <Card className="overflow-auto mt-4 shadow-none w-full">
         <CardBody
           style={{ backgroundColor: "#fff", borderRadius: "10px" }}
-          className="p-2 w-full flex flex-col gap-4"
+          className="p-2 flex flex-col gap-4"
         >
-          <div className="w-full justify-between flex sm:justify-around">
+          <div className="w-screen md:w-full justify-evenly md:justify-between flex sm:justify-around">
             {/* Nova Coleta */}
             <div className="grid justify-items-center">
               <Link to="/newcollect" className="flex flex-col items-center group">
@@ -76,7 +76,21 @@ export default function TrackTurn() {
               </Link>
             </div>
 
-            {/* Suporte */}
+            <div className="grid justify-items-center">
+              <Link to="/mycollects" className="flex flex-col items-center group">
+                <div
+                  style={{
+                    borderRadius: "100%",
+                  }}
+                  className="w-fit cursor-pointer bg-gradient-to-b from-green-500 to-green-700 group-hover:from-white group-hover:to-white group-hover:border group-hover:border-green-500 transform transition-transform duration-200 group-hover:scale-95"
+                >
+                  <FaChartSimple className="text-6xl p-3 text-white group-hover:text-green-500" />
+                </div>
+                <label className="text-xs font-bold text-center"> Performance</label>
+              </Link>
+            </div>
+
+           
             <div className="grid justify-items-center">
               <Link to="/support" className="flex flex-col items-center group">
                 <div
@@ -92,7 +106,7 @@ export default function TrackTurn() {
                 <label className="text-xs font-bold text-center">Fale com a <br />Diretoria</label>
               </Link>
             </div>
-
+            
             {/* Sair */}
             <div className="grid justify-items-center">
               <button
