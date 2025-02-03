@@ -100,17 +100,18 @@ export default function FormLogin() {
 
       <div>
         <div className="flex justify-center">
-          <img
-            style={{ width: '500px', position: 'relative' }}
-            src={logoVb}
-            alt="Logo"
-          />
+        <img
+          className="w-[500px] md:drop-shadow-none relative drop-shadow-[1px_1px_7px_white]"
+          src={logoVb}
+          alt="Logo"
+        />
+
         </div>
          
-            <Typography style={{ position: 'relative' }} variant="h4" color="blue-gray" className="mb-2">
+            <Typography style={{ position: 'relative' }} variant="h4" color="blue-gray" className="text-white md:text-gray-600 mb-2">
           Portal do Cliente
         </Typography>
-        <Typography style={{ position: 'relative' }} className="mb-16 text-gray-600 font-normal text-[18px]">
+        <Typography style={{ position: 'relative' }} className="text-white md:text-gray-600 mb-16 font-normal text-[18px]">
           O Controle de suas encomendas ao seu alcance
         </Typography>
         <form action="#" className="mx-auto max-w-[24rem] text-left">
@@ -131,7 +132,7 @@ export default function FormLogin() {
               placeholder="Insira seu CPF ou CNPJ"
               value={cpfCnpj}
               onChange={(e) => setCpfCnpj(e.target.value)}
-              className="text-center text-white font-bold w-full placeholder:opacity-100 focus:border-t-primary border-t-blue-gray-200 sm:text-black"
+              className="text-center text-white font-bold w-full placeholder:opacity-100 focus:border-t-primary border-t-blue-gray-200 md:text-black"
             />
             {errors.cpfCnpj && (
               <Typography variant="small" color="red" className="text-center mt-1">
@@ -157,7 +158,7 @@ export default function FormLogin() {
   type={passwordShown ? "text" : "password"}
   value={senha}
   onChange={(e) => setSenha(e.target.value)}
-  className="text-center w-full text-white font-bold placeholder:opacity-100 focus:border-t-primary border-t-blue-gray-200 sm:text-black"
+  className="text-center w-full text-white font-bold placeholder:opacity-100 focus:border-t-primary border-t-blue-gray-200 md:text-black"
   icon={
     <i onClick={togglePasswordVisibility}>
       {passwordShown ? (
