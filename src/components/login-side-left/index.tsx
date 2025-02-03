@@ -9,6 +9,8 @@ import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../../config.tsx";
 import logoVb from "../../assets/LogoVBLOG_Prioritaria.png"
+import coverLogin from "../../assets/bgLogin.png";
+
 
 export default function FormLogin() {
   const [cpfCnpj, setCpfCnpj] = useState("");
@@ -85,19 +87,30 @@ export default function FormLogin() {
   }
 
   return (
-    <section style={{ width: '70%' }} className="grid text-center h-screen items-center p-8">
+    <section style={{ width: '100%' }} className="grid text-center h-screen items-center p-8">
+ <div
+  className="absolute inset-0 bg-cover md:hidden"
+  style={{
+    background: `linear-gradient(to top, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.7)), url(${coverLogin})`,
+    backgroundColor: '#FBFBFB',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+  }}
+></div>
+
       <div>
         <div className="flex justify-center">
           <img
-            style={{ width: '500px' }}
+            style={{ width: '500px', position: 'relative' }}
             src={logoVb}
             alt="Logo"
           />
         </div>
-        <Typography variant="h4" color="blue-gray" className="mb-2">
+         
+            <Typography style={{ position: 'relative' }} variant="h4" color="blue-gray" className="mb-2">
           Portal do Cliente
         </Typography>
-        <Typography className="mb-16 text-gray-600 font-normal text-[18px]">
+        <Typography style={{ position: 'relative' }} className="mb-16 text-gray-600 font-normal text-[18px]">
           O Controle de suas encomendas ao seu alcance
         </Typography>
         <form action="#" className="mx-auto max-w-[24rem] text-left">
@@ -163,7 +176,7 @@ export default function FormLogin() {
 
           {/* Botão de Login */}
           <Button
-            style={{ backgroundColor: '#00D479' }}
+            style={{ backgroundColor: '#00D479', position: 'relative' }}
             color="gray"
             size="lg"
             className="mt-6"
@@ -176,14 +189,14 @@ export default function FormLogin() {
 
           {/* Mensagem de erro geral */}
           {errors.general && (
-            <Typography variant="small" color="red" className="text-center mt-4">
+            <Typography variant="small" style={{ position: 'relative' }} color="red" className="text-center mt-4">
               ⚠️ {errors.general}
             </Typography>
           )}
 
           {/* Mensagem de sucesso */}
           {idCliente && (
-            <Typography variant="small" color="green" className="text-center font-bold mt-4">
+            <Typography variant="small" color="green" style={{ position: 'relative' }} className="text-center font-bold mt-4">
               {/* Bem-vindo, seu ID de cliente é: {idCliente} */}
               Bem-vindo ao Portal do Cliente! 😉 
             </Typography>
