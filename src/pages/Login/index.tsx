@@ -6,7 +6,7 @@ import CoverLogin from "../../components/login-side-right";
  
 export default function Login() {
  return (
-   <div className="h-full flex justify-center">
+   <div style={{ overflow: 'hidden' }}  className="h-full flex justify-center">
 <FormLogin/>
 <CoverLogin/>
    </div>
