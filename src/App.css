@@ -46,22 +46,23 @@ body, html {
  
 } 
  
-/* Para navegadores baseados em WebKit (Chrome, Safari, Edge) */
+/* Para WebKit (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
-  width: 8px; /* Ajuste a largura conforme necessário */
+  width: 8px; /* Define a largura */
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.3); /* Ajuste a transparência conforme necessário */
+  background-color: transparent; /* Deixa o "thumb" invisível */
   border-radius: 10px;
-  border: 2px solid transparent; /* Torna a borda transparente */
+  border: none;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent; /* Fundo da barra de rolagem transparente */
+  background: transparent; /* Fundo invisível */
 }
 
 /* Para Firefox */
 * {
-  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
 }
