@@ -77,7 +77,7 @@ export default function TrackTurn() {
             </div>
 
             <div className="grid justify-items-center">
-              <Link to="/mycollects" className="flex flex-col items-center group">
+              <Link to="/performance" className="flex flex-col items-center group">
                 <div
                   style={{
                     borderRadius: "100%",
