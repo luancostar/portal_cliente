@@ -118,7 +118,7 @@ export function StatsSection({ idCliente }: { idCliente?: string }) {
   const donutData = [performanceValue, 100 - performanceValue];
 
   return (
-    <section className="px-4 container mx-auto">
+    <section className="px-2 w-full mx-auto">
       <div className="flex items-center justify-between">
         <h1 className="font-bold text-gray-600 text-3xl px-2">Performance de Coletas</h1>
         <Link to="/home" className="flex flex-col items-end p-4">
