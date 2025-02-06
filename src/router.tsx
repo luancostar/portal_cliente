@@ -5,11 +5,16 @@ import NewCollect from "./pages/NewCollect";
 import Diretoria from "./pages/Diretoria";
 import MyCollects from "./pages/MyCollects";
 import Performance from "./pages/Performance";
+import AlterarSenha from "./pages/changePassword";
 
 const router = createBrowserRouter ([
     {
         path: '/',
         element: <Login/>
+    },
+    {
+        path: '/alterarsenha',
+        element: <AlterarSenha/>
     },
     {
         path: '/home',

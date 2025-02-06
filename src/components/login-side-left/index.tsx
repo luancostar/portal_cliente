@@ -27,45 +27,42 @@ export default function FormLogin() {
     try {
       setLoading(true);
       setErrors({ cpfCnpj: "", senha: "", general: "" });
-
+  
       if (!cpfCnpj) {
         setErrors((prev) => ({ ...prev, cpfCnpj: "⚠️ CPF ou CNPJ é obrigatório." }));
         setLoading(false);
         return;
       }
-
+  
       if (!senha) {
         setErrors((prev) => ({ ...prev, senha: "⚠️ A senha é obrigatória." }));
         setLoading(false);
         return;
       }
-
+  
       const formData = new FormData();
       formData.append("cpf_cnpj", cpfCnpj);
       formData.append("senha", senha);
-
-      const response = await axios.post(
-        `${API_URL}/autenticacao.php`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
+  
+      const response = await axios.post(`${API_URL}/autenticacao.php`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+  
       if (response.data.status === "success") {
-        const { id, razao_social } = response.data.data;
-      
+        const { id, razao_social, primeiro_acesso } = response.data.data;
+  
         setIdCliente(id);
         localStorage.setItem("idCliente", id);
-        localStorage.setItem("razaoSocial", razao_social); // Armazenando a razão social
-      
-        // Delay de 2 segundos antes de redirecionar
+        localStorage.setItem("razaoSocial", razao_social);
+  
+        // Se for primeiro acesso, redireciona para alterar senha, senão para home
         setTimeout(() => {
-          navigate("/home");
+          if (primeiro_acesso) {
+            navigate("/alterarsenha");
+          } else {
+            navigate("/home");
+          }
         }, 2000);
-
       } else {
         setErrors((prev) => ({
           ...prev,
@@ -81,7 +78,7 @@ export default function FormLogin() {
       setLoading(false);
     }
   }
-
+  
   function handleClick() {
     handleLogin(cpfCnpj, senha);
   }
