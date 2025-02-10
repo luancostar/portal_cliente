@@ -187,7 +187,7 @@ export function OrdersTable({ idCliente }) {
                   </li>
                 )}
               <div
-                className="bg-[#24c200] xl:h-[2px] xl:w-[100px] xl:mt-[15px] xl:ml-[5px] h-[17px] w-[2px] mt-[-25px] ml-[14px]"
+                className="bg-[#24c200] xl:h-[2px] xl:w-[100px] xl:mt-[15px] xl:ml-[5px] h-[17px] w-[2px] mt-[-25px]  ml-[14px]"
               >
               </div>
 
