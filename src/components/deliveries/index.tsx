@@ -63,7 +63,7 @@ export default function DeliveriesTable({ idCliente }) {
     <p><strong>Destinatário:</strong> {entrega.destinatario} - {entrega.destinatario_cidade}</p>
 
     {/* Status da entrega com múltiplas etapas */}
-    <p><strong>Status:</strong></p>
+    <p><strong>Previsão de Entrega:</strong> {entrega.prev_entrega_real ? new Date(entrega.prev_entrega_real).toLocaleDateString("pt-BR") : "Não informado"}</p>
     <ul className="md:flex md:justify-between mt-4 list-disc ">
       {entrega.emissao_cte && 
       <li className="flex items-center text-gray-500"> 
