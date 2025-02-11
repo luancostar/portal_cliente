@@ -66,6 +66,7 @@ export default function ChangePassword() {
       } else {
         setError(response.data.message || "Erro ao alterar a senha.");
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setError("⚠️ Erro na requisição. Tente novamente.");
     }

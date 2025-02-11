@@ -7,6 +7,7 @@ import MyCollects from "./pages/MyCollects";
 import Performance from "./pages/Performance";
 import AlterarSenha from "./pages/changePassword";
 import MyDeliveries from "./pages/MyDeliveries";
+import NovaSenha from "./pages/newPassword";
 
 const router = createBrowserRouter ([
     {
@@ -16,6 +17,10 @@ const router = createBrowserRouter ([
     {
         path: '/alterarsenha',
         element: <AlterarSenha/>
+    },
+    {
+        path: '/novasenha',
+        element: <NovaSenha/>
     },
     {
         path: '/home',

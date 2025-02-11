@@ -186,6 +186,10 @@ export default function FormLogin() {
           >
             {loading ? "Carregando..." : "LOGIN"}
           </Button>
+              
+              <p className="text-center mt-2">
+                <a className="text-green-500 text-center mt-2" href="">Esqueceu a senha ?</a>
+              </p>
 
           {/* Mensagem de erro geral */}
           {errors.general && (
