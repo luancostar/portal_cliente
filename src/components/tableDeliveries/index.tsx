@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import * as XLSX from "xlsx";
 import excelPng from "../../assets/excel.png";
+import { API_URL } from "../../../config";
 
 import {
   Card,
@@ -37,7 +38,7 @@ export default function EntregasTable() {
     if (!idCliente) return;
   
     setLoading(true);
-    fetch(`http://localhost/roteirizador/functions/portal_cliente/entregas/listarEntregas.php?id_cliente=${idCliente}`)
+    fetch(`${API_URL}/entregas/listarEntregas.php?id_cliente=${idCliente}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "success" && data.data.entregas) {
