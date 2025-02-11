@@ -1,7 +1,12 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import React, { useState, useEffect } from "react";
 import { Card } from "@material-tailwind/react";
 import { API_URL } from "../../../config";
 import loadingGif from "../../assets/loading.gif";
+import { Link } from "react-router-dom";
+
 
 export default function DeliveriesTable({ idCliente }) {
   const [coletas, setColetas] = useState([]);
@@ -12,11 +17,11 @@ export default function DeliveriesTable({ idCliente }) {
     if (idCliente) {
       const controller = new AbortController();
       const signal = controller.signal;
-
-      const url = `http://localhost/roteirizador/functions/portal_cliente/entregas/listarEntregas.php?id_cliente=${idCliente}`;
-
+  
+      const url = `${API_URL}/entregas/listarEntregas.php?id_cliente=${idCliente}`;
+  
       setLoading(true);
-
+  
       fetch(url, { signal })
         .then((response) => {
           if (!response.ok) {
@@ -26,7 +31,10 @@ export default function DeliveriesTable({ idCliente }) {
         })
         .then((data) => {
           if (data.status === "success" && Array.isArray(data.data.entregas) && data.data.entregas.length > 0) {
-            setColetas(data.data.entregas); // Agora exibe todas as entregas corretamente
+            // Ordena por data e seleciona as 3 mais recentes
+            setColetas(data.data.entregas
+              .sort((a, b) => new Date(b.emissao_cte) - new Date(a.emissao_cte))
+              .slice(0, 3));
           } else {
             setColetas([]);
           }
@@ -39,22 +47,23 @@ export default function DeliveriesTable({ idCliente }) {
           }
         })
         .finally(() => setLoading(false));
-
+  
       return () => controller.abort();
     }
   }, [idCliente]);
+  
 
   if (loading) {
     return <div>Carregando dados...</div>;
   }
 
   if (error) {
-    return <div className="text-red-500">Erro: {error}</div>;
+    return <div className="text-red-500 mt-2 text-sm">⚠️Dados não carregados, tente novamente em alguns instantes. {error}</div>;
   }
 
   return (
     <div className="mt-6">
-      <h2 className="text-xl text-gray-500 font-bold mb-4">📦 Acompanhe suas Entregas:</h2>
+      <h2 className="text-xl text-gray-500 font-bold mb-4">🚚 Acompanhe suas Entregas:</h2>
       {coletas.map((entrega, index) => (
   <Card className="mt-4 text-xs p-4" key={index}>
     <p><strong>CTE:</strong> {entrega.cte}</p>
@@ -152,7 +161,15 @@ export default function DeliveriesTable({ idCliente }) {
             )}
           </ul>
         </Card>
+     
       ))}
+         <>
+         <Link to="/mydeliveries">
+
+         <button type="button" className="text-md font-bold text-green-500 w-full mt-4 hover:text-white border border-green-500 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">📦 Ver Mais</button>
+         </Link>
+
+         </>
     </div>
   );
 }
