@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 
-const NovaSenha = () => {
+const RecuperarSenha = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
 
@@ -47,7 +47,8 @@ const NovaSenha = () => {
       );
 
       setMensagem(response.data);
-    } catch (error: any) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error: unknown) {
       setMensagem("Erro ao alterar senha. Tente novamente.");
     } finally {
       setCarregando(false);
@@ -97,4 +98,4 @@ const NovaSenha = () => {
   );
 };
 
-export default NovaSenha;
+export default RecuperarSenha;
