@@ -4,10 +4,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Typography, Card } from "@material-tailwind/react";
-import { API_URL } from "../../../config";
 import Chart from "react-apexcharts";
-import bgPerformance from "../../assets/bgperformance.png"
-
+import bgPerformance from "../../assets/bgperformance.png";
+import { API_URL } from "../../../config";
+ 
 interface StatsCardPropsType {
   count: string;
   title: string;
@@ -24,14 +24,9 @@ function StatsCard({ count, title, description, fullWidth = false, bgImage, isFi
         className={`relative p-6 rounded-lg overflow-hidden ${fullWidth ? "col-span-1 lg:col-span-3 w-full" : ""} 
         ${isFirst ? "bg-white text-green-700" : "text-white"}`}
       >
-        {/* Imagem de fundo no final do card */}
         {bgImage && (
           <div className="absolute bottom-0 left-0 w-full flex justify-end">
-            <img 
-              src={bgImage} 
-              alt="" 
-              className="w-32 mr-4 opacity-90"
-            />
+            <img src={bgImage} alt="" className="w-32 mr-4 opacity-90" />
           </div>
         )}
   
@@ -49,15 +44,13 @@ function StatsCard({ count, title, description, fullWidth = false, bgImage, isFi
         </div>
       </Card>
     );
-  }
+}
   
-
-export function StatsSection({ idCliente }: { idCliente?: string }) {
+export function StatsSectionEntregas({ idCliente }: { idCliente?: string }) {
   const [data, setData] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("ID Cliente recebido:", idCliente);
     if (!idCliente) {
       setLoading(false);
       return;
@@ -66,10 +59,9 @@ export function StatsSection({ idCliente }: { idCliente?: string }) {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${API_URL}/coletas/performanceColetas.php?id_cliente=${idCliente}`
+          `${API_URL}/entregas/performanceEntregas.php?id_cliente=${idCliente}`
         );
-        console.log("Resposta da API:", response.data);
-        setData(response.data?.data || null);
+        setData(response.data?.data?.entregas || null);
       } catch (error) {
         console.error("Erro ao buscar dados da API:", error);
       } finally {
@@ -89,11 +81,13 @@ export function StatsSection({ idCliente }: { idCliente?: string }) {
   }
 
   const fieldsToShow = {
-    total_coletas: "TOTAL DE COLETAS",
-    coletas_em_aberto: "COLETAS EM ABERTO",
-    coletas_efetuadas: "COLETAS EFETUADAS",
-    coletas_nao_efetuadas: "COLETAS NÃO EFETUADAS",
-    performance_coletas: "PERFORMANCE DE COLETAS",
+    total_entregas: "TOTAL DE ENTREGAS",
+    entregas_em_aberto: "ENTREGAS EM ABERTO",
+    entregas_efetuadas: "ENTREGAS EFETUADAS",
+    entregas_em_aberto_fora_prazo: "EM ABERTO FORA DO PRAZO",
+    entregas_em_aberto_no_prazo: "EM ABERTO NO PRAZO",
+    entregas_efetuadas_fora_prazo: "EFETUADAS FORA DO PRAZO",
+    entregas_efetuadas_no_prazo: "EFETUADAS NO PRAZO",
   };
 
   const stats = Object.entries(fieldsToShow)
@@ -104,64 +98,53 @@ export function StatsSection({ idCliente }: { idCliente?: string }) {
       description: `Valor correspondente a ${title.toLowerCase()}.`,
     }));
 
-  const totalColetas = stats.find((stat) => stat.title === "TOTAL DE COLETAS");
-  const middleStats = stats.filter(
-    (stat) =>
-      stat.title === "COLETAS EM ABERTO" ||
-      stat.title === "COLETAS EFETUADAS" ||
-      stat.title === "COLETAS NÃO EFETUADAS"
+  const totalEntregas = stats.find((stat) => stat.title === "TOTAL DE ENTREGAS");
+  const middleStats = stats.filter((stat) =>
+    ["ENTREGAS EM ABERTO", "ENTREGAS EFETUADAS", "EM ABERTO FORA DO PRAZO"].includes(stat.title)
   );
-  const performanceColetas = stats.find((stat) => stat.title === "PERFORMANCE DE COLETAS");
-
-  const performanceValue = parseFloat(data.performance_coletas) || 0;
+  const performanceValue = ((data.entregas_efetuadas / data.total_entregas) * 100) || 0;
   const donutData = [performanceValue, 100 - performanceValue];
 
   return (
     <section className="px-2 mt-2 w-full mx-auto">
-     
-
-      {/* Card Total de Coletas com a imagem de fundo */}
-      {totalColetas && (
+ 
+      {totalEntregas && (
         <div className="grid grid-cols-1 gap-6">
-          <StatsCard {...totalColetas} fullWidth bgImage={bgPerformance} />
+          <StatsCard {...totalEntregas} fullWidth bgImage={bgPerformance} />
         </div>
       )}
 
-      {/* Cards do Meio */}
       <div className="grid lg:grid-cols-3 gap-6 mt-6">
         {middleStats.map((props, index) => (
           <StatsCard key={index} {...props} />
         ))}
       </div>
 
-      {/* Gráfico de Performance */}
-      {performanceColetas && (
-        <div className="flex justify-center mt-10">
-          <Card className="p-6 w-full">
-            <Typography variant="h5" className="text-center font-bold text-gray-700">
-              Eficiência de Coletas:
-            </Typography>
-            <Chart
-                className="flex justify-center"
-              options={{
-                chart: { type: "donut" },
-                labels: ["Performance", "Restante"],
-                colors: ["#0dab61", "#cccccc"],
-                dataLabels: { enabled: true },
-                legend: { show: false },
-                plotOptions: {
-                  pie: { donut: { size: "70%" } },
-                },
-              }}
-              series={donutData}
-              type="donut"
-              width="350px"
-            />
-          </Card>
-        </div>
-      )}
+      <div className="flex justify-center mt-10">
+        <Card className="p-6 w-full">
+          <Typography variant="h5" className="text-center font-bold text-gray-700">
+            Eficiência de Entregas:
+          </Typography>
+          <Chart
+            className="flex justify-center"
+            options={{
+              chart: { type: "donut" },
+              labels: ["Performance", "Restante"],
+              colors: ["#0dab61", "#cccccc"],
+              dataLabels: { enabled: true },
+              legend: { show: false },
+              plotOptions: {
+                pie: { donut: { size: "70%" } },
+              },
+            }}
+            series={donutData}
+            type="donut"
+            width="350px"
+          />
+        </Card>
+      </div>
     </section>
   );
 }
 
-export default StatsSection;
+export default StatsSectionEntregas;

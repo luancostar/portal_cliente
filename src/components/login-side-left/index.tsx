@@ -1,7 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
-
 import { useState } from "react";
 import axios from "axios";
 import { Typography, Input, Button } from "@material-tailwind/react";
