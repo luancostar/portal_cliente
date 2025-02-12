@@ -9,7 +9,7 @@ export default defineConfig({
     host: true
   },
    build: {
-    target: 'es2015', // Se der erro, altere para 'es2015'
+    target: 'esnext', // Se der erro, altere para 'es2015'
     minify: 'esbuild',
     sourcemap: true
   }
