@@ -2,13 +2,14 @@
 // @ts-nocheck
 
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../../../config";
 
 const RecuperarSenha = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
+  const navigate = useNavigate();
 
   const [novaSenha, setNovaSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
@@ -23,45 +24,63 @@ const RecuperarSenha = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     if (!token) {
       setMensagem("Token inválido.");
       return;
     }
-
+  
+    if (novaSenha.length < 6) {
+      setMensagem("A senha deve ter pelo menos 6 caracteres.");
+      return;
+    }
+  
     if (novaSenha !== confirmarSenha) {
       setMensagem("As senhas não coincidem.");
       return;
     }
-
+  
     setCarregando(true);
     setMensagem("");
-
+  
     try {
       const response = await axios.post(
         `${API_URL}/clientes/alterarSenhaToken.php`,
+        { token, nova_senha: novaSenha }, // Enviando como JSON
         {
-          token,
-          nova_senha: novaSenha,
+          headers: { "Content-Type": "application/json" }, // Cabeçalho correto
         }
       );
-
-      setMensagem(response.data.message); // Exibe a mensagem do back-end
+  
+      setMensagem(response.data.message);
+  
+      if (response.data.status === "success") {
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000);
+      }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         setMensagem(error.response.data.message || "Erro ao alterar senha.");
       } else {
         setMensagem("Erro ao conectar com o servidor.");
       }
+    } finally {
+      setCarregando(false);
     }
-}
+  };
+  
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-md w-96">
         <h2 className="text-xl font-bold mb-4">Redefinir Senha</h2>
 
-        {mensagem && <p className="text-red-500 mb-4">{mensagem}</p>}
+        {mensagem && (
+          <p className={`mb-4 ${mensagem.includes("sucesso") ? "text-green-500" : "text-red-500"}`}>
+            {mensagem}
+          </p>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -88,7 +107,7 @@ const RecuperarSenha = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 disabled:bg-gray-400"
             disabled={carregando}
           >
             {carregando ? "Alterando..." : "Alterar Senha"}
