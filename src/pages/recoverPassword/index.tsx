@@ -4,6 +4,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { API_URL } from "../../../config";
 
 const RecuperarSenha = () => {
   const [searchParams] = useSearchParams();
@@ -38,22 +39,22 @@ const RecuperarSenha = () => {
 
     try {
       const response = await axios.post(
-        "https://seu-servidor.com/processa_alteracao_senha.php",
+        `${API_URL}/clientes/alterarSenhaToken.php`,
         {
           token,
           nova_senha: novaSenha,
-          confirmar_senha: confirmarSenha,
         }
       );
 
-      setMensagem(response.data);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error: unknown) {
-      setMensagem("Erro ao alterar senha. Tente novamente.");
-    } finally {
-      setCarregando(false);
+      setMensagem(response.data.message); // Exibe a mensagem do back-end
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        setMensagem(error.response.data.message || "Erro ao alterar senha.");
+      } else {
+        setMensagem("Erro ao conectar com o servidor.");
+      }
     }
-  };
+}
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
