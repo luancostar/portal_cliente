@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../../config.tsx";
 import logoVb from "../../assets/LogoVBLOG_Prioritaria.png"
 import coverLogin from "../../assets/bgLogin.png";
-
+import RecuperarSenhaModal from "../recoverPass/index.tsx";
 
 export default function FormLogin() {
   const [cpfCnpj, setCpfCnpj] = useState("");
@@ -18,6 +18,8 @@ export default function FormLogin() {
   const [idCliente, setIdCliente] = useState(null);
   const [errors, setErrors] = useState({ cpfCnpj: "", senha: "", general: "" });
   const [passwordShown, setPasswordShown] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+
   const navigate = useNavigate();
 
   const togglePasswordVisibility = () => setPasswordShown((cur) => !cur);
@@ -185,10 +187,15 @@ export default function FormLogin() {
           >
             {loading ? "Carregando..." : "LOGIN"}
           </Button>
-              
-              <p className="text-center mt-2">
-                <a className="text-green-500 text-center mt-2" href="">Esqueceu a senha ?</a>
+
+    
+              <p className="text-center text-white mt-2">
+                <button type="button" className="md:text-green-500 text-center mt-2 relative" onClick={() => setModalOpen(true)}>Esqueceu a senha ?
+
+                </button>
               </p>
+              <RecuperarSenhaModal open={modalOpen} onClose={() => setModalOpen(false)} />
+  
 
           {/* Mensagem de erro geral */}
           {errors.general && (
