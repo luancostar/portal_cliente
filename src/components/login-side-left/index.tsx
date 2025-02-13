@@ -190,7 +190,7 @@ export default function FormLogin() {
 
     
               <p className="text-center text-white mt-2">
-                <button type="button" className="md:text-green-500 text-center mt-2 relative" onClick={() => setModalOpen(true)}>Esqueceu a senha ?
+                <button type="button" className="md:text-green-500 text-center mt-2 relative" onClick={() => setModalOpen(true)}>Esqueceu a senha ? 🔑
 
                 </button>
               </p>

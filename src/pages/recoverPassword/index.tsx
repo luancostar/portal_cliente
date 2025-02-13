@@ -2,47 +2,44 @@
 // @ts-nocheck
 
 import { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Card, CardBody } from "@material-tailwind/react";
+import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../../config";
+import axios from "axios";
+import alteraBg from "../../assets/alterabg.png";
 
-const RecuperarSenha = () => {
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get("token");
-  const navigate = useNavigate();
-
+export default function ChangePassword() {
   const [novaSenha, setNovaSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
-  const [mensagem, setMensagem] = useState("");
-  const [carregando, setCarregando] = useState(false);
-
-  useEffect(() => {
-    if (!token) {
-      setMensagem("Token inválido ou expirado.");
-    }
-  }, [token]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
+ 
+  const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    if (!token) {
-      setMensagem("Token inválido.");
+    setError("");
+    setSuccess("");
+
+    if (!idCliente) {
+      setError("⚠️ Erro ao obter ID do cliente. Faça login novamente.");
       return;
     }
-  
-    if (novaSenha.length < 6) {
-      setMensagem("A senha deve ter pelo menos 6 caracteres.");
+
+    if (!novaSenha || !confirmarSenha) {
+      setError("⚠️ Preencha todos os campos.");
       return;
     }
-  
+
     if (novaSenha !== confirmarSenha) {
-      setMensagem("As senhas não coincidem.");
+      setError("⚠️ As senhas não coincidem.");
       return;
     }
-  
-    setCarregando(true);
-    setMensagem("");
-  
+
+    if (!/^(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(novaSenha)) {
+      setError("⚠️ A senha deve ter pelo menos 8 caracteres, incluindo letras maiúsculas e minúsculas.");
+      return;
+    }
+
     try {
       const response = await axios.post(
         `${API_URL}/clientes/alterarSenhaToken.php`,
@@ -69,53 +66,69 @@ const RecuperarSenha = () => {
       setCarregando(false);
     }
   };
-  
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-md w-96">
-        <h2 className="text-xl font-bold mb-4">Redefinir Senha</h2>
-
-        {mensagem && (
-          <p className={`mb-4 ${mensagem.includes("sucesso") ? "text-green-500" : "text-red-500"}`}>
-            {mensagem}
-          </p>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block font-medium">Nova Senha</label>
-            <input
-              type="password"
-              className="w-full p-2 border rounded"
-              value={novaSenha}
-              onChange={(e) => setNovaSenha(e.target.value)}
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block font-medium">Confirmar Senha</label>
-            <input
-              type="password"
-              className="w-full p-2 border rounded"
-              value={confirmarSenha}
-              onChange={(e) => setConfirmarSenha(e.target.value)}
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 disabled:bg-gray-400"
-            disabled={carregando}
-          >
-            {carregando ? "Alterando..." : "Alterar Senha"}
-          </button>
-        </form>
+ <>
+    <Card className="p-6 w-full bg-transparent shadow-none">
+    <CardBody
+      style={{
+        padding: '0px',
+        backgroundImage: "linear-gradient(to bottom, rgb(13,171,97), rgb(0,128,50))",
+        borderRadius: "10px"
+      }}
+      className="w-full flex flex-col gap-4"
+    >
+      <div className="flex justify-between">
+        <div className="p-6 text-2xl font-bold text-white sm:text-6xl md:text-4xl">
+          Bem-vindo ao Portal do Cliente VB !
+        </div>
+        <div className="mt-2 flex justify-center">
+          <img src={alteraBg} alt="" className="w-full xl:max-w-[50%]" />
+        </div>
       </div>
-    </div>
-  );
-};
+      
+    </CardBody>
+    
+    <div className="py-4 max-w-none container">
+      <h2 className="text-center font-bold">Definir Nova Senha:</h2>
+      <small> Para sua maior segurança, redefina uma nova senha!</small><br></br>
+      <small className="text-light-blue-800 font-bold">❗ A nova senha requer 8 caracteres entre letras maiúsculas e minúsculas</small>
+      <form className="mt-2  bg-white p-6 rounded-lg shadow-md" onSubmit={handleSubmit}>
+      <div className="mb-4">
+        <label className="block text-gray-700 font-semibold mb-2">Nova Senha:</label>
+        <input
+          type="password"
+          value={novaSenha}
+          onChange={(e) => setNovaSenha(e.target.value)}
+          required
+          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
 
-export default RecuperarSenha;
+      <div className="mb-4">
+        <label className="block text-gray-700 font-semibold mb-2">Confirmar Senha:</label>
+        <input
+          type="password"
+          value={confirmarSenha}
+          onChange={(e) => setConfirmarSenha(e.target.value)}
+          required
+          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      {error && <p className="text-red-500 text-center text-sm mb-2">{error}</p>}
+      {success && <p className="text-green-500 text-sm mb-2">{success}</p>}
+
+      <button
+        type="submit"
+        className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-400 transition duration-200"
+      >
+        Alterar Senha
+      </button>
+    </form>
+    </div>
+  </Card>
+
+    </>
+  );
+}
