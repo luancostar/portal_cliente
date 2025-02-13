@@ -70,7 +70,7 @@ const RecuperarSenha = () => {
       >
         <div className="flex justify-between">
           <div className="p-6 text-2xl font-bold text-white sm:text-6xl md:text-4xl">
-            Bem-vindo ao Portal do Cliente VB!
+            Redefina sua senha de acesso
           </div>
           <div className="mt-2 flex justify-center">
             <img src={alteraBg} alt="" className="w-full xl:max-w-[50%]" />
