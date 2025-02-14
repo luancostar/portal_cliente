@@ -120,6 +120,7 @@ export function StatsSection({ idCliente }: { idCliente?: string }) {
   const performanceColetas = stats.find((stat) => stat.title === "PERFORMANCE DE COLETAS");
 
   const performanceValue = parseFloat(data.performance_coletas) || 0;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const donutData = [performanceValue, 100 - performanceValue];
 
   return (

@@ -216,7 +216,7 @@ export default function FormLogin() {
         {/* Loader Spinner - Centralizado */}
         {loading && (
           <div className="absolute inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50 z-50">
-            <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-gray-200"></div>
+            <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-green-500"></div>
           </div>
         )}
       </div>

@@ -5,7 +5,7 @@
 import { useState } from "react";  // Importa o hook useState
 import { useNavigate } from "react-router-dom";  // Importa useNavigate
 import { Card, CardBody } from "@material-tailwind/react";
-import { FaDoorOpen, FaSpinner } from "react-icons/fa";
+import { FaDoorOpen } from "react-icons/fa";
 import { FaTruckRampBox, FaBoxesStacked, FaChartSimple, FaTruck } from "react-icons/fa6";
 import vbIcon from "../../assets/logo_negativa.png"
 import { Link } from "react-router-dom";
@@ -30,13 +30,8 @@ export default function TrackTurn() {
     <div >
       {/* Exibe o loading em tela cheia */}
       {loading && (
-        <div className="absolute inset-0 flex justify-center items-center bg-gray-800 bg-opacity-70 z-50">
-          <div className="text-white text-xl">
-            <div className="animate-spin flex justify-center items-center">
-              <FaSpinner className="text-6xl text-white" />
-            </div>
-            <div>Deslogando...</div>
-          </div>
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-green-500"></div>
         </div>
       )}
 
