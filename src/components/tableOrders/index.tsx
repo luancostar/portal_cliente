@@ -23,6 +23,8 @@ export default function ColetasTable() {
   const [loading, setLoading] = useState(true);
   const [idCliente, setIdCliente] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -49,11 +51,19 @@ export default function ColetasTable() {
   }, [idCliente]);
   
 
-  const filteredColetas = coletas.filter((coleta) =>
-    Object.values(coleta).some((value) =>
-      value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+  const filteredColetas = coletas.filter((coleta) => {
+    const agendamentoDate = new Date(coleta.data_agendamento);
+    const start = startDate ? new Date(startDate) : null;
+    const end = endDate ? new Date(endDate) : null;
+
+    return (
+      (!start || agendamentoDate >= start) &&
+      (!end || agendamentoDate <= end) &&
+      Object.values(coleta).some((value) =>
+        value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  });
 
   const totalPages = Math.ceil(filteredColetas.length / itemsPerPage);
   const currentItems = filteredColetas.slice(
@@ -65,6 +75,7 @@ export default function ColetasTable() {
     // Defina os dados da tabela
     const data = filteredColetas.map((coleta) => ({
       "Data Solicitação": new Date(coleta.data_solicitacao).toLocaleDateString("pt-BR"),
+      "Data Agendamento": new Date(coleta.data_agendamento).toLocaleDateString("pt-BR"),
       "Hora Solicitação": coleta.hora_solicitacao,
       "Status": coleta.status_coleta,
       "Data Coleta": new Date(coleta.data_coleta).toLocaleDateString("pt-BR"),
@@ -91,6 +102,7 @@ export default function ColetasTable() {
 
   return (
     <div className="p-4 w-full">
+      
         <div className="flex justify-between">
    <button
         onClick={exportToExcel}
@@ -99,6 +111,7 @@ export default function ColetasTable() {
         <img width={'30px'} className="mr-2" src={excelPng} alt="" />
         Download
       </button>
+     
         <Link to="/home" className="flex flex-col items-end group">
             <h2><i  style={{color: "rgb(13,171,97"}} className="text-3xl fa-sharp fa-solid fa-arrow-left"></i></h2>
         </Link>
@@ -106,17 +119,40 @@ export default function ColetasTable() {
           
     <Card  className="mt-2 p-0 shadow-none w-full">
       <CardHeader   floated={false} shadow={false} className="rounded-none">
-        <div  className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
+        <div  className="mb-4 flex flex-col justify-between gap-3 md:flex-row md:items-center">
           <div >
  
-            <Typography    variant="h5" color="blue-gray">
+            <Typography variant="h5" color="blue-gray">
               Histórico de Coletas
             </Typography>
             <Typography  color="gray" className="mt-1 font-normal">
-              Últimas coletas solicitadas:
+             Procure por período ou filtre por palavra chave
             </Typography>
           </div>
+
+          <div className="flex gap-2 justify-between">
+  <div className="flex flex-col w-full">
+    <label className="text-gray-700 font-medium">De</label>
+    <input
+      className="border-2 border-gray-300 p-1 rounded-md"
+      type="date"
+      value={startDate}
+      onChange={(e) => setStartDate(e.target.value)}
+    />
+  </div>
+  <div className="flex flex-col w-full">
+    <label className="text-gray-700 font-medium">Até</label>
+    <input
+      className="border-2 border-gray-300 p-1 rounded-md"
+      type="date"
+      value={endDate}
+      onChange={(e) => setEndDate(e.target.value)}
+    />
+  </div>
+</div>
+
           <div className="flex w-full shrink-0 gap-2 md:w-max">
+  
             <div className="w-full md:w-72">
             <Input
                   label="Filtrar na Tabela"
@@ -133,6 +169,7 @@ export default function ColetasTable() {
           <tr>
                 {[
                   "Data Solicitação",
+                  "Data Agendamento",
                   "Hora Solicitação",
                   "Status",
                   "Data Coleta",
@@ -166,6 +203,9 @@ export default function ColetasTable() {
                     <tr key={index}>
                         <td className={classes}>
                         {isNaN(new Date(coleta.data_solicitacao)) ? "Aguardando..." : new Date(coleta.data_solicitacao).toLocaleDateString("pt-BR")}
+                        </td>
+                        <td className={classes}>
+                        {isNaN(new Date(coleta.data_agendamento)) ? "Aguardando..." : new Date(coleta.data_agendamento).toLocaleDateString("pt-BR")}
                         </td>
                       <td className={classes}>{coleta.hora_solicitacao}</td>
                       <td className={classes}>
