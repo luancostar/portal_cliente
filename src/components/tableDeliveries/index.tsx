@@ -79,6 +79,7 @@ export default function EntregasTable() {
       "CTE": entrega.cte,
       "Emissão": new Date(entrega.emissao_cte).toLocaleDateString("pt-BR"),
       "CPF/CNPJ Cliente": entrega.cpf_cnpj_cliente,
+      "Data Entrega": new Date(entrega.baixa_entrega).toLocaleDateString("pt-BR"),
       "Condição Pgto": entrega.condicao_pgto,
       "Status": entrega.status_entrega,
       "Tipo Frete": entrega.cif_fob,
@@ -155,6 +156,7 @@ export default function EntregasTable() {
                   "Emissão",
                   "Status",
                   "CPF/CNPJ Cliente",
+                  "Data Entrega",
                   "Condição Pgto",
                   "Tipo Frete",
                   "Valor Total",
@@ -197,6 +199,7 @@ export default function EntregasTable() {
                       />
                     </td>
                     <td className="p-4">{entrega.cpf_cnpj_cliente}</td>
+                    <td className="p-4">{new Date(entrega.baixa_entrega).toLocaleDateString("pt-BR")}</td>
                     <td className="p-4">{entrega.condicao_pgto}</td>
                     <td className="p-4">{entrega.cif_fob}</td>
                     <td className="p-4">R$ {parseFloat(entrega.vlr_total_cte).toFixed(2)}</td>
