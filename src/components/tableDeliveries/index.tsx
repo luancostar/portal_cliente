@@ -144,7 +144,8 @@ export default function EntregasTable() {
                 Histórico de Entregas
               </Typography>
               <Typography color="gray" className="mt-1 font-normal">
-                Últimas entregas realizadas:
+              Procure por período de entrega ou filtre por palavra chave
+
               </Typography>
             </div>
             <div className="flex gap-2 justify-between">
