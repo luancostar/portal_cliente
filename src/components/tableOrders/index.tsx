@@ -126,7 +126,7 @@ export default function ColetasTable() {
               Histórico de Coletas
             </Typography>
             <Typography  color="gray" className="mt-1 font-normal">
-             Procure por período ou filtre por palavra chave
+             Procure por período de agendamento ou filtre por palavra chave
             </Typography>
           </div>
 
