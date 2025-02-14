@@ -26,6 +26,8 @@ export default function EntregasTable() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   useEffect(() => {
     const clienteId = localStorage.getItem("idCliente");
@@ -49,11 +51,20 @@ export default function EntregasTable() {
       .finally(() => setLoading(false));
   }, [idCliente]);
 
-  const filteredEntregas = entregas.filter((entrega) =>
+  const filteredEntregas = entregas.filter((entrega) => {
+    const entregaDate = new Date(entrega.baixa_entrega);
+    const start = startDate ? new Date(startDate) : null;
+    const end = endDate ? new Date(endDate) : null;
+
+    return (
+      (!start || entregaDate >= start) &&
+      (!end || entregaDate <= end) &&
+
     Object.values(entrega).some((value) =>
       value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+  )
+    );
+});
 
   const totalPages = Math.ceil(filteredEntregas.length / itemsPerPage);
   const currentItems = filteredEntregas.slice(
@@ -136,6 +147,26 @@ export default function EntregasTable() {
                 Últimas entregas realizadas:
               </Typography>
             </div>
+            <div className="flex gap-2 justify-between">
+            <div className="flex flex-col w-full">
+              <label className="text-gray-700 font-medium">De</label>
+              <input
+                className="border-2 border-gray-300 p-1 rounded-md"
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+            </div>
+            <div className="flex flex-col w-full">
+              <label className="text-gray-700 font-medium">Até</label>
+              <input
+                className="border-2 border-gray-300 p-1 rounded-md"
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </div>
+          </div>
             <div className="flex w-full shrink-0 gap-2 md:w-max">
               <div className="w-full md:w-72">
                 <Input
