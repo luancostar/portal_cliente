@@ -7,6 +7,7 @@ import { Typography, Card } from "@material-tailwind/react";
 import { API_URL } from "../../../config";
 import Chart from "react-apexcharts";
 import bgPerformance from "../../assets/bgperformance.png"
+import loadingGif from "../../assets/loading.gif";
 
 interface StatsCardPropsType {
   count: string;
@@ -81,7 +82,12 @@ export function StatsSection({ idCliente }: { idCliente?: string }) {
   }, [idCliente]);
 
   if (loading) {
-    return <Typography>Carregando...</Typography>;
+    return <Typography className="w-full flex justify-center">
+    <img
+    style={{width:'80px', marginTop:'100px'}}
+    
+    src={loadingGif} alt="" />
+    </Typography>;;
   }
 
   if (!data) {

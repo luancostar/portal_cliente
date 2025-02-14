@@ -32,18 +32,18 @@ export default function Performance() {
  
         </div>
       <Card className="bg-green-700 ">
-        <div className="w-full text-white flex justify-center text-center ">
+        <div className="bg-transparent w-full text-white flex justify-center text-center ">
           <button
-            className={`text-xl justify-center w-full border-r-2 border-gray-500 p-2 flex items-center active:scale-95 transition-all ${
-              activeSection === "coletas" ? "bg-green-800" : ""
+            className={`text-xl rounded-md justify-center w-full border-r-2 border-gray-500 p-2 flex items-center active:scale-95 transition-all ${
+              activeSection === "coletas" ? "bg-green-900" : ""
             }`}
             onClick={() => setActiveSection("coletas")}
           >
             <FaPeopleCarry className="mr-2" /> COLETAS
           </button>
           <button
-            className={`text-xl justify-center w-full p-2 flex items-center active:scale-95 transition-all ${
-              activeSection === "entregas" ? "bg-green-800" : ""
+            className={`text-xl rounded-md justify-center w-full p-2 flex items-center active:scale-95 transition-all ${
+              activeSection === "entregas" ? "bg-green-900" : ""
             }`}
             onClick={() => setActiveSection("entregas")}
           >

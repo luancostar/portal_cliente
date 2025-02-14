@@ -51,6 +51,7 @@ const RecuperarSenha = () => {
       if (response.data.status === "success") {
         setTimeout(() => navigate("/login"), 2000);
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setMensagem("⚠️ Erro ao conectar com o servidor.");
     } finally {
