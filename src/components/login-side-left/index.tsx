@@ -89,7 +89,7 @@ export default function FormLogin() {
  <div
   className="absolute inset-0 bg-cover md:hidden"
   style={{
-    background: `linear-gradient(to top, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.7)), url(${coverLogin})`,
+    background: `linear-gradient(  to top, rgb(7 2 2 / 54%), rgb(231 255 233 / 68%)), url(${coverLogin})`,
     backgroundColor: '#FBFBFB',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
@@ -99,7 +99,7 @@ export default function FormLogin() {
       <div>
         <div className="flex justify-center">
         <img
-          className="w-[500px] md:drop-shadow-none relative drop-shadow-[1px_1px_7px_white]"
+          className="w-[500px] md:drop-shadow-none relative"
           src={logoVb}
           alt="Logo"
         />
