@@ -141,30 +141,48 @@ export function StatsSection({ idCliente }: { idCliente?: string }) {
       </div>
 
       {/* Gráfico de Performance */}
-      {performanceColetas && (
-        <div className="flex justify-center mt-10">
-          <Card className="p-6 w-full">
-            <Typography variant="h5" className="text-center font-bold text-gray-700">
-              Eficiência de Coletas:
-            </Typography>
-            <Chart
-                className="flex justify-center"
-              options={{
-                chart: { type: "donut" },
-                labels: ["Performance", "Restante"],
-                colors: ["#0dab61", "#cccccc"],
-                dataLabels: { enabled: true },
-                legend: { show: false },
-                plotOptions: {
-                  pie: { donut: { size: "70%" } },
+  {/* Gráfico de Performance - Semi Circle Gauge */}
+{performanceColetas && (
+  <div className="flex justify-center mt-10">
+    <Card className="p-6 w-full">
+      <Typography variant="h5" className="text-center font-bold text-gray-700">
+        Eficiência de Coletas:
+      </Typography>
+      <Chart
+        className="flex justify-center"
+        options={{
+          chart: { type: "radialBar" },
+          plotOptions: {
+            radialBar: {
+              startAngle: -90,
+              endAngle: 90,
+              track: {
+                background: "#cccccc",
+                strokeWidth: "97%",
+              },
+              dataLabels: {
+                name: { show: false },
+                value: {
+                  fontSize: "30px",
+                  fontWeight: "bold",
+                  offsetY: 10,
+                  color: "#0dab61",
+                  formatter: (val) => `${val}%`,
                 },
-              }}
-              series={donutData}
-              type="donut"
-              width="350px"
-            />
-          </Card>
-        </div>
+              },
+            },
+          },
+          colors: ["#0dab61"],
+          stroke: { lineCap: "round" },
+          labels: ["Performance"],
+        }}
+        series={[performanceValue]}
+        type="radialBar"
+        width="350px"
+      />
+    </Card>
+  </div>
+
       )}
     </section>
   );

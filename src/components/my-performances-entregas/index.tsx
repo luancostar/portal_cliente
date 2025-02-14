@@ -9,7 +9,6 @@ import bgPerformance from "../../assets/bgperformance.png";
 import { API_URL } from "../../../config";
 import loadingGif from "../../assets/loading.gif";
 
- 
 interface StatsCardPropsType {
   count: string;
   title: string;
@@ -19,35 +18,35 @@ interface StatsCardPropsType {
 }
 
 function StatsCard({ count, title, description, fullWidth = false, bgImage, isFirst = false }: StatsCardPropsType) {
-    return (
-      <Card 
-        shadow={false} 
-        style={{ backgroundImage: isFirst ? "none" : "linear-gradient(to bottom, rgb(13,171,97), rgb(0,128,50))" }} 
-        className={`relative p-6 rounded-lg overflow-hidden ${fullWidth ? "col-span-1 lg:col-span-3 w-full" : ""} 
-        ${isFirst ? "bg-white text-green-700" : "text-white"}`}
-      >
-        {bgImage && (
-          <div className="absolute bottom-0 left-0 w-full flex justify-end">
-            <img src={bgImage} alt="" className="w-32 mr-4 opacity-90" />
-          </div>
-        )}
-  
-        <div className="relative z-10">
-          <Typography variant="gradient" className={`text-4xl font-bold ${isFirst ? "text-green-700" : "text-white"}`}>
-            {count}
-          </Typography>
-          <hr className={`mt-2 mb-4 max-w-xs ${isFirst ? "border-green-700" : "border-white"}`} />
-          <Typography variant="h5" className={`mt-1 font-bold ${isFirst ? "text-green-700" : "text-white"}`}>
-            {title}
-          </Typography>
-          <Typography className={`text-base max-w-xs font-normal leading-7 ${isFirst ? "text-green-700" : "text-white"}`}>
-            {description}
-          </Typography>
+  return (
+    <Card 
+      shadow={false} 
+      style={{ backgroundImage: isFirst ? "none" : "linear-gradient(to bottom, rgb(13,171,97), rgb(0,128,50))" }} 
+      className={`relative p-6 rounded-lg overflow-hidden ${fullWidth ? "col-span-1 lg:col-span-3 w-full" : ""} 
+      ${isFirst ? "bg-white text-green-700" : "text-white"}`}
+    >
+      {bgImage && (
+        <div className="absolute bottom-0 left-0 w-full flex justify-end">
+          <img src={bgImage} alt="" className="w-32 mr-4 opacity-90" />
         </div>
-      </Card>
-    );
+      )}
+
+      <div className="relative z-10">
+        <Typography variant="gradient" className={`text-4xl font-bold ${isFirst ? "text-green-700" : "text-white"}`}>
+          {count}
+        </Typography>
+        <hr className={`mt-2 mb-4 max-w-xs ${isFirst ? "border-green-700" : "border-white"}`} />
+        <Typography variant="h5" className={`mt-1 font-bold ${isFirst ? "text-green-700" : "text-white"}`}>
+          {title}
+        </Typography>
+        <Typography className={`text-base max-w-xs font-normal leading-7 ${isFirst ? "text-green-700" : "text-white"}`}>
+          {description}
+        </Typography>
+      </div>
+    </Card>
+  );
 }
-  
+
 export function StatsSectionEntregas({ idCliente }: { idCliente?: string }) {
   const [data, setData] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(true);
@@ -75,12 +74,11 @@ export function StatsSectionEntregas({ idCliente }: { idCliente?: string }) {
   }, [idCliente]);
 
   if (loading) {
-    return <Typography className="w-full flex justify-center">
-    <img
-    style={{width:'80px', marginTop:'100px'}}
-    
-    src={loadingGif} alt="" />
-    </Typography>;
+    return (
+      <Typography className="w-full flex justify-center">
+        <img style={{ width: "80px", marginTop: "100px" }} src={loadingGif} alt="" />
+      </Typography>
+    );
   }
 
   if (!data) {
@@ -109,12 +107,11 @@ export function StatsSectionEntregas({ idCliente }: { idCliente?: string }) {
   const middleStats = stats.filter((stat) =>
     ["ENTREGAS EM ABERTO", "ENTREGAS EFETUADAS", "EM ABERTO FORA DO PRAZO"].includes(stat.title)
   );
+  
   const performanceValue = ((data.entregas_efetuadas / data.total_entregas) * 100) || 0;
-  const donutData = [performanceValue, 100 - performanceValue];
 
   return (
     <section className="px-2 mt-2 w-full mx-auto">
- 
       {totalEntregas && (
         <div className="grid grid-cols-1 gap-6">
           <StatsCard {...totalEntregas} fullWidth bgImage={bgPerformance} />
@@ -127,28 +124,47 @@ export function StatsSectionEntregas({ idCliente }: { idCliente?: string }) {
         ))}
       </div>
 
-      <div className="flex justify-center mt-10">
+      {/* Novo gráfico Semi-Circle Gauge */}
+      <div className="flex justify-center mt-6">
         <Card className="p-6 w-full">
           <Typography variant="h5" className="text-center font-bold text-gray-700">
             Eficiência de Entregas:
           </Typography>
-          <Chart
+         
+        <Chart
             className="flex justify-center"
             options={{
-              chart: { type: "donut" },
-              labels: ["Performance", "Restante"],
-              colors: ["#0dab61", "#cccccc"],
-              dataLabels: { enabled: true },
-              legend: { show: false },
+              chart: { type: "radialBar" },
               plotOptions: {
-                pie: { donut: { size: "70%" } },
+                radialBar: {
+                  startAngle: -90,
+                  endAngle: 90,
+                  track: {
+                    background: "#cccccc",
+                    strokeWidth: "97%",
+                  },
+                  dataLabels: {
+                    name: { show: false },
+                    value: {
+                      fontSize: "30px",
+                      fontWeight: "bold",
+                      offsetY: 10,
+                      color: "#0dab61",
+                      formatter: (val) => `${val.toFixed(1)}%`,
+
+                    },
+                  },
+                },
               },
+              colors: ["#0dab61"],
+              stroke: { lineCap: "round" },
+              labels: ["Performance"],
             }}
-            series={donutData}
-            type="donut"
+            series={[performanceValue]}
+            type="radialBar"
             width="350px"
-          />
-        </Card>
+              />
+            </Card>
       </div>
     </section>
   );

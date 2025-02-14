@@ -101,7 +101,7 @@ export default function TrackTurn() {
                 >
                   <FaChartSimple className="text-6xl p-3 text-white group-hover:text-green-500" />
                 </div>
-                <label className="text-xs font-bold text-center"> Performance</label>
+                <label className="text-xs font-bold text-center"> Performances</label>
               </Link>
             </div>
 

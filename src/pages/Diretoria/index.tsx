@@ -6,6 +6,8 @@ import { Card, CardBody } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { API_URL } from '../../../config';
 import bgMsg from "../../assets/diretoriabg.png";
+import InputMask from 'react-input-mask';
+
 
 const Formulario: React.FC = () => {
   const [nome, setNome] = useState('');
@@ -98,14 +100,14 @@ const Formulario: React.FC = () => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Telefone para contato</label>
-          <input
-            type="text"
-            value={telefone}
-            onChange={(e) => setTelefone(e.target.value)}
-            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-          />
-        </div>
+        <label className="block text-sm font-medium text-gray-700">Telefone para contato</label>
+        <InputMask
+          mask="(99) 99999-9999"
+          value={telefone}
+          onChange={(e) => setTelefone(e.target.value)}
+          className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+        />
+      </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">O que tem a nos dizer ?</label>
           <textarea
