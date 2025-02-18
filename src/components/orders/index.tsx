@@ -29,11 +29,21 @@ export function OrdersTable({ idCliente }) {
         })
         .then((data) => {
           if (data.status === "success" && Array.isArray(data.data) && data.data.length > 0) {
-            const coletaMaisRecente = data.data[data.data.length - 1]; // Pega a última coleta retornada
-            setColetas([coletaMaisRecente]);
-  
-            if (coletaMaisRecente?.razao_social) {
-              localStorage.setItem("razao_social", coletaMaisRecente.razao_social);
+            const hoje = new Date().setHours(0, 0, 0, 0);
+
+            const coletasFiltradas = data.data
+              .map(coleta => ({
+                ...coleta,
+                data_agendamento: new Date(coleta.data_agendamento).setHours(0, 0, 0, 0)
+              }))
+              .filter(coleta => coleta.data_agendamento >= hoje)
+              .sort((a, b) => a.data_agendamento - b.data_agendamento);
+            
+            if (coletasFiltradas.length > 0) {
+              setColetas([coletasFiltradas[0]]);
+              localStorage.setItem("razao_social", coletasFiltradas[0].razao_social || "");
+            } else {
+              setColetas([]);
             }
           } else {
             setColetas([]);
@@ -51,6 +61,7 @@ export function OrdersTable({ idCliente }) {
       return () => controller.abort();
     }
   }, [idCliente]);
+
   if (loading) {
     return <div>Carregando dados...</div>;
   }
@@ -115,7 +126,7 @@ export function OrdersTable({ idCliente }) {
             {coleta.data_solicitacao
               ? new Date(coleta.data_agendamento).toLocaleDateString("pt-BR")
               : "N/A"}{" "}
-            - {coleta.hora_solicitacao}
+            - 📅
           </time>
         </div>
       </div>
