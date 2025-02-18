@@ -30,11 +30,23 @@ export default function DeliveriesTable({ idCliente }) {
           return response.json();
         })
         .then((data) => {
-          if (data.status === "success" && Array.isArray(data.data.entregas) && data.data.entregas.length > 0) {
-            // Ordena por data e seleciona as 3 mais recentes
-            setColetas(data.data.entregas
-              .sort((a, b) => new Date(b.emissao_cte) - new Date(a.emissao_cte))
-              .slice(0, 3));
+          if (data.status === "success" && Array.isArray(data.data.entregas)) {
+            const entregasAbertas = data.data.entregas.filter(
+              (entrega) => entrega.status_entrega !== "ENTREGUE"
+            );
+  
+            // Se houver menos de 3 entregas em aberto, adiciona as mais recentes até completar 3
+            if (entregasAbertas.length < 3) {
+              const entregasMaisRecentes = data.data.entregas
+                .sort((a, b) => new Date(b.emissao_cte) - new Date(a.emissao_cte))
+                .slice(0, 3);
+                
+              // Combina as entregas abertas com as recentes, garantindo no mínimo 3
+              const entregasFinal = [...new Set([...entregasAbertas, ...entregasMaisRecentes])].slice(0, 3);
+              setColetas(entregasFinal);
+            } else {
+              setColetas(entregasAbertas);
+            }
           } else {
             setColetas([]);
           }
@@ -51,6 +63,7 @@ export default function DeliveriesTable({ idCliente }) {
       return () => controller.abort();
     }
   }, [idCliente]);
+  
   
 
   if (loading) {
