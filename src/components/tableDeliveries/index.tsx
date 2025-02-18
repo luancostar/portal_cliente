@@ -35,7 +35,7 @@ export default function EntregasTable() {
       setIdCliente(clienteId);
     }
   }, []);
-
+  
   useEffect(() => {
     if (!idCliente) return;
   
@@ -44,13 +44,35 @@ export default function EntregasTable() {
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "success" && data.data.entregas) {
-          setEntregas(data.data.entregas.reverse()); // Corrigido para acessar "entregas"
+          const entregasOrdenadas = data.data.entregas.sort((a, b) => {
+            // Prioriza entregas com status "ENTREGUE"
+            if (a.status_entrega === "ENTREGUE" && b.status_entrega !== "ENTREGUE") {
+              return -1;
+            }
+            if (a.status_entrega !== "ENTREGUE" && b.status_entrega === "ENTREGUE") {
+              return 1;
+            }
+          
+            // Se ambos forem "ENTREGUE", ordena pela baixa_entrega mais recente
+            if (a.status_entrega === "ENTREGUE" && b.status_entrega === "ENTREGUE") {
+              const dataA = a.baixa_entrega ? new Date(a.baixa_entrega).getTime() : 0;
+              const dataB = b.baixa_entrega ? new Date(b.baixa_entrega).getTime() : 0;
+              return dataB - dataA;
+            }
+          
+            // Para os demais casos, mantém a ordenação original
+            return 0;
+          });
+          
+  
+          setEntregas(entregasOrdenadas);
         }
       })
       .catch((error) => console.error("Erro ao buscar dados:", error))
       .finally(() => setLoading(false));
   }, [idCliente]);
-
+  
+  
   const filteredEntregas = entregas.filter((entrega) => {
     const entregaDate = new Date(entrega.baixa_entrega);
     const start = startDate ? new Date(startDate) : null;
@@ -231,7 +253,11 @@ export default function EntregasTable() {
                       />
                     </td>
                     <td className="p-4">{entrega.cpf_cnpj_cliente}</td>
-                    <td className="p-4">{new Date(entrega.baixa_entrega).toLocaleDateString("pt-BR")}</td>
+                    <td>
+                      {entrega.baixa_entrega && !isNaN(new Date(entrega.baixa_entrega).getTime()) 
+                        ? new Date(entrega.baixa_entrega).toLocaleDateString("pt-BR") 
+                        : "AGUARDANDO..."}
+                    </td>
                     <td className="p-4">{entrega.condicao_pgto}</td>
                     <td className="p-4">{entrega.cif_fob}</td>
                     <td className="p-4">R$ {parseFloat(entrega.vlr_total_cte).toFixed(2)}</td>
