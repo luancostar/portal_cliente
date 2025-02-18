@@ -28,23 +28,42 @@ export function OrdersTable({ idCliente }) {
           return response.json();
         })
         .then((data) => {
+          console.log("Coletas recebidas:", data.data); // Verificar retorno da API
+  
           if (data.status === "success" && Array.isArray(data.data) && data.data.length > 0) {
-            const hoje = new Date().setHours(0, 0, 0, 0);
-
-            const coletasFiltradas = data.data
+            const hoje = new Date();
+            hoje.setHours(0, 0, 0, 0); // Ajuste para comparar datas sem horário
+  
+            // Ordena todas as coletas pela data, da mais recente para a mais antiga
+            const coletasOrdenadas = data.data
               .map(coleta => ({
                 ...coleta,
                 data_agendamento: new Date(coleta.data_agendamento).setHours(0, 0, 0, 0)
               }))
-              .filter(coleta => coleta.data_agendamento >= hoje)
-              .sort((a, b) => a.data_agendamento - b.data_agendamento);
-            
-            if (coletasFiltradas.length > 0) {
-              setColetas([coletasFiltradas[0]]);
-              localStorage.setItem("razao_social", coletasFiltradas[0].razao_social || "");
-            } else {
-              setColetas([]);
+              .sort((a, b) => b.data_agendamento - a.data_agendamento);
+  
+            // Encontra a coleta do dia atual
+            const coletaHoje = coletasOrdenadas.find(coleta => coleta.data_agendamento === hoje.getTime());
+  
+            // Encontra a coleta imediatamente anterior (aquela que vem logo antes da de hoje)
+            const indexHoje = coletaHoje ? coletasOrdenadas.indexOf(coletaHoje) : -1;
+            const coletaAnterior = indexHoje > 0 ? coletasOrdenadas[indexHoje + 1] : null;
+  
+            // Define o estado com as coletas filtradas
+            setColetas(
+              coletaHoje 
+                ? (coletaAnterior ? [coletaHoje, coletaAnterior] : [coletaHoje]) 
+                : []
+            );
+  
+            // Armazena a razão social no localStorage, se houver coleta do dia
+            if (coletaHoje) {
+              localStorage.setItem("razao_social", coletaHoje.razao_social || "");
             }
+  
+            // Exibir motorista e placa para depuração
+            console.log("Motorista hoje:", coletaHoje?.motorista);
+            console.log("Placa hoje:", coletaHoje?.placa);
           } else {
             setColetas([]);
           }
@@ -61,7 +80,8 @@ export function OrdersTable({ idCliente }) {
       return () => controller.abort();
     }
   }, [idCliente]);
-
+  
+  
   if (loading) {
     return <div>Carregando dados...</div>;
   }
@@ -80,59 +100,59 @@ export function OrdersTable({ idCliente }) {
               <ul role="list" className="-mb-8 w-full grid justify-items-start xl:flex sm:justify-start" >
                 {/* Etapa 1: Pendente de autorização ou Autorizada ou Coletada */}
                 <li>
-  <div className="relative pb-8">
-    <div className="relative flex space-x-3">
-      <div>
-        {/* Ícone SVG: Só aparece quando status_coleta NÃO for "Pendente de autorização" */}
-        <span
-          className={`h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white ${
-            coleta.status_coleta === "Pendente de autorização" ? "hidden" : "bg-green-500"
-          }`}
-        >
-          <svg
-            className="h-5 w-5 text-white"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fillRule="evenodd"
-              d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </span>
+                  <div className="relative pb-8">
+                    <div className="relative flex space-x-3">
+                      <div>
+                        {/* Ícone SVG: Só aparece quando status_coleta NÃO for "Pendente de autorização" */}
+                        <span
+                          className={`h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white ${
+                            coleta.status_coleta === "Pendente de autorização" ? "hidden" : "bg-green-500"
+                          }`}
+                        >
+                          <svg
+                            className="h-5 w-5 text-white"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            aria-hidden="true"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </span>
 
-        {/* Imagem de carregamento: Só aparece quando status_coleta for "Pendente de autorização" */}
-        <img
-          src={loadingGif}
-          alt="Carregando"
-          width={'28px'}
-          className={`${coleta.status_coleta === "Pendente de autorização" ? "block" : "hidden"}`}
-        />
-      </div>
+                        {/* Imagem de carregamento: Só aparece quando status_coleta for "Pendente de autorização" */}
+                        <img
+                          src={loadingGif}
+                          alt="Carregando"
+                          width={'28px'}
+                          className={`${coleta.status_coleta === "Pendente de autorização" ? "block" : "hidden"}`}
+                        />
+                      </div>
 
-      <div className="text-sm text-gray-500 flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
-        <div>
-          {coleta.status_coleta === "Pendente de autorização"
-            ? "Aguardando confirmação de coleta"
-            : coleta.status_coleta === "Autorizada" || coleta.status_coleta === "Coletada"
-            ? "Coleta aprovada! roteirizando..."
-            : "Aguardando confirmação de coleta"}
-        </div>
+                      <div className="text-sm text-gray-500 flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                        <div>
+                          {coleta.status_coleta === "Pendente de autorização"
+                            ? "Aguardando confirmação de coleta"
+                            : coleta.status_coleta === "Autorizada" || coleta.status_coleta === "Coletada"
+                            ? "Coleta aprovada! roteirizando..."
+                            : "Coleta aprovada! roteirizando..."}
+                        </div>
 
-        <div className="whitespace-nowrap text-right text-sm text-gray-500">
-          <time>
-            {coleta.data_solicitacao
-              ? new Date(coleta.data_agendamento).toLocaleDateString("pt-BR")
-              : "N/A"}{" "}
-            - 📅
-          </time>
-        </div>
-      </div>
-    </div>
-  </div>
-</li>
+                        <div className="whitespace-nowrap text-right text-sm text-gray-500">
+                          <time>
+                            {coleta.data_agendamento
+                              ? new Date(coleta.data_agendamento).toLocaleDateString("pt-BR")
+                              : "N/A"}{" "}
+                            - 📅
+                          </time>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
 
                 <div
                 className="bg-[#24c200] xl:h-[2px] xl:w-[100px] xl:mt-[15px] xl:ml-[5px] h-[17px] w-[2px] mt-[-25px] ml-[14px]"
@@ -142,6 +162,7 @@ export function OrdersTable({ idCliente }) {
                 {/* Etapa 2: Roteirizando coleta ou dados do motorista e placa */}
                 {(
                   coleta.status_coleta === "Autorizada" ||
+                  coleta.status_coleta === "Não coletada" ||
                   coleta.status_coleta === "Coletada") && (
                   <li>
                     <div className="relative pb-8">
