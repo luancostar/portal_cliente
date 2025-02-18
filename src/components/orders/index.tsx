@@ -113,7 +113,7 @@ export function OrdersTable({ idCliente }) {
         <div className="whitespace-nowrap text-right text-sm text-gray-500">
           <time>
             {coleta.data_solicitacao
-              ? new Date(coleta.data_solicitacao).toLocaleDateString("pt-BR")
+              ? new Date(coleta.data_agendamento).toLocaleDateString("pt-BR")
               : "N/A"}{" "}
             - {coleta.hora_solicitacao}
           </time>
