@@ -8,8 +8,9 @@ import TrackTurn from "../../components/Track";
 import { OrdersTable } from "../../components/orders";
 import DeliveriesTable from "../../components/deliveries";
 import Hero from "../../components/Hero";
+import ButtonBaloon from "../../components/buttonBalloon";
  
-
+ 
 export default function Home() {
   const [idCliente, setIdCliente] = useState(null);
 
@@ -22,14 +23,15 @@ export default function Home() {
   return (
     <div className="h-full w-100 flex">
       <div className="p-6 w-full">
-        {/* Passando o idCliente para os componentes */}
+ 
         <SearchHeaderCard idCliente={idCliente} />
         <TrackTurn />
-        {/* <ColetasTable idCliente={idCliente} /> */}
-        <Hero/>
  
+        <Hero/>
         <OrdersTable idCliente={idCliente} />
         <DeliveriesTable idCliente={idCliente} />
+        <ButtonBaloon/>
+       
       </div>
     </div>
   );

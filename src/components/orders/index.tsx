@@ -222,15 +222,13 @@ export function OrdersTable({ idCliente }) {
                 className="bg-[#24c200] xl:h-[2px] xl:w-[100px] xl:mt-[15px] xl:ml-[5px] h-[17px] w-[2px] mt-[-25px]  ml-[14px]"
               >
               </div>
-
-                {/* Etapa 3: Veículo em rota de coleta ou Coleta realizada com sucesso */}
-                {coleta.status_coleta === "Coletada" ? (
+   {/* Etapa 3: Coleta realizada, não realizada ou veículo em rota de coleta */}
+   {coleta.status_coleta === "Coletada" ? (
                   <li>
                     <div className="relative pb-8">
                       <div className="relative flex space-x-3">
                         <div>
                           <span className="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center ring-8 ring-white">
-
                             <svg
                               className="h-5 w-5 text-white"
                               viewBox="0 0 20 20"
@@ -247,62 +245,75 @@ export function OrdersTable({ idCliente }) {
                         </div>
                         <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
                           <div>
-                            <p className="text-sm text-gray-500">
-                              Coleta realizada com sucesso
-                            </p>
+                            <p className="text-sm text-gray-500">Coleta realizada com sucesso</p>
                           </div>
                           <div className="whitespace-nowrap text-right text-sm text-gray-500">
                             <time dateTime={coleta.data_coleta}>
-                            {coleta.data_coleta ? new Date(coleta.data_coleta).toLocaleDateString("pt-BR"): "N/A"} - 
-                              {coleta.hora_coleta || "N/A"}
+                              {coleta.data_coleta ? new Date(coleta.data_coleta).toLocaleDateString("pt-BR") : "N/A"} - {coleta.hora_coleta || "N/A"}
                             </time>
                           </div>
                         </div>
                       </div>
                     </div>
                   </li>
-                ) : (
-                  // Caso o status seja "Autorizada" e tenha motorista/placa, continua com "Veículo em rota de coleta"
-                  (coleta.nome_motorista && coleta.nome_motorista !== "SEM MOTORISTA" &&
-                    coleta.placa_veiculo && coleta.placa_veiculo !== "SEM PLACA") && (
-                     <li>
-                       <div className="relative pb-8">
-                         <div className="relative flex space-x-3">
-                           <div>
-                             <span className="h-8 w-8 rounded-full bg-transparent flex items-center justify-center ring-8 ring-white">
-                        <img src={loadingGif} alt="" />
+                ) : coleta.status_coleta === "Não coletada" ? (
+                  <li>
+                    <div className="relative pb-8">
+                      <div className="relative flex space-x-3">
+                        <div>
+                          <span className="h-8 w-8 rounded-full bg-red-500 flex items-center justify-center ring-8 ring-white">
+                            <svg
+                              className="h-5 w-5 text-white"
+                              viewBox="0 0 18 18"
+                              fill="currentColor"
+                              aria-hidden="true"
+                            >
+                            <path  d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
 
-                               <svg
-                                 className="h-5 w-5 text-white"
-                                 viewBox="0 0 20 20"
-                                 fill="currentColor"
-                                 aria-hidden="true"
-                               >
-                                 <path
-                                   fillRule="evenodd"
-                                   d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                                   clipRule="evenodd"
-                                 />
-                               </svg>
-                             </span>
-                           </div>
-                           <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
-                             <div>
-                               <p className="text-sm text-gray-500">
-                                 Veículo em rota de coleta
-                                </p>
-                             </div>
-                             <div className="whitespace-nowrap text-right text-sm text-gray-500">
-                               <time dateTime={coleta.data_hora_inclusao}>
-                                 {coleta.data_hora_inclusao || "N/A"}
-                               </time>
-                             </div>
-                           </div>
-                         </div>
-                       </div>
-                     </li>
-                  )
-                )}
+                            </svg>
+                          </span>
+                        </div>
+                        <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                          <div>
+                            <p className="text-sm text-gray-500">Coleta não realizada! - 
+                            <time dateTime={coleta.data_coleta}>
+                              {coleta.data_coleta ? new Date(coleta.data_coleta).toLocaleDateString("pt-BR") : "N/A"}  
+                            </time>
+                            </p>
+                         
+                          <a className="text-blue-600 flex items-center" href="">Suporte Online
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="ml-1  bi bi-whatsapp" viewBox="0 0 16 16">
+                                <path  d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+                              </svg>
+                             </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                ) : coleta.nome_motorista && coleta.nome_motorista !== "SEM MOTORISTA" && coleta.placa_veiculo && coleta.placa_veiculo !== "SEM PLACA" ? (
+                  <li>
+                    <div className="relative pb-8">
+                      <div className="relative flex space-x-3">
+                        <div>
+                          <span className="h-8 w-8 rounded-full bg-transparent flex items-center justify-center ring-8 ring-white">
+                            <img src={loadingGif} alt="Carregando..." />
+                          </span>
+                        </div>
+                        <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                          <div>
+                            <p className="text-sm text-gray-500">Veículo em rota de coleta</p>
+                          </div>
+                          <div className="whitespace-nowrap text-right text-sm text-gray-500">
+                            <time dateTime={coleta.data_hora_inclusao}>
+                              {coleta.data_hora_inclusao || "N/A"}
+                            </time>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                ) : null}
               </ul>
             </div>
           </Card>
