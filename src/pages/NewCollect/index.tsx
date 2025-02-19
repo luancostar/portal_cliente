@@ -194,6 +194,7 @@ const SolicitarColetaForm = () => {
             <label htmlFor="solicitante_coleta" className="text-sm font-medium text-gray-700">Nome do Solicitante</label>
             <div className="mt-4 absolute left-3 top-3 text-gray-500">
               <i className="fas fa-user"></i>
+   
             </div>
             <input
               type="text"
@@ -210,7 +211,7 @@ const SolicitarColetaForm = () => {
           <div className="relative">
             <label htmlFor="volume_solicitado" className="text-sm font-medium text-gray-700">Quantidade de Volumes</label>
             <div className="mt-4 absolute left-3 top-3 text-gray-500">
-              <i className="fas fa-user"></i>
+              <i className="fas fa-box"></i>
             </div>
             <input
               type="text"
@@ -246,7 +247,7 @@ const SolicitarColetaForm = () => {
           <div className="relative">
             <label htmlFor="peso_solicitado" className="text-sm font-medium text-gray-700">Peso Solicitado</label>
             <div className="mt-4 absolute left-3 top-3 text-gray-500">
-              <i className="fas fa-user"></i>
+              <i className="fas fa-balance-scale"></i>
             </div>
             <input
               type="text"
@@ -263,7 +264,7 @@ const SolicitarColetaForm = () => {
           <div className="relative">
             <label htmlFor="qtd_notas" className="text-sm font-medium text-gray-700">Quantidade de Notas</label>
             <div className="mt-4 absolute left-3 top-3 text-gray-500">
-              <i className="fas fa-user"></i>
+            <i class="fas fa-file-alt"></i>
             </div>
             <input
               type="number"
