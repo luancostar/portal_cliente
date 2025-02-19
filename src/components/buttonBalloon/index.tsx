@@ -10,7 +10,7 @@ export default function ButtonBaloon() {
     <Button 
     title="Contatar suporte por Whatsapp"
     color="green" 
-    className="!fixed rounded-full bottom-5 right-0 flex items-center focus:!fixed active:!fixed"
+    className="!fixed rounded-full bottom-5 right-2 flex items-center focus:!fixed active:!fixed"
     >
     <svg
         xmlns="http://www.w3.org/2000/svg"
