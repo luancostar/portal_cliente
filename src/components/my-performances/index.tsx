@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Typography, Card } from "@material-tailwind/react";
+import { Typography, Card, Button } from "@material-tailwind/react";
 import { API_URL } from "../../../config";
 import Chart from "react-apexcharts";
 import bgPerformance from "../../assets/bgperformance.png"
@@ -53,47 +53,59 @@ function StatsCard({ count, title, description, fullWidth = false, bgImage, isFi
   }
   
 
-export function StatsSection({ idCliente }: { idCliente?: string }) {
-  const [data, setData] = useState<Record<string, unknown> | null>(null);
-  const [loading, setLoading] = useState(true);
+  export function StatsSection({ idCliente }: { idCliente?: string }) {
+    const [data, setData] = useState<Record<string, unknown> | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
+  
+    // Obtém o primeiro e último dia do mês atual
+    const now = new Date();
+    const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split("T")[0];
+    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split("T")[0];
+  
+    const [dataInicial, setDataInicial] = useState(firstDay);
+    const [dataFinal, setDataFinal] = useState(lastDay);
+    const [filterData, setFilterData] = useState({ dataInicial: firstDay, dataFinal: lastDay });
+  
+  
+      const fetchData = async (dataIni: string, dataFim: string) => {
+        if (!idCliente) return;
+    
+        setLoading(true);
+        try {
+          const response = await axios.get(
+            `${API_URL}/coletas/performanceColetas.php?id_cliente=${idCliente}&data_inicial=${dataIni}&data_final=${dataFim}`
+          );
+          setData(response.data?.data || null);
+        } catch (error) {
+          console.error("Erro ao buscar dados da API:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
 
+       // Buscar dados automaticamente ao montar o componente (mês vigente)
   useEffect(() => {
-    console.log("ID Cliente recebido:", idCliente);
-    if (!idCliente) {
-      setLoading(false);
-      return;
-    }
-
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `${API_URL}/coletas/performanceColetas.php?id_cliente=${idCliente}`
-        );
-        console.log("Resposta da API:", response.data);
-        setData(response.data?.data || null);
-      } catch (error) {
-        console.error("Erro ao buscar dados da API:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    fetchData(firstDay, lastDay);
   }, [idCliente]);
 
-  if (loading) {
-    return <Typography className="w-full flex justify-center">
-    <img
-    style={{width:'80px', marginTop:'100px'}}
-    
-    src={loadingGif} alt="" />
-    </Typography>;;
-  }
-
-  if (!data) {
-    return <Typography className="text-red-500">Erro ao carregar os dados.</Typography>;
-  }
-
+  // Buscar dados apenas quando o usuário clicar no botão Filtrar
+  useEffect(() => {
+    if (submitted) {
+      fetchData(filterData.dataInicial, filterData.dataFinal);
+    }
+  }, [submitted, filterData]);
+  
+    if (loading) {
+      return <Typography className="w-full flex justify-center">
+        <img style={{ width: '80px', marginTop: '100px' }} src={loadingGif} alt="" />
+      </Typography>;
+    }
+  
+    if (!data) {
+      return <Typography className="text-red-500">Erro ao carregar os dados.</Typography>;
+    }
+  
   const fieldsToShow = {
     total_coletas: "TOTAL DE COLETAS",
     coletas_em_aberto: "COLETAS EM ABERTO",
@@ -125,8 +137,48 @@ export function StatsSection({ idCliente }: { idCliente?: string }) {
 
   return (
     <section className="px-2 mt-2 w-full mx-auto">
-     
+      <section className="px-2 mt-2 w-full mx-auto">
+      <form
+        className="grid sm:flex gap-4 mb-4"
+        onSubmit={(e) => {
+          e.preventDefault();
+          setFilterData({ dataInicial, dataFinal });
+          setSubmitted(true);
+        }}
+      >
+        <div className="flex justify-center"> 
 
+        <input
+          type="date"
+          value={dataInicial}
+          onChange={(e) => setDataInicial(e.target.value)}
+          className="border p-2 rounded"
+        />
+        <input
+          type="date"
+          value={dataFinal}
+          onChange={(e) => setDataFinal(e.target.value)}
+          className="border p-2 rounded"
+        />
+        </div>
+        <Button className="w-full sm:w-auto" type="submit" color="green">
+          Filtrar
+        </Button>
+      </form>
+
+      {loading ? (
+        <Typography className="w-full flex justify-center">
+          <img style={{ width: "80px", marginTop: "100px" }} src={loadingGif} alt="Carregando" />
+        </Typography>
+      ) : data ? (
+        <div>
+          {/* Renderizar os cards e gráficos aqui */}
+          <Typography className="text-green-700"> </Typography>
+        </div>
+      ) : (
+        <Typography className="text-red-500">Erro ao carregar os dados.</Typography>
+      )}
+    </section>
       {/* Card Total de Coletas com a imagem de fundo */}
       {totalColetas && (
         <div className="grid grid-cols-1 gap-6">
