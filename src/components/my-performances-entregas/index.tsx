@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Typography, Card } from "@material-tailwind/react";
+import { Typography, Card, Button } from "@material-tailwind/react";
 import Chart from "react-apexcharts";
 import bgPerformance from "../../assets/bgperformance.png";
 import { API_URL } from "../../../config";
@@ -30,7 +30,6 @@ function StatsCard({ count, title, description, fullWidth = false, bgImage, isFi
           <img src={bgImage} alt="" className="w-32 mr-4 opacity-90" />
         </div>
       )}
-
       <div className="relative z-10">
         <Typography variant="gradient" className={`text-4xl font-bold ${isFirst ? "text-green-700" : "text-white"}`}>
           {count}
@@ -51,27 +50,38 @@ export function StatsSectionEntregas({ idCliente }: { idCliente?: string }) {
   const [data, setData] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Estado para armazenar as datas
+  const [dataInicial, setDataInicial] = useState(() => {
+    const hoje = new Date();
+    return new Date(hoje.getFullYear(), hoje.getMonth(), 1).toISOString().split("T")[0];
+  });
+
+  const [dataFinal, setDataFinal] = useState(() => {
+    const hoje = new Date();
+    return new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).toISOString().split("T")[0];
+  });
+
   useEffect(() => {
     if (!idCliente) {
       setLoading(false);
       return;
     }
-
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `${API_URL}/entregas/performanceEntregas.php?id_cliente=${idCliente}`
-        );
-        setData(response.data?.data?.entregas || null);
-      } catch (error) {
-        console.error("Erro ao buscar dados da API:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, [idCliente]);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `${API_URL}/entregas/performanceEntregas.php?id_cliente=${idCliente}&data_inicial=${dataInicial}&data_final=${dataFinal}`
+      );
+      setData(response.data?.data?.entregas || null);
+    } catch (error) {
+      console.error("Erro ao buscar dados da API:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -112,6 +122,37 @@ export function StatsSectionEntregas({ idCliente }: { idCliente?: string }) {
 
   return (
     <section className="px-2 mt-2 w-full mx-auto">
+    <form
+      className="grid sm:flex gap-4 mb-4"
+      onSubmit={(e) => {
+        e.preventDefault();
+        setFilterData({ dataInicial, dataFinal });
+        setSubmitted(true);
+      }}
+    >
+      <div className="flex justify-center"> 
+
+      <input
+        type="date"
+        value={dataInicial}
+        onChange={(e) => setDataInicial(e.target.value)}
+        className="border p-2 rounded"
+      />
+      <input
+        type="date"
+        value={dataFinal}
+        onChange={(e) => setDataFinal(e.target.value)}
+        className="border p-2 rounded"
+      />
+      </div>
+      <Button className="w-full sm:w-auto" onClick={fetchData} type="submit" color="green">
+        Filtrar
+      </Button>
+    </form>
+
+         
+       
+
       {totalEntregas && (
         <div className="grid grid-cols-1 gap-6">
           <StatsCard {...totalEntregas} fullWidth bgImage={bgPerformance} />
@@ -124,14 +165,12 @@ export function StatsSectionEntregas({ idCliente }: { idCliente?: string }) {
         ))}
       </div>
 
-      {/* Novo gráfico Semi-Circle Gauge */}
       <div className="flex justify-center mt-6">
         <Card className="p-6 w-full">
           <Typography variant="h5" className="text-center font-bold text-gray-700">
             Eficiência de Entregas:
           </Typography>
-         
-        <Chart
+          <Chart
             className="flex justify-center"
             options={{
               chart: { type: "radialBar" },
@@ -139,32 +178,25 @@ export function StatsSectionEntregas({ idCliente }: { idCliente?: string }) {
                 radialBar: {
                   startAngle: -90,
                   endAngle: 90,
-                  track: {
-                    background: "#cccccc",
-                    strokeWidth: "97%",
-                  },
-                  dataLabels: {
-                    name: { show: false },
-                    value: {
-                      fontSize: "30px",
+                  track: { background: "#cccccc", strokeWidth: "97%" },
+                  dataLabels: 
+                  { name: { show: false },
+                    value: {   fontSize: "30px",
                       fontWeight: "bold",
                       offsetY: 10,
                       color: "#0dab61",
-                      formatter: (val) => `${val.toFixed(1)}%`,
-
-                    },
-                  },
+                      formatter: (val) => `${val.toFixed(1)}%`,} },
                 },
               },
               colors: ["#0dab61"],
               stroke: { lineCap: "round" },
-              labels: ["Performance"],
+               labels: ["Performance"],
             }}
             series={[performanceValue]}
             type="radialBar"
             width="350px"
-              />
-            </Card>
+          />
+        </Card>
       </div>
     </section>
   );
