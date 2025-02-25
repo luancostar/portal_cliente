@@ -36,11 +36,16 @@ export function OrdersTable({ idCliente }) {
   
             // Ordena todas as coletas pela data, da mais recente para a mais antiga
             const coletasOrdenadas = data.data
-              .map(coleta => ({
+            .map(coleta => {
+              const dataAgendamento = new Date(coleta.data_agendamento + "T00:00:00"); // Garante que a data seja interpretada corretamente
+              dataAgendamento.setMinutes(dataAgendamento.getMinutes() + dataAgendamento.getTimezoneOffset()); // Ajusta o fuso horário
+              return {
                 ...coleta,
-                data_agendamento: new Date(coleta.data_agendamento).setHours(0, 0, 0, 0)
-              }))
-              .sort((a, b) => b.data_agendamento - a.data_agendamento);
+                data_agendamento: dataAgendamento.setHours(0, 0, 0, 0)
+              };
+            })
+            .sort((a, b) => b.data_agendamento - a.data_agendamento);
+          
   
             // Encontra a coleta do dia atual
             const coletaHoje = coletasOrdenadas.find(coleta => coleta.data_agendamento === hoje.getTime());
