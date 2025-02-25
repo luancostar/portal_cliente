@@ -50,6 +50,21 @@ export default function ColetasTable() {
       .finally(() => setLoading(false));
   }, [idCliente]);
   
+  const ajustarData = (data) => {
+    if (!data) return "Aguardando...";
+  
+    const partes = data.split("-"); // Supondo que a data venha no formato YYYY-MM-DD
+    if (partes.length !== 3) return "Data inválida";
+  
+    const dataCorrigida = new Date(
+      Number(partes[0]), // Ano
+      Number(partes[1]) - 1, // Mês (ajustando, pois no JS os meses vão de 0 a 11)
+      Number(partes[2]) // Dia
+    );
+  
+    return dataCorrigida.toLocaleDateString("pt-BR");
+  };
+  
 
   const filteredColetas = coletas.filter((coleta) => {
     const agendamentoDate = new Date(coleta.data_agendamento);
@@ -202,12 +217,11 @@ export default function ColetasTable() {
                   return (
                     <tr key={index}>
                         <td className={classes}>
-                        {isNaN(new Date(coleta.data_solicitacao)) ? "Aguardando..." : new Date(coleta.data_solicitacao).toLocaleDateString("pt-BR")}
+                    
+                        {isNaN(new Date(coleta.data_solicitacao)) ? "Aguardando..." : new Date(coleta.data_solicitacao + "T00:00:00Z").toLocaleDateString("pt-BR")}
                         </td>
-                        <td className={classes}>
-                        {isNaN(new Date(coleta.data_agendamento)) ? "Aguardando..." : new Date(coleta.data_agendamento).toLocaleDateString("pt-BR")}
-                        </td>
-                      <td className={classes}>{coleta.hora_solicitacao}</td>
+                        <td className={classes}>{ajustarData(coleta.data_agendamento)}</td>
+                        <td className={classes}>{ajustarData(coleta.data_solicitacao)}</td>
                       <td className={classes}>
                         <Chip
                           size="sm"
@@ -226,9 +240,7 @@ export default function ColetasTable() {
                           }
                         />
                       </td>
-                      <td className={classes}>
-                        {isNaN(new Date(coleta.data_coleta)) ? "Aguardando..." : new Date(coleta.data_coleta).toLocaleDateString("pt-BR")}
-                        </td>
+                      <td className={classes}>{ajustarData(coleta.data_coleta)}</td>
                       <td className={classes}>{coleta.hora_coleta}</td>
                       <td className={classes}>{coleta.solicitante_coleta}</td>
                       <td className={classes} style={{ textAlign: "center" }}>{coleta.volume_solicitado}</td>
