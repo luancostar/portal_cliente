@@ -5,95 +5,76 @@ import React, { useState, useEffect } from "react";
 import { Card } from "@material-tailwind/react";
 import { API_URL } from "../../../config";
 import loadingGif from "../../assets/loading.gif"
+ 
 
-export function OrdersTable({ idCliente }) {
-  const [coletas, setColetas] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    if (idCliente) {
-      const controller = new AbortController();
-      const signal = controller.signal;
+  export function OrdersTable({ idCliente }) {
+    const [coletas, setColetas] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
   
-      const url = `${API_URL}/coletas/getColetasCliente.php?id_cliente=${idCliente}`;
+    useEffect(() => {
+      if (idCliente) {
+        const controller = new AbortController();
+        const signal = controller.signal;
+        const url = `${API_URL}/coletas/getColetasCliente.php?id_cliente=${idCliente}`;
   
-      setLoading(true);
+        setLoading(true);
   
-      fetch(url, { signal })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Erro ao buscar dados da API");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log("Coletas recebidas:", data.data); // Verificar retorno da API
-  
-          if (data.status === "success" && Array.isArray(data.data) && data.data.length > 0) {
-            const hoje = new Date();
-            hoje.setHours(0, 0, 0, 0); // Ajuste para comparar datas sem horário
-  
-            // Ordena todas as coletas pela data, da mais recente para a mais antiga
-            const coletasOrdenadas = data.data
-            .map(coleta => {
-              const dataAgendamento = new Date(coleta.data_agendamento + "T00:00:00"); // Garante que a data seja interpretada corretamente
-              dataAgendamento.setMinutes(dataAgendamento.getMinutes() + dataAgendamento.getTimezoneOffset()); // Ajusta o fuso horário
-              return {
-                ...coleta,
-                data_agendamento: dataAgendamento.setHours(0, 0, 0, 0)
-              };
-            })
-            .sort((a, b) => b.data_agendamento - a.data_agendamento);
-          
-  
-            // Encontra a coleta do dia atual
-            const coletaHoje = coletasOrdenadas.find(coleta => coleta.data_agendamento === hoje.getTime());
-  
-            // Encontra a coleta imediatamente anterior (aquela que vem logo antes da de hoje)
-            const indexHoje = coletaHoje ? coletasOrdenadas.indexOf(coletaHoje) : -1;
-            const coletaAnterior = indexHoje > 0 ? coletasOrdenadas[indexHoje + 1] : null;
-  
-            // Define o estado com as coletas filtradas
-            setColetas(
-              coletaHoje 
-                ? (coletaAnterior ? [coletaHoje, coletaAnterior] : [coletaHoje]) 
-                : []
-            );
-  
-            // Armazena a razão social no localStorage, se houver coleta do dia
-            if (coletaHoje) {
-              localStorage.setItem("razao_social", coletaHoje.razao_social || "");
+        fetch(url, { signal })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Erro ao buscar dados da API");
             }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Coletas recebidas:", data.data);
   
-            // Exibir motorista e placa para depuração
-            console.log("Motorista hoje:", coletaHoje?.motorista);
-            console.log("Placa hoje:", coletaHoje?.placa);
-          } else {
-            setColetas([]);
-          }
-        })
-        .catch((err) => {
-          if (err.name === "AbortError") {
-            console.log("Requisição abortada");
-          } else {
-            setError(err.message);
-          }
-        })
-        .finally(() => setLoading(false));
+            if (data.status === "success" && Array.isArray(data.data) && data.data.length > 0) {
+              const hoje = new Date();
+              hoje.setHours(0, 0, 0, 0);
   
-      return () => controller.abort();
+              const ontem = new Date(hoje);
+              ontem.setDate(hoje.getDate() - 1);
+  
+              // Ordenar por data_agendamento (decrescente)
+              const coletasOrdenadas = data.data
+                .map(coleta => ({
+                  ...coleta,
+                  data_agendamento: new Date(coleta.data_agendamento + "T00:00:00")
+                }))
+                .sort((a, b) => b.data_agendamento - a.data_agendamento);
+  
+              // Filtrar para obter as coletas de hoje e ontem
+              const coletasFiltradas = coletasOrdenadas.filter(coleta => {
+                const dataColeta = new Date(coleta.data_agendamento);
+                dataColeta.setHours(0, 0, 0, 0);
+                return dataColeta.getTime() === hoje.getTime() || dataColeta.getTime() === ontem.getTime();
+              });
+  
+              setColetas(coletasFiltradas.slice(0, 2)); // Garante no máximo 2 coletas
+            } else {
+              setColetas([]);
+            }
+          })
+          .catch((err) => {
+            if (err.name !== "AbortError") {
+              setError(err.message);
+            }
+          })
+          .finally(() => setLoading(false));
+  
+        return () => controller.abort();
+      }
+    }, [idCliente]);
+  
+    if (loading) {
+      return <div>Carregando dados...</div>;
     }
-  }, [idCliente]);
   
-  
-  if (loading) {
-    return <div>Carregando dados...</div>;
-  }
-
-  if (error) {
-    return <div className="text-red-500">Erro: {error}</div>;
-  }
+    if (error) {
+      return <div className="text-red-500">Erro: {error}</div>;
+    }
 
   return (
     <div className="mt-6">
@@ -285,12 +266,25 @@ export function OrdersTable({ idCliente }) {
                               {coleta.data_coleta ? new Date(coleta.data_coleta).toLocaleDateString("pt-BR") : "N/A"}  
                             </time>
                             </p>
-                         
-                          <a className="text-blue-600 flex items-center" href="">Suporte Online
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="ml-1  bi bi-whatsapp" viewBox="0 0 16 16">
-                                <path  d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
-                              </svg>
-                             </a>
+                            <a 
+                            className="text-blue-600 flex items-center" 
+                            href="https://wa.me/558581016266?text=Ol%C3%A1%21%20Minha%20coleta%20n%C3%A3o%20foi%20efetuada%20no%20per%C3%ADodo%20estipulado%2C%20o%20que%20houve%20%3F" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                          >
+                            Suporte Online
+                            <svg 
+                              xmlns="http://www.w3.org/2000/svg" 
+                              width="16" 
+                              height="16" 
+                              fill="currentColor" 
+                              className="ml-1 bi bi-whatsapp" 
+                              viewBox="0 0 16 16"
+                            >
+                              <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+                            </svg>
+                          </a>
+
                           </div>
                         </div>
                       </div>
