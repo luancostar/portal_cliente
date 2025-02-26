@@ -7,6 +7,10 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import * as XLSX from "xlsx";
 import { API_URL } from "../../../config";
 import excelPng from "../../assets/excel.png";
+import pdfPng from "../../assets/pdf.png";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+
 import {
   Card,
   CardHeader,
@@ -89,11 +93,11 @@ export default function ColetasTable() {
   const exportToExcel = () => {
     // Defina os dados da tabela
     const data = filteredColetas.map((coleta) => ({
-      "Data Solicitação": new Date(coleta.data_solicitacao).toLocaleDateString("pt-BR"),
-      "Data Agendamento": new Date(coleta.data_agendamento).toLocaleDateString("pt-BR"),
+      "Data Solicitação": ajustarData(coleta.data_solicitacao),
+      "Data Agendamento": ajustarData(coleta.data_agendamento),
       "Hora Solicitação": coleta.hora_solicitacao,
       "Status": coleta.status_coleta,
-      "Data Coleta": new Date(coleta.data_coleta).toLocaleDateString("pt-BR"),
+      "Data Coleta": ajustarData(coleta.data_coleta),
       "Hora Coleta": coleta.hora_coleta,
       "Solicitante": coleta.solicitante_coleta,
       "Volume": coleta.volume_solicitado,
@@ -101,6 +105,7 @@ export default function ColetasTable() {
       "Motorista": coleta.nome_motorista,
       "Placa": coleta.placa_veiculo,
     }));
+    
 
     // Crie uma planilha a partir dos dados
     const ws = XLSX.utils.json_to_sheet(data);
@@ -113,20 +118,74 @@ export default function ColetasTable() {
     XLSX.writeFile(wb, "coletas.xlsx");
   };
 
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+  
+    // Título do documento
+    doc.text("Histórico de Coletas", 14, 10);
+  
+    // Definir as colunas e dados da tabela
+    const columns = [
+      "Data Solicitação",
+      "Data Agendamento",
+      "Hora Solicitação",
+      "Status",
+      "Data Coleta",
+      "Hora Coleta",
+      "Solicitante",
+      "Volumes",
+      "Peso/KG",
+      "Motorista",
+      "Placa",
+    ];
+    const rows = filteredColetas.map((coleta) => [
+      ajustarData(coleta.data_solicitacao),
+      ajustarData(coleta.data_agendamento),
+      coleta.hora_solicitacao,
+      coleta.status_coleta,
+      ajustarData(coleta.data_coleta),
+      coleta.hora_coleta,
+      coleta.solicitante_coleta,
+      coleta.volume_solicitado,
+      coleta.peso,
+      coleta.nome_motorista,
+      coleta.placa_veiculo,
+    ]);
+    
+  
+    // Gerar tabela no PDF
+      autoTable(doc, {
+      head: [columns],
+      body: rows,
+      startY: 20, // Posição inicial abaixo do título
+    });
+  
+    // Salvar o arquivo PDF
+    doc.save("coletas.pdf");
+  };
+
  
 
   return (
     <div className="p-4 w-full">
-      
-        <div className="flex justify-between">
+   <div className="flex justify-between w-full">
+   <div className="flex w-full">
    <button
         onClick={exportToExcel}
-        className="p-2 bg-transparent flex text-green-500 font-bold text-sm rounded mb-4 border-[1px] border-green-500"
+        className="p-2 bg-transparent items-center flex text-green-500 font-bold text-xs rounded mb-4 border-[1px] border-green-500"
         >
-        <img width={'30px'} className="mr-2" src={excelPng} alt="" />
-        Download
+        <img width={'40px'} className="mr-2" src={excelPng} alt="" />
+        BAIXAR XLSX
       </button>
-     
+      <button
+          onClick={exportToPDF}
+          className="p-2 ml-5 items-center bg-transparent flex text-red-500 font-bold text-xs rounded mb-4 border-[1px] border-red-500"
+        >
+          <img width={'25px'} className="mr-2" src={pdfPng} alt="" />
+          BAIXAR PDF
+        </button>
+      </div>
+
         <Link to="/home" className="flex flex-col items-end group">
             <h2><i  style={{color: "rgb(13,171,97"}} className="text-3xl fa-sharp fa-solid fa-arrow-left"></i></h2>
         </Link>

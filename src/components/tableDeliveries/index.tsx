@@ -170,17 +170,17 @@ export default function EntregasTable() {
       <div className="flex w-full">
       <button
         onClick={exportToExcel}
-        className="p-2 bg-transparent items-center flex text-green-500 font-bold text-sm rounded mb-4 border-[1px] border-green-500"
+        className="p-2 bg-transparent items-center flex text-green-500 font-bold text-xs rounded mb-4 border-[1px] border-green-500"
         >
         <img width={'40px'} className="mr-2" src={excelPng} alt="" />
-        Download
+      BAIXAR XLSX
       </button>
       <button
           onClick={exportToPDF}
-          className="p-2 ml-5 items-center bg-transparent flex text-red-500 font-bold text-sm rounded mb-4 border-[1px] border-red-500"
+          className="p-2 ml-5 items-center bg-transparent flex text-red-500 font-bold text-xs rounded mb-4 border-[1px] border-red-500"
         >
           <img width={'25px'} className="mr-2" src={pdfPng} alt="" />
-          Download
+          BAIXAR PDF
         </button>
       </div>
         <Link to="/home" className="flex flex-col items-end group">
