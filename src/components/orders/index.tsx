@@ -234,9 +234,11 @@ import loadingGif from "../../assets/loading.gif"
                             <p className="text-sm text-gray-500">Coleta realizada com sucesso</p>
                           </div>
                           <div className="whitespace-nowrap text-right text-sm text-gray-500">
-                            <time dateTime={coleta.data_coleta}>
-                              {coleta.data_coleta ? new Date(coleta.data_coleta).toLocaleDateString("pt-BR") : "N/A"} - {coleta.hora_coleta || "N/A"}
-                            </time>
+                          <time dateTime={coleta.data_coleta}>
+                            {coleta.data_coleta
+                              ? new Date(`${coleta.data_coleta}T12:00:00`).toLocaleDateString("pt-BR")
+                              : "N/A"} - {coleta.hora_coleta || "N/A"}
+                          </time>
                           </div>
                         </div>
                       </div>
