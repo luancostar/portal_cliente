@@ -49,7 +49,12 @@ import loadingGif from "../../assets/loading.gif"
               const coletasFiltradas = coletasOrdenadas.filter(coleta => {
                 const dataColeta = new Date(coleta.data_agendamento);
                 dataColeta.setHours(0, 0, 0, 0);
-                return dataColeta.getTime() === hoje.getTime() || dataColeta.getTime() === ontem.getTime();
+              
+                // Condição para incluir coletas de hoje ou ontem
+                const isHojeOuOntem = dataColeta.getTime() === hoje.getTime() || dataColeta.getTime() === ontem.getTime();
+                
+                // Incluir sempre se estiver "Pendente de autorização"
+                return isHojeOuOntem || coleta.status_coleta === "Pendente de autorização";
               });
   
               setColetas(coletasFiltradas.slice(0, 2)); // Garante no máximo 2 coletas
@@ -121,19 +126,18 @@ import loadingGif from "../../assets/loading.gif"
                       <div className="text-sm text-gray-500 flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
                         <div>
                           {coleta.status_coleta === "Pendente de autorização"
-                            ? "Aguardando confirmação de coleta"
+                            ? "Aguardando confirmação de coleta..."
                             : coleta.status_coleta === "Autorizada" || coleta.status_coleta === "Coletada"
                             ? "Coleta aprovada! roteirizando..."
                             : "Coleta aprovada! roteirizando..."}
                         </div>
 
                         <div className="whitespace-nowrap text-right text-sm text-gray-500">
-                          <time>
-                            {coleta.data_agendamento
-                              ? new Date(coleta.data_agendamento).toLocaleDateString("pt-BR")
-                              : "N/A"}{" "}
-                            - 📅
-                          </time>
+                        <time>
+                          {coleta.data_agendamento && !isNaN(new Date(coleta.data_agendamento))
+                            ? new Date(coleta.data_agendamento).toLocaleDateString("pt-BR")
+                            : "⌛"}
+                        </time>
                         </div>
                       </div>
                     </div>
