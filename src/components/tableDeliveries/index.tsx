@@ -9,6 +9,7 @@ import excelPng from "../../assets/excel.png";
 import pdfPng from "../../assets/pdf.png";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import touchGif from "../../assets/touch.gif"
 import { API_URL } from "../../../config";
 
 import {
@@ -313,6 +314,9 @@ export default function EntregasTable() {
           </div>
         </CardFooter>
       </Card>
+      <div className="fixed bottom-[120px] right-[-30px] z-[1] w-[180px] h-[59px]">
+    < img className="invert xl:hidden" src={touchGif} alt="Carregando..." />
+    </div>
     </div>
   );
 }
