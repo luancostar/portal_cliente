@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import * as XLSX from "xlsx";
 import excelPng from "../../assets/excel.png";
+import pdfPng from "../../assets/pdf.png";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import { API_URL } from "../../../config";
 
 import {
@@ -45,14 +48,14 @@ export default function EntregasTable() {
       .then((data) => {
         if (data.status === "success" && data.data.entregas) {
           const entregasOrdenadas = data.data.entregas.sort((a, b) => {
-            // Prioriza entregas com status "ENTREGUE"
-            if (a.status_entrega === "ENTREGUE" && b.status_entrega !== "ENTREGUE") {
+            // Prioriza entregas com status "EM ABERTO"
+            if (a.status_entrega === "EM ABERTO" && b.status_entrega !== "EM ABERTO") {
               return -1;
             }
-            if (a.status_entrega !== "ENTREGUE" && b.status_entrega === "ENTREGUE") {
+            if (a.status_entrega !== "EM ABERTO" && b.status_entrega === "EM ABERTO") {
               return 1;
             }
-          
+  
             // Se ambos forem "ENTREGUE", ordena pela baixa_entrega mais recente
             if (a.status_entrega === "ENTREGUE" && b.status_entrega === "ENTREGUE") {
               const dataA = a.baixa_entrega ? new Date(a.baixa_entrega).getTime() : 0;
@@ -72,6 +75,28 @@ export default function EntregasTable() {
       .finally(() => setLoading(false));
   }, [idCliente]);
   
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+    doc.text("Histórico de Entregas", 14, 10);
+    
+    const tableData = entregas.map(entrega => [
+      entrega.cte,
+      new Date(entrega.emissao_cte).toLocaleDateString("pt-BR"),
+      entrega.status_entrega,
+      entrega.cpf_cnpj_cliente,
+      new Date(entrega.baixa_entrega).toLocaleDateString("pt-BR"),
+      entrega.condicao_pgto,
+      entrega.cif_fob,
+      parseFloat(entrega.vlr_total_cte).toFixed(2),
+    ]);
+    
+    autoTable(doc, {
+      head: [["CTE", "Emissão", "Status", "CPF/CNPJ Cliente", "Data Entrega", "Condição Pgto", "Tipo Frete", "Valor Total (R$)"]],
+      body: tableData,
+    });
+    
+    doc.save("entregas.pdf");
+  };
   
   const filteredEntregas = entregas.filter((entrega) => {
     const entregaDate = new Date(entrega.baixa_entrega);
@@ -117,8 +142,6 @@ export default function EntregasTable() {
       "Status": entrega.status_entrega,
       "Tipo Frete": entrega.cif_fob,
       "Valor Total (R$)": parseFloat(entrega.vlr_total_cte).toFixed(2),
-      "MAF": entrega.maf,
-      "Data MAF": new Date(entrega.data_maf).toLocaleDateString("pt-BR"),
       "Prev. Entrega": new Date(entrega.prev_entrega).toLocaleDateString("pt-BR"),
       "Peso Taxado (KG)": entrega.peso_taxado,
       "Qtd Volumes": entrega.qtd_volumes,
@@ -143,14 +166,23 @@ export default function EntregasTable() {
 
   return (
     <div className="p-4 w-full">
-      <div className="flex justify-between">
+      <div className="flex justify-between w-full">
+      <div className="flex w-full">
       <button
         onClick={exportToExcel}
-        className="p-2 bg-transparent flex text-green-500 font-bold text-sm rounded mb-4 border-[1px] border-green-500"
+        className="p-2 bg-transparent items-center flex text-green-500 font-bold text-sm rounded mb-4 border-[1px] border-green-500"
         >
-        <img width={'30px'} className="mr-2" src={excelPng} alt="" />
+        <img width={'40px'} className="mr-2" src={excelPng} alt="" />
         Download
       </button>
+      <button
+          onClick={exportToPDF}
+          className="p-2 ml-5 items-center bg-transparent flex text-red-500 font-bold text-sm rounded mb-4 border-[1px] border-red-500"
+        >
+          <img width={'25px'} className="mr-2" src={pdfPng} alt="" />
+          Download
+        </button>
+      </div>
         <Link to="/home" className="flex flex-col items-end group">
           <h2>
             <i style={{ color: "rgb(13,171,97)" }} className="text-3xl fa-sharp fa-solid fa-arrow-left"></i>
@@ -214,8 +246,6 @@ export default function EntregasTable() {
                   "Condição Pgto",
                   "Tipo Frete",
                   "Valor Total",
-                  "MAF",
-                  "Data MAF",
                   "Prev. Entrega",
                   "Peso Taxado",
                   "Qtd Volumes",
@@ -261,8 +291,6 @@ export default function EntregasTable() {
                     <td className="p-4">{entrega.condicao_pgto}</td>
                     <td className="p-4">{entrega.cif_fob}</td>
                     <td className="p-4">R$ {parseFloat(entrega.vlr_total_cte).toFixed(2)}</td>
-                    <td className="p-4">{entrega.maf}</td>
-                    <td className="p-4">{new Date(entrega.data_maf).toLocaleDateString("pt-BR")}</td>
                     <td className="p-4">{new Date(entrega.prev_entrega).toLocaleDateString("pt-BR")}</td>
                     <td className="p-4 text-center">{entrega.peso_taxado} KG</td>
                     <td className="p-4 text-center">{entrega.qtd_volumes}</td>
