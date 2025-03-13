@@ -44,7 +44,7 @@ export default function ColetasTable() {
     if (!idCliente) return;
   
     setLoading(true);
-    fetch(`${API_URL}/coletas/getColetasCliente.php?id_cliente=${idCliente}`)
+    fetch(`${API_URL}/coletas/getColetasCliente.php?id_cliente=${idCliente}&data_inicial=2025-01-01&data_final=2099-12-31`)
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "success") {
@@ -300,7 +300,7 @@ export default function ColetasTable() {
                           }
                         />
                       </td>
-                      <td className={classes}>{ajustarData(coleta.data_coleta)}</td>
+                      {isNaN(new Date(coleta.data_coleta)) ? "Aguardando..." : new Date(coleta.data_coleta + "T00:00:00Z").toLocaleDateString("pt-BR")}
                       <td className={classes}>{coleta.hora_coleta}</td>
                       <td className={classes}>{coleta.solicitante_coleta}</td>
                       <td className={classes} style={{ textAlign: "center" }}>{coleta.volume_solicitado}</td>
