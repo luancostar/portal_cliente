@@ -270,8 +270,10 @@ import loadingGif from "../../assets/loading.gif"
                           <div>
                             <p className="text-sm text-gray-500">Coleta não realizada! - 
                             <time dateTime={coleta.data_coleta}>
-                              {coleta.data_coleta ? new Date(coleta.data_coleta).toLocaleDateString("pt-BR") : "N/A"}  
-                            </time>
+                            {coleta.data_coleta
+                              ? new Date(`${coleta.data_coleta}T12:00:00`).toLocaleDateString("pt-BR")
+                              : "N/A"} - {coleta.hora_coleta || "N/A"}
+                          </time>
                             </p>
                             <a 
                             className="text-blue-600 flex items-center" 
