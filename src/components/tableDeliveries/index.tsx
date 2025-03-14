@@ -42,9 +42,8 @@ export default function EntregasTable() {
   
   useEffect(() => {
     if (!idCliente) return;
-  
     setLoading(true);
-    fetch(`${API_URL}/entregas/listarEntregas.php?id_cliente=${idCliente}&data_inicial=2025-01-01&data_final=2099-12-31`)
+    fetch(`${API_URL}/entregas/listarEntregas.php?id_cliente=${idCliente}&data_inicial=2025-01-01&data_final=2025-12-31`)
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "success" && data.data.entregas) {
