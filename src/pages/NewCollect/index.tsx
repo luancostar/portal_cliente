@@ -7,7 +7,10 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import { API_URL } from '../../../config';
+import withAuth from "../hoc"; 
 
+
+// eslint-disable-next-line react-refresh/only-export-components
 const SolicitarColetaForm = () => {
   const [data, setData] = useState({
     id_cliente: "",
@@ -473,4 +476,5 @@ const SolicitarColetaForm = () => {
   );
 };
 
-export default SolicitarColetaForm;
+// eslint-disable-next-line react-refresh/only-export-components
+export default withAuth(SolicitarColetaForm);
