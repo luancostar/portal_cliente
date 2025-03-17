@@ -9,7 +9,9 @@ import InputMask from "react-input-mask";
 import "react-toastify/dist/ReactToastify.css";
 import { API_URL } from "../../../config";
 import bgMsg from "../../assets/diretoriabg.png";
+import withAuth from "../hoc";
 
+// eslint-disable-next-line react-refresh/only-export-components
 const Formulario: React.FC = () => {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
@@ -133,4 +135,6 @@ const Formulario: React.FC = () => {
   );
 };
 
-export default Formulario;
+// Aplique o HOC antes de exportar o componente
+// eslint-disable-next-line react-refresh/only-export-components
+export default withAuth(Formulario);

@@ -7,9 +7,11 @@ import { Card } from "@material-tailwind/react";
 import { FaParachuteBox, FaPeopleCarry } from "react-icons/fa";
 import StatsSectionEntregas from "../../components/my-performances-entregas";
 import { Link } from "react-router-dom";
+import withAuth from "../hoc"; 
 
-export default function Performance() {
-  const [idCliente, setIdCliente] = useState(null);
+
+function Performance() {
+  const [idCliente, setIdCliente] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState("coletas"); // Estado para alternar a exibição
 
   useEffect(() => {
@@ -19,18 +21,16 @@ export default function Performance() {
   }, []);
 
   return (
-    
     <div className="h-full p-2 justify-center">
-     
-       <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center">
         <h4 className="ml-2 text-xl font-bold text-gray-700">Minhas Performances</h4>
         <Link to="/home" className="flex flex-col items-end p-2">
           <h2>
             <i style={{ color: "rgb(13,171,97)" }} className="text-3xl fa-sharp fa-solid fa-arrow-left"></i>
           </h2>
         </Link>
- 
-        </div>
+      </div>
+
       <Card className="bg-green-700 ">
         <div className="bg-transparent w-full text-white flex justify-center text-center ">
           <button
@@ -57,3 +57,7 @@ export default function Performance() {
     </div>
   );
 }
+
+// Aplique o HOC antes de exportar o componente
+// eslint-disable-next-line react-refresh/only-export-components
+export default withAuth(Performance);
