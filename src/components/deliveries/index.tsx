@@ -35,18 +35,22 @@ export default function DeliveriesTable({ idCliente }) {
               (entrega) => entrega.status_entrega !== "ENTREGUE"
             );
   
-            // Se houver menos de 3 entregas em aberto, adiciona as mais recentes até completar 3
-            if (entregasAbertas.length < 3) {
+          // Sempre pega todas as entregas em aberto
+            let entregasFinal = [...entregasAbertas];
+
+            // Se houver menos de 3 entregas abertas, complementa com as mais recentes
+            if (entregasFinal.length < 3) {
               const entregasMaisRecentes = data.data.entregas
-                .sort((a, b) => new Date(b.emissao_cte) - new Date(a.emissao_cte))
-                .slice(0, 3);
-                
-              // Combina as entregas abertas com as recentes, garantindo no mínimo 3
-              const entregasFinal = [...new Set([...entregasAbertas, ...entregasMaisRecentes])].slice(0, 3);
-              setColetas(entregasFinal);
-            } else {
-              setColetas(entregasAbertas);
+                .filter((entrega) => entrega.status_entrega === "ENTREGUE") // Pega as entregues
+                .sort((a, b) => new Date(b.emissao_cte) - new Date(a.emissao_cte)) // Ordena pela mais recente
+                .slice(0, 3 - entregasFinal.length); // Complementa até ter 3 no total
+
+              entregasFinal = [...entregasFinal, ...entregasMaisRecentes];
             }
+
+            // Define o estado com a lista final
+            setColetas(entregasFinal);
+
           } else {
             setColetas([]);
           }
