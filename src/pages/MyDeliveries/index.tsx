@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import EntregasTable from "../../components/tableDeliveries";
 import withAuth from "../hoc" // Importe o HOC
 
+// eslint-disable-next-line react-refresh/only-export-components
 function MyDeliveries() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [idCliente, setIdCliente] = useState<string | null>(null);

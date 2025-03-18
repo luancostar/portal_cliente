@@ -3,8 +3,9 @@
 
 import React, { useState, useEffect } from "react";
 import ColetasTable from "../../components/tableOrders";
-import withAuth from "../hoc"; // Importe o HOC
+import withAuth from "../hoc"; 
 
+// eslint-disable-next-line react-refresh/only-export-components
 function MyCollects() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [idCliente, setIdCliente] = useState<string | null>(null);

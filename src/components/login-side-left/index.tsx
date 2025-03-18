@@ -133,7 +133,7 @@ export default function FormLogin() {
               className="text-center text-white font-bold w-full placeholder:opacity-100 focus:border-t-primary border-t-blue-gray-200 md:text-black"
             />
             {errors.cpfCnpj && (
-              <Typography variant="small" color="red" className="text-center mt-1">
+              <Typography variant="small" color="red" className="relative text-center mt-1">
                 {errors.cpfCnpj}
               </Typography>
             )}
@@ -169,7 +169,7 @@ export default function FormLogin() {
             }
           />
             {errors.senha && (
-              <Typography variant="small" color="red" className="text-center mt-1">
+              <Typography variant="small" color="red" className="relative text-center mt-1">
                 {errors.senha}
               </Typography>
             )}

@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import withAuth from "../hoc"; 
 
 
+// eslint-disable-next-line react-refresh/only-export-components
 function Performance() {
   const [idCliente, setIdCliente] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState("coletas"); // Estado para alternar a exibição
