@@ -328,7 +328,7 @@ export default function ColetasTable() {
           </div>
         </CardFooter>
     </Card>
-    <div className="fixed bottom-[120px] right-[-30px] z-[1] w-[180px] h-[59px]">
+    <div className="fixed bottom-[50px] right-[-30px] z-[1] w-[180px] h-[59px]">
     <img className="invert xl:hidden" src={touchGif} alt="Carregando..." />
     </div>
     </div>
