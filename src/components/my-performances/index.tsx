@@ -220,7 +220,7 @@ function StatsCard({ count, title, description, fullWidth = false, bgImage, isFi
                   fontWeight: "bold",
                   offsetY: 10,
                   color: "#0dab61",
-                  formatter: (val) => `${val}%`,
+                  formatter: (val) => `${parseFloat(val).toFixed(2)}%`,
                 },
               },
             },

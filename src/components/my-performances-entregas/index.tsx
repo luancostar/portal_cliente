@@ -185,7 +185,7 @@ export function StatsSectionEntregas({ idCliente }: { idCliente?: string }) {
                       fontWeight: "bold",
                       offsetY: 10,
                       color: "#0dab61",
-                      formatter: (val) => `${val.toFixed(1)}%`,} },
+                      formatter: (val) => `${parseFloat(val).toFixed(2)}%`,} },
                 },
               },
               colors: ["#0dab61"],
