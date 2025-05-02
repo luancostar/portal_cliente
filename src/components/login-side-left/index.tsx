@@ -222,8 +222,8 @@ export default function FormLogin() {
           </div>
         )}
       </div>
-      <div style={{backgroundColor:'#acacac8c'}} className="flex justify-center w-full fixed bottom-2 left-0 items-baseline w-100">
-        <p className="text-white z-10 md:text-black">
+      <div className="flex justify-center w-full fixed bottom-2 left-0 items-baseline bg-[#acacac8c] md:bg-transparent">
+      <p className="text-white z-10 md:text-black">
           desenvolvido por 
         </p>
        <img
@@ -231,7 +231,7 @@ export default function FormLogin() {
           src={logoVbTech}
           alt="Logo"
         />
-      <p className="text-white z-10 fixed top-0 right-3 md:text-black">
+      <p className="text-white z-10 fixed top-0 right-3">
          ver. 1.0.0
         </p>
        </div>
