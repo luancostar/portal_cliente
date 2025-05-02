@@ -8,6 +8,7 @@ import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../../config.tsx";
 import logoVb from "../../assets/LogoVBLOG_Prioritaria.png"
+import logoVbTech from "../../assets/vbtechname.png"
 import coverLogin from "../../assets/bgLogin.png";
 import RecuperarSenhaModal from "../recoverPass/index.tsx";
 
@@ -108,6 +109,7 @@ export default function FormLogin() {
          
             <Typography style={{ position: 'relative' }} variant="h4" color="blue-gray" className="text-white md:text-gray-600 mb-2">
           Portal do Cliente
+      
         </Typography>
         <Typography style={{ position: 'relative' }} className="text-white md:text-gray-600 mb-16 font-normal text-[18px]">
           O Controle de suas encomendas ao seu alcance
@@ -220,6 +222,20 @@ export default function FormLogin() {
           </div>
         )}
       </div>
-    </section>
+      <div style={{backgroundColor:'#acacac8c'}} className="flex justify-center w-full fixed bottom-2 left-0 items-baseline w-100">
+        <p className="text-white z-10 md:text-black">
+          desenvolvido por 
+        </p>
+       <img
+          className="ml-1 w-[80px] md:drop-shadow-none bottom-2"
+          src={logoVbTech}
+          alt="Logo"
+        />
+      <p className="text-white z-10 fixed top-0 right-3 md:text-black">
+         ver. 1.0.0
+        </p>
+       </div>
+      
+     </section>
   );
 }
